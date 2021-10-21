@@ -44,3 +44,14 @@ Los datos obligatorios son: Usuario, Contraseña, PAN, Nombre del TajetaHabiente
 Una tarjeta debe ser creada con estado “no vigente”
 Los campos a ingresar son obligatorios
 El campo PIN es de carácter sensible.
+
+-
+
+
+
+todo:
+
+- set up sql server 2017 / connect to instance from net core
+- build tuples according to model
+- create CQRS so they connect to model (tuples) in netcore
+- implement above tasks
