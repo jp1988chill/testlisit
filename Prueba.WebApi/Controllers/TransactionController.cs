@@ -96,7 +96,7 @@ namespace Prueba.WebApi.Controllers
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> CrearToken([FromBody] UserBody objBodyObjectRequest)
         {
-            var handlerResponse = await _mediator.Send(new CrearUsuarioCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            var handlerResponse = await _mediator.Send(new CrearTokenCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
     }

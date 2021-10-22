@@ -15,9 +15,9 @@ namespace Prueba.Domain
             this.Token = token;
         }
         [Key]
-        public Guid Token { get; private set; }     //Token de usuario generado con duración de N minutos
-        public string Name { get; private set; }    //Nombre de tarjetahabiente que contiene 1:1 class Card
-        public string Password { get; private set; }
+        public Guid Token { get; set; }     //Token de usuario generado con duración de N minutos
+        public string Name { get; set; }    //Nombre de tarjetahabiente que contiene 1:1 class Card
+        public string Password { get; set; }
     }
 
     public class UserResponse

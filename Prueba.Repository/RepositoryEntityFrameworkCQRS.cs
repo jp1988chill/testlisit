@@ -46,6 +46,11 @@ namespace Prueba.Repository
             }
         }
 
+        public virtual IEnumerable<TEntity> GetAll()
+        {
+            return dbSet.AsEnumerable();
+        }
+
         public virtual TEntity GetByID(object id)
         {
             return dbSet.Find(id);
