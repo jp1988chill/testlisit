@@ -7,30 +7,33 @@ using System.Linq.Expressions;
 
 namespace Prueba.Domain.Models
 {
-    public class CrearTarjetaModel
+    public class DescontarSaldoTarjetaModel
     {
         //Lógica Microservicio...
-        public bool CrearTarjetas(List<Card> cards, IRepositoryEntityFrameworkCQRS<Card> cardRepository){
-
-            //Generamos nuevo GUID para cada tarjeta.
+        public bool DescontarSaldoTarjetas(List<Card> cards, decimal saldoADescontar, IRepositoryEntityFrameworkCQRS<Card> cardRepository){
             foreach (Card card in cards) {
-                card.Id = new Guid();
+                Card thisCard = cardRepository.GetByID(card.Id);
+                if (thisCard != null) {
+                    thisCard.Amount -= saldoADescontar;
+                    if (thisCard.Amount < 0) {
+                        thisCard.Amount = 0;
+                    }
+                    cardRepository.Update(thisCard);
+                }
             }
-
-            cardRepository.InsertMany(cards);
             if (cardRepository.Save() > 0) {
                 return true;
             }
             return false;
         }
-        public async Task<CardResponse> CrearTarjeta(CardBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<Card> cardRepository)
+        public async Task<CardResponse> DescontarSaldoTarjeta(CardBody objBodyObjectRequest, decimal saldoADescontar, IRepositoryEntityFrameworkCQRS<Card> cardRepository)
         {
             int httpCod = 200;
             string httpMsg = "Registros Procesados Correctamente";
             string moreInfo = "200 - Success";
             string usrFriendlyErr = "Registros Procesados Correctamente";
 
-            if (CrearTarjetas(objBodyObjectRequest.Cards, cardRepository) != true) {
+            if (DescontarSaldoTarjetas(objBodyObjectRequest.Cards, saldoADescontar, cardRepository) != true) {
                 httpCod = 400;
                 httpMsg = "Error al ingresar tarjetas";
                 moreInfo = httpCod + " - Error";

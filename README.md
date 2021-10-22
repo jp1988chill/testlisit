@@ -28,9 +28,9 @@ Crear un usuario valido de acceso a sistema. -> OK
 Una tarjeta debe ser creada con estado “no vigente” -> OK
 Los campos a ingresar son obligatorios -> OK
 Quitar todo el saldo de una tarjeta. -> OK
+Quitar una parte del saldo de una tarjeta. -> OK
 
 Todo:
-Quitar una parte del saldo de una tarjeta.
 Añadir saldo a una tarjeta.
 Obtener una tarjeta por su GUID
 Obtener las tarjetas por nombre de tarjetahabiente.

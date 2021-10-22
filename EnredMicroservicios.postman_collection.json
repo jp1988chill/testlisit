@@ -16,7 +16,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "ADC7AA2B-DE29-4E6C-10B4-08D995900FDC",
+							"value": "6e79ae43-dc31-4a61-0fa7-08d9959527fb",
 							"type": "string"
 						},
 						{
@@ -94,6 +94,54 @@
 					"path": [
 						"action",
 						"VaciarSaldoTarjeta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DescontarSaldoTarjeta",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "6E79AE43-DC31-4A61-0FA7-08D9959527FB",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"8A98854B-19A3-47F0-D3E2-08D995953104\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"E5E340AD-BDA9-40FE-D3E0-08D995953104\",\r\n      \"Name\": \"Cliente Hilbert\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/DescontarSaldoTarjeta/1200",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"DescontarSaldoTarjeta",
+						"1200"
 					]
 				}
 			},
