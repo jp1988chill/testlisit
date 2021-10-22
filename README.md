@@ -55,5 +55,5 @@ todo:
 - build tuples according to model -> OK
 - add CQRS + DI from repositories -> OK
 - add DDD pattern (command handler format) -> OK
-- add Token lease and security layer
-- implement above tasks
+- Generate Token from user/pass, update Token lease inside User tuple, implement security layer by checking the TOKEN inside User Tuple to be generated at most, 10 minutes ago. If OK, API can be used, otherwise API rejects the TOKEN.
+- the rest of the tasks

@@ -19,7 +19,7 @@ namespace Prueba.Domain.Models
                     userRepository.Delete(thisUser);
                     userRepository.Save();
                 }
-                thisUser = new User(user.Name, user.Password, new Guid());
+                thisUser = new User(user.Name, user.Password, new Guid(), DateTime.Now.AddMinutes(10).ToString()); //10 minutes lease time
                 userRepository.Insert(thisUser);
                 userRepository.Save();
                 usersTokenGenerado.Add(thisUser);
