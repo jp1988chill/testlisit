@@ -31,9 +31,9 @@ Quitar todo el saldo de una tarjeta. -> OK
 Quitar una parte del saldo de una tarjeta. -> OK
 Añadir saldo a una tarjeta. -> OK
 Obtener una tarjeta por su GUID -> OK
+Obtener las tarjetas por nombre de tarjetahabiente. -> OK
 
 Todo:
-Obtener las tarjetas por nombre de tarjetahabiente.
 Actualizar el nombre del tarjetahabiente.
 Establecer el PIN (clave de 4 dígitos) de la tarjeta.
 Modificar el estado de una tarjeta, “vigente” o “no vigente”. Si la tarjeta se encuentra “no vigente” sólo se podrá modificar el estado.

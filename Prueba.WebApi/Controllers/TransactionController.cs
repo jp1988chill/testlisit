@@ -197,5 +197,30 @@ namespace Prueba.WebApi.Controllers
             var handlerResponse = await _mediator.Send(new ObtenerTarjetaCommand() { GuidTarjeta = guidTarjeta }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
+
+
+        /// <summary>
+        /// Obtiene todas las Tarjetas por NombreUsuario.
+        /// </summary>
+        /// <param name="nombreUsuario">Nombre de TarjetaHabiente asociado a una lista de Tarjetas.</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/ObtenerTarjetaPorNombreUsuario/{nombreUsuario}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        [HttpPost]
+        [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> ObtenerTarjetaPorNombreUsuario([FromRoute] string nombreUsuario)
+        {
+            var handlerResponse = await _mediator.Send(new ObtenerTarjetaPorNombreUsuarioCommand() { NombreUsuario = nombreUsuario }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
     }
 }
