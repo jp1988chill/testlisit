@@ -44,15 +44,22 @@ namespace Prueba.WebApi.Extensions
                 try
                 {
                     User user = userRepository.GetByID(new Guid(token));
-                    DateTime userDT = DateTime.Parse(user.Tokenleasetime);
-                    int result = DateTime.Compare(DateTime.Now, userDT);
-                    if (result < 0)
+                    if (user != null)
                     {
-                        context.Succeed(requirement);
+                        DateTime userDT = DateTime.Parse(user.Tokenleasetime);
+                        int result = DateTime.Compare(DateTime.Now, userDT);
+                        if (result < 0)
+                        {
+                            context.Succeed(requirement);
+                        }
+                        else
+                        {
+                            httpContext = CustomMessage(httpContext, "El Token del usuario se encuentra expirado (" + userDT.ToShortTimeString() + "). Genere un nuevo Token");
+                            context.Fail();
+                        }
                     }
-                    else
-                    {
-                        httpContext = CustomMessage(httpContext, "El Token del usuario se encuentra expirado ("+ userDT.ToShortTimeString()+"). Genere un nuevo Token");
+                    else {
+                        httpContext = CustomMessage(httpContext, "No existe usuario con el Token (" + token + ").");
                         context.Fail();
                     }
                 }

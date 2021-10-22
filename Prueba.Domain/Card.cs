@@ -15,7 +15,7 @@ namespace Prueba.Domain
         }
         
         [Key]
-        public System.Guid Id { get; private set; } //ID objeto interno .NET
+        public System.Guid Id { get; set; } //ID objeto interno .NET
         public string Name { get; set; }    //nombre tarjetahabiente
         public string Pan { get; set; } //número de tarjeta(PAN) formato: 1234-1234-1234-1234.
         public string Pin { get; set; } //clave de 4 dígitos para usuario.
@@ -38,7 +38,6 @@ namespace Prueba.Domain
 
     public class CardBody
     {
-        public Guid Token { get; set; } //Token validación operación
         public List<Card> Cards { get; set; }
 
         public override string ToString()

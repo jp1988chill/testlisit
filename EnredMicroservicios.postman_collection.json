@@ -16,7 +16,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "8BA75580-A5D9-4546-2360-08D9957BF650",
+							"value": "ADC7AA2B-DE29-4E6C-10B4-08D995900FDC",
 							"type": "string"
 						},
 						{
@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"Token\": \"dc2ce1d2-66f9-44c6-4865-08d9957bb520\",\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016206\",\r\n      \"Name\": \"Cliente Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"148FAF14-7B16-4827-81DB-08D995016206\",\r\n      \"Name\": \"Cliente Hilbert\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 1355\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -47,6 +47,53 @@
 					"path": [
 						"action",
 						"CrearTarjeta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VaciarSaldoTarjeta",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "ADC7AA2B-DE29-4E6C-10B4-08D995900FDC",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"148FAF14-7B16-4827-81DB-08D995016206\",\r\n      \"Name\": \"Cliente Hilbert\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/VaciarSaldoTarjeta",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"VaciarSaldoTarjeta"
 					]
 				}
 			},
@@ -100,7 +147,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"27C3FA6E-DCD0-4D3F-51CE-08D99533F5EF\",\r\n      \"Name\": \"User Juan Pablo Neira 2\",\r\n      \"Password\": \"LocalTest1\"\r\n    },\r\n    {\r\n      \"Token\": \"FB20A841-DA48-4ED1-51CF-08D99533F5EF\",\r\n      \"Name\": \"User Hilbert 3\",\r\n      \"Password\": \"1234ac\"\r\n    },\r\n    {\r\n      \"Token\": \"D23C210A-1A26-4E8B-51D0-08D99533F5EF\",\r\n      \"Name\": \"User Hilbertb5\",\r\n      \"Password\": \"1234ac\"\r\n    },\r\n    {\r\n      \"Token\": \"0D6BFC51-E21D-4E1D-51D1-08D99533F5EF\",\r\n      \"Name\": \"User Hilbert4\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n\r\n  ]\r\n}",
+					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"27C3FA6E-DCD0-4D3F-51CE-08D99533F5EF\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\"\r\n    },\r\n    {\r\n      \"Token\": \"FB20A841-DA48-4ED1-51CF-08D99533F5EF\",\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
