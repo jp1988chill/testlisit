@@ -38,7 +38,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/CrearTarjeta")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //todo
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
         [HttpPut]
         [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
@@ -62,7 +62,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/CrearUsuario")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //todo
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
         [HttpPut]
         [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
@@ -87,7 +87,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/CrearToken")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //todo
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado se genera desde este método, no se puede crear dependencia circular
         [HttpPut]
         [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]

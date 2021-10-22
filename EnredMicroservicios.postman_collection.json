@@ -12,13 +12,25 @@
 			},
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "8BA75580-A5D9-4546-2360-08D9957BF650",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
 				},
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"Token\": \"D3561B46-4F3E-4860-81D7-08D995016206\",\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016206\",\r\n      \"Name\": \"Cliente Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"148FAF14-7B16-4827-81DB-08D995016206\",\r\n      \"Name\": \"Cliente Hilbert\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"Token\": \"dc2ce1d2-66f9-44c6-4865-08d9957bb520\",\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016206\",\r\n      \"Name\": \"Cliente Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"148FAF14-7B16-4827-81DB-08D995016206\",\r\n      \"Name\": \"Cliente Hilbert\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
