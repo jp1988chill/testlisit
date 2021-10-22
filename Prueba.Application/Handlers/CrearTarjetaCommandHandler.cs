@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Prueba.Application.Handlers
 {
-    public class CrearTarjetaCommandHandler : IRequestHandler<CardTransactionCommand, CardResponse>
+    public class CrearTarjetaCommandHandler : IRequestHandler<CrearTarjetaCommand, CardResponse>
     {
-        private IGenericRepository<Card> cardRepository = null;
+        private IRepositoryEntityFrameworkCQRS<Card> cardRepository = null;
         public CrearTarjetaCommandHandler(PruebaContext pruebaContext)
         {
             cardRepository = new RepositoryEntityFrameworkCQRS<Card>(pruebaContext);
@@ -26,7 +26,7 @@ namespace Prueba.Application.Handlers
             pruebaContext.Database.EnsureCreated();
         }
 
-        public async Task<CardResponse> Handle(CardTransactionCommand request, CancellationToken cancellationToken)
+        public async Task<CardResponse> Handle(CrearTarjetaCommand request, CancellationToken cancellationToken)
         {
             var middleWareHandler = new CrearTarjetaModel();
             var middleWareHandlerResponse = (await middleWareHandler.CrearTarjeta(request.objBodyObjectRequest, cardRepository));

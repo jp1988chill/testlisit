@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class UserTransactionCommand : IRequest<UserResponse>
+    public class CrearUsuarioCommand : IRequest<UserResponse>
     {
         //Cards
         [FromBody]

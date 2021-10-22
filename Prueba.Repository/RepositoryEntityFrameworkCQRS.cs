@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Prueba.Repository
 {
-    public class RepositoryEntityFrameworkCQRS<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public class RepositoryEntityFrameworkCQRS<TEntity> : IRepositoryEntityFrameworkCQRS<TEntity> where TEntity : class
     {
         protected DbContext context;
         internal DbSet<TEntity> dbSet;

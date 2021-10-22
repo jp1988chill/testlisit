@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class CardTransactionCommand : IRequest<CardResponse>
+    public class CrearTarjetaCommand : IRequest<CardResponse>
     {
         [FromBody]
         public Guid Token { get; set; }

@@ -47,7 +47,7 @@ namespace Prueba.WebApi.Controllers
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> CrearTarjeta([FromBody] CardBody objBodyObjectRequest)
         {
-            var handlerResponse = await _mediator.Send(new CardTransactionCommand() { objBodyObjectRequest = objBodyObjectRequest}).ConfigureAwait(false);
+            var handlerResponse = await _mediator.Send(new CrearTarjetaCommand() { objBodyObjectRequest = objBodyObjectRequest}).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
 
@@ -71,9 +71,33 @@ namespace Prueba.WebApi.Controllers
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> CrearUsuario([FromBody] UserBody objBodyObjectRequest)
         {
-            var handlerResponse = await _mediator.Send(new UserTransactionCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            var handlerResponse = await _mediator.Send(new CrearUsuarioCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
 
+
+        /// <summary>
+        /// Crear un Token.
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/CrearToken")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //todo
+        [HttpPut]
+        [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> CrearToken([FromBody] UserBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new CrearUsuarioCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
     }
 }

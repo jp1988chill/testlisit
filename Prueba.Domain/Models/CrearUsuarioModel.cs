@@ -10,14 +10,14 @@ namespace Prueba.Domain.Models
     public class CrearUsuarioModel
     {
         //Lógica Microservicio...
-        public bool CrearUsuarios(List<User> users, IGenericRepository<User> userRepository){
+        public bool CrearUsuarios(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
             userRepository.InsertMany(users);
             if (userRepository.Save() > 0) {
                 return true;
             }
             return false;
         }
-        public async Task<UserResponse> CrearUsuario(UserBody objBodyObjectRequest, IGenericRepository<User> userRepository)
+        public async Task<UserResponse> CrearUsuario(UserBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<User> userRepository)
         {
             int httpCod = 200;
             string httpMsg = "Registros Procesados Correctamente";

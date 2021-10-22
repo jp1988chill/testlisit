@@ -10,14 +10,14 @@ namespace Prueba.Domain.Models
     public class CrearTarjetaModel
     {
         //Lógica Microservicio...
-        public bool CrearTarjetas(List<Card> cards, IGenericRepository<Card> cardRepository){
+        public bool CrearTarjetas(List<Card> cards, IRepositoryEntityFrameworkCQRS<Card> cardRepository){
             cardRepository.InsertMany(cards);
             if (cardRepository.Save() > 0) {
                 return true;
             }
             return false;
         }
-        public async Task<CardResponse> CrearTarjeta(CardBody objBodyObjectRequest, IGenericRepository<Card> cardRepository)
+        public async Task<CardResponse> CrearTarjeta(CardBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<Card> cardRepository)
         {
             int httpCod = 200;
             string httpMsg = "Registros Procesados Correctamente";

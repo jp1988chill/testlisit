@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace Prueba.Application.Handlers
 {
-    public class CrearUsuarioCommandHandler : IRequestHandler<UserTransactionCommand, UserResponse>
+    public class CrearUsuarioCommandHandler : IRequestHandler<CrearUsuarioCommand, UserResponse>
     {
-        private IGenericRepository<User> userRepository = null;
+        private IRepositoryEntityFrameworkCQRS<User> userRepository = null;
         public CrearUsuarioCommandHandler(PruebaContext pruebaContext)
         {
             userRepository = new RepositoryEntityFrameworkCQRS<User>(pruebaContext);
         }
 
-        public async Task<UserResponse> Handle(UserTransactionCommand request, CancellationToken cancellationToken)
+        public async Task<UserResponse> Handle(CrearUsuarioCommand request, CancellationToken cancellationToken)
         {
             var middleWareHandler = new CrearUsuarioModel();
             var middleWareHandlerResponse = (await middleWareHandler.CrearUsuario(request.objBodyObjectRequest, userRepository));
