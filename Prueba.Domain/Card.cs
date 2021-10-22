@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Prueba.Domain
 {
@@ -12,7 +13,8 @@ namespace Prueba.Domain
             Name = name;
             Pan = pan;
         }
-
+        
+        [Key]
         public System.Guid Id { get; private set; } //ID objeto interno .NET
         public string Name { get; set; }    //nombre tarjetahabiente
         public string Pan { get; set; } //número de tarjeta(PAN) formato: 1234-1234-1234-1234.

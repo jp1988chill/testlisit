@@ -39,6 +39,41 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "CrearUsuario",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\"\r\n    },\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016208\",\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/CrearUsuario",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"CrearUsuario"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
