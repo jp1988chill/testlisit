@@ -51,7 +51,7 @@ El campo PIN es de carácter sensible.
 
 todo:
 
-- set up sql server 2017 / connect to instance from net core
-- build tuples according to model
+- set up sql server 2017 / connect to instance from net core -> OK
+- build tuples according to model -> OK
 - create CQRS so they connect to model (tuples) in netcore
 - implement above tasks

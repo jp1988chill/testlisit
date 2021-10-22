@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Prueba.Domain
@@ -13,8 +14,9 @@ namespace Prueba.Domain
             this.Token = token;
         }
 
-        public string Name { get; private set; }
-        public string Password { get; private set; }
+        [Key]
         public Guid Token { get; private set; }
+        public string Name { get; private set; }    //Nombre de tarjetahabiente que contiene 1:1 class Card
+        public string Password { get; private set; }
     }
 }

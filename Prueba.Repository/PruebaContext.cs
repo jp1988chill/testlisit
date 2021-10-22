@@ -10,12 +10,18 @@ namespace Prueba.Repository
 
         }
 
-        // Entities
-        public DbSet<Card> Cards { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
         }
+		
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("server=localhost\\SQLEXPRESS;database=Prueba;trusted_connection=true;"); //comment out this once test is done
+        }
+		
+		// Entities
+        public DbSet<User> Users { get; set; }
+        public DbSet<Card> Cards { get; set; }
     }
 }
