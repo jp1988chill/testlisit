@@ -13,46 +13,42 @@ namespace Prueba.WebApi.Controllers
     [ApiController]
     public class CardController : ControllerBase
     {
-        private readonly PruebaContext _context;
+        private IGenericRepository<User> userRepository = null;
+        private IGenericRepository<Card> cardRepository = null;
+
         public CardController(PruebaContext pruebaContext)
         {
-            _context = pruebaContext;
+            userRepository = new RepositoryEntityFrameworkCQRS<User>(pruebaContext);
+            cardRepository = new RepositoryEntityFrameworkCQRS<Card>(pruebaContext);
 
+            //Mapear y crear BD desde Modelo EF Core a base de datos real, si no existe. (Requerido por EF Core)
             // Drop the database if it exists
-            //_context.Database.EnsureDeleted();
+            //pruebaContext.Database.EnsureDeleted();
 
             // Create the database if it doesn't exist
-            _context.Database.EnsureCreated();
+            pruebaContext.Database.EnsureCreated();
         }
 
         [HttpGet("action/GetUsers")]
         public List<User> GetUsers()
         {
-            User usuario = Create(new User("", "", new Guid()));
-            var res = _context.Users.ToList();
-            return res;
+            return userRepository.Get().ToList();
         }
 
         [HttpGet("action/CreateUser")]
-        public User Create(User user)
+        public void Create(User user)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(user);
-                _context.SaveChanges();
-                return user;
-            }
-            return null;
+            userRepository.Insert(user);
+            userRepository.Save();
         }
 
 
         [HttpGet("action/download")]
         public FileResult Download()
         {
+            Create(new Domain.User("Usuario8", "Password8", new Guid()));
             throw new NotImplementedException();
         }
-
-        //CreacionUsuario
 
     }
 }

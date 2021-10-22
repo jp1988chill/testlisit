@@ -5,9 +5,8 @@ using System.Linq.Expressions;
 
 namespace Prueba.Domain
 {
-    public interface IPruebaContext<TEntity>
+    public interface IRepositoryEntityFrameworkCQRS<TEntity>
     {
-        /*
         void Delete(object id);
         void Delete(TEntity entityToDelete);
         IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "");
@@ -15,6 +14,5 @@ namespace Prueba.Domain
         void Insert(TEntity entity);
         void Update(TEntity entityToUpdate);
         void Save();
-        */
     }
 }

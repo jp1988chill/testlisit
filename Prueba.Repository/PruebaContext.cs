@@ -19,8 +19,8 @@ namespace Prueba.Repository
         {
             optionsBuilder.UseSqlServer("server=localhost\\SQLEXPRESS;database=Prueba;trusted_connection=true;"); //comment out this once test is done
         }
-		
-		// Entities
+
+        // Entities mapped to EF Core will then be used along CQRS methods (RepositoryEntityFrameworkCQRS.cs)
         public DbSet<User> Users { get; set; }
         public DbSet<Card> Cards { get; set; }
     }

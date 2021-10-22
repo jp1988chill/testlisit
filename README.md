@@ -53,5 +53,6 @@ todo:
 
 - set up sql server 2017 / connect to instance from net core -> OK
 - build tuples according to model -> OK
+- add CQRS + DI from repositories / command handler format
 - create CQRS so they connect to model (tuples) in netcore
 - implement above tasks

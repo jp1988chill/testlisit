@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Prueba.Domain;
 
 namespace Prueba.WebApi
 {
@@ -23,7 +24,7 @@ namespace Prueba.WebApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen();
-            services.AddDbContext<PruebaContext>(
+            services.AddDbContext<PruebaContext>( //Registrar EntifyFramework Core
                 options => options
                     .UseSqlServer(Configuration.GetConnectionString("database"))
                     .EnableSensitiveDataLogging()

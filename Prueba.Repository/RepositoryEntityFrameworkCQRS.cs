@@ -7,12 +7,12 @@ using System.Linq.Expressions;
 
 namespace Prueba.Repository
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public class RepositoryEntityFrameworkCQRS<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         protected DbContext context;
         internal DbSet<TEntity> dbSet;
 
-        public GenericRepository(PruebaContext context)
+        public RepositoryEntityFrameworkCQRS(PruebaContext context)
         {
             this.context = context;
             this.dbSet = context.Set<TEntity>();
