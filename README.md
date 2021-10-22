@@ -22,7 +22,13 @@ Tareas
 
 Debe modificar el desarrollo del API que permita:
 
-Crear una tarjeta.
+Crear una tarjeta. -> OK
+Cada invocación a método debe realizarse de manera segura y utilizando un token que debe entregar en el api vía HEADER. Dicho token debe tener una vigencia de 10 minutos. Use usuario/contraseña creado anteriormente para este propósito. -> OK
+Crear un usuario valido de acceso a sistema. -> OK
+Una tarjeta debe ser creada con estado “no vigente” -> OK
+Los campos a ingresar son obligatorios -> OK
+
+Todo:
 Quitar todo el saldo de una tarjeta.
 Quitar una parte del saldo de una tarjeta.
 Añadir saldo a una tarjeta.
@@ -32,28 +38,9 @@ Actualizar el nombre del tarjetahabiente.
 Establecer el PIN (clave de 4 dígitos) de la tarjeta.
 Modificar el estado de una tarjeta, “vigente” o “no vigente”. Si la tarjeta se encuentra “no vigente” sólo se podrá modificar el estado.
 Exportar un *.csv con los datos de las tarjetas vigentes con saldo mayor a cero.
-Crear un usuario valido de acceso a sistema.
-Cada invocación a método debe realizarse de manera segura y utilizando un token que debe entregar en el api vía HEADER. Dicho token debe tener una vigencia de 10 minutos. Use usuario/contraseña creado anteriormente para este propósito.
  
-
 Junto con las funcionalidades, se requiere que:
-
 El número de tarjeta (PAN) debe ser válido según el formato 1234-1234-1234-1234.
 El número de tarjeta debe mostrarse como XXX-XXXX-XXXX-1234
 Los datos obligatorios son: Usuario, Contraseña, PAN, Nombre del TajetaHabiente
-Una tarjeta debe ser creada con estado “no vigente”
-Los campos a ingresar son obligatorios
 El campo PIN es de carácter sensible.
-
--
-
-
-
-todo:
-
-- set up sql server 2017 / connect to instance from net core -> OK
-- build tuples according to model -> OK
-- add CQRS + DI from repositories -> OK
-- add DDD pattern (command handler format) -> OK
-- Generate Token from user/pass, update Token lease inside User tuple, implement security layer by checking the TOKEN inside User Tuple to be generated at most, 10 minutes ago. If OK, API can be used, otherwise API rejects the TOKEN.
-- the rest of the tasks
