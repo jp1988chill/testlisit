@@ -53,6 +53,7 @@ todo:
 
 - set up sql server 2017 / connect to instance from net core -> OK
 - build tuples according to model -> OK
-- add CQRS + DI from repositories / command handler format
-- create CQRS so they connect to model (tuples) in netcore
+- add CQRS + DI from repositories -> OK
+- add DDD pattern (command handler format) -> OK
+- add Token lease and security layer
 - implement above tasks

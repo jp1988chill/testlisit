@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Prueba.Domain;
+using MediatR;
+using System;
 
 namespace Prueba.WebApi
 {
@@ -30,6 +32,7 @@ namespace Prueba.WebApi
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors()
             );
+            services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

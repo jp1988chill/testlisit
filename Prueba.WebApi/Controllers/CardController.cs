@@ -5,6 +5,13 @@ using Prueba.Repository;
 using System.Collections.Generic;
 using Prueba.Domain;
 using System.Linq;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Net;
+using Prueba.WebApi.Responses;
+using Prueba.Application.Commands;
+using System.Threading.Tasks;
 
 namespace Prueba.WebApi.Controllers
 {
@@ -13,42 +20,46 @@ namespace Prueba.WebApi.Controllers
     [ApiController]
     public class CardController : ControllerBase
     {
-        private IGenericRepository<User> userRepository = null;
-        private IGenericRepository<Card> cardRepository = null;
+        private readonly IMediator _mediator;
 
-        public CardController(PruebaContext pruebaContext)
+        public CardController(IMediator mediator)
         {
-            userRepository = new RepositoryEntityFrameworkCQRS<User>(pruebaContext);
-            cardRepository = new RepositoryEntityFrameworkCQRS<Card>(pruebaContext);
-
-            //Mapear y crear BD desde Modelo EF Core a base de datos real, si no existe. (Requerido por EF Core)
-            // Drop the database if it exists
-            //pruebaContext.Database.EnsureDeleted();
-
-            // Create the database if it doesn't exist
-            pruebaContext.Database.EnsureCreated();
+            _mediator = mediator;
         }
 
-        [HttpGet("action/GetUsers")]
-        public List<User> GetUsers()
+        /// <summary>
+        /// Ajuste de Capital (Ajuste Masivo).
+        /// </summary>
+        /// <param name="PolicyNumber">Número de poliza</param>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <param name="sequence">Número de llamada </param>
+        /// <param name="Contractor">Rut contratante </param>
+        /// <param name="transactionId">Número de transacción </param>
+        /// <param name="dummyTest">Si está definido, el Microservicio realiza un test de operabilidad, y retorna OK. </param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/CrearTarjeta")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //todo
+        [HttpPut]
+        [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> CrearTarjeta([FromBody] CardBody objBodyObjectRequest)
         {
-            return userRepository.Get().ToList();
+            var handlerResponse = await _mediator.Send(new CardTransactionCommand() { objBodyObjectRequest = objBodyObjectRequest}).ConfigureAwait(false);
+            return Ok(handlerResponse);
         }
-
-        [HttpGet("action/CreateUser")]
-        public void Create(User user)
-        {
-            userRepository.Insert(user);
-            userRepository.Save();
-        }
-
 
         [HttpGet("action/download")]
         public FileResult Download()
         {
-            Create(new Domain.User("Usuario8", "Password8", new Guid()));
             throw new NotImplementedException();
         }
-
     }
 }

@@ -56,6 +56,11 @@ namespace Prueba.Repository
             dbSet.Add(entity);
         }
 
+        public virtual void InsertMany(List<TEntity> entity)
+        {
+            dbSet.AddRange(entity);
+        }
+
         public virtual void Delete(object id)
         {
             TEntity entityToDelete = dbSet.Find(id);
@@ -77,9 +82,9 @@ namespace Prueba.Repository
             context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
-        public void Save()
+        public int Save()
         {
-            context.SaveChanges();
+            return context.SaveChanges();
         }
     }
 }

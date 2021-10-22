@@ -1,0 +1,44 @@
+{
+	"info": {
+		"_postman_id": "3527d507-527c-4a4a-8728-b8cef891927b",
+		"name": "EnredMicroservicios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CrearTarjeta",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Token\": \"D3561B46-4F3E-4860-81D7-08D995016206\",\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016206\",\r\n      \"Name\": \"Cliente Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"148FAF14-7B16-4827-81DB-08D995016206\",\r\n      \"Name\": \"Cliente Hilbert\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/CrearTarjeta",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"CrearTarjeta"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
