@@ -198,7 +198,6 @@ namespace Prueba.WebApi.Controllers
             return Ok(handlerResponse);
         }
 
-
         /// <summary>
         /// Obtiene todas las Tarjetas por NombreUsuario.
         /// </summary>
@@ -220,6 +219,31 @@ namespace Prueba.WebApi.Controllers
         public async Task<IActionResult> ObtenerTarjetaPorNombreUsuario([FromRoute] string nombreUsuario)
         {
             var handlerResponse = await _mediator.Send(new ObtenerTarjetaPorNombreUsuarioCommand() { NombreUsuario = nombreUsuario }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
+        /// <summary>
+        /// Actualiza el NombreUsuario a nivel global, incluído en las tarjetas que corresponden.
+        /// </summary>
+        /// <param name="nombreUsuarioOriginal">Nombre de TarjetaHabiente original asociado a una lista de Tarjetas.</param>
+        /// <param name="nombreUsuarioNuevo">Nuevo Nombre de TarjetaHabiente original que reemplazará el Nombre de TarjetaHabiente anterior.</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/ActualizarNombreUsuario/{nombreUsuarioOriginal}/{nombreUsuarioNuevo}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        [HttpPost]
+        [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> ActualizarNombreUsuario([FromRoute] string nombreUsuarioOriginal, [FromRoute] string nombreUsuarioNuevo)
+        {
+            var handlerResponse = await _mediator.Send(new ActualizarNombreUsuarioCommand() { NombreUsuarioOriginal = nombreUsuarioOriginal, NombreUsuarioNuevo = nombreUsuarioNuevo }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
     }

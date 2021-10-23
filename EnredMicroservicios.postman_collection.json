@@ -244,6 +244,138 @@
 			"response": []
 		},
 		{
+			"name": "ObtenerTarjetaPorNombreUsuario",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "AE3FAE9F-FA16-4C2E-6AA5-08D995ADA13F",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/ObtenerTarjetaPorNombreUsuario/User Juan Pablo Neira",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"ObtenerTarjetaPorNombreUsuario",
+						"User Juan Pablo Neira"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ActualizarNombreUsuario",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "44841339-2F11-49BE-1B75-08D995B6EE62",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/ActualizarNombreUsuario/User Juan Pablo Neira/Nuevo User Juan Pablo Neira",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"ActualizarNombreUsuario",
+						"User Juan Pablo Neira",
+						"Nuevo User Juan Pablo Neira"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CrearToken",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"4770D437-81D5-45DD-8507-08D9959B4370\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\"\r\n    },\r\n    {\r\n      \"Token\": \"FB20A841-DA48-4ED1-51CF-08D99533F5EF\",\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/CrearToken",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"CrearToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CrearUsuario",
 			"protocolProfileBehavior": {
 				"strictSSL": false
@@ -273,41 +405,6 @@
 					"path": [
 						"action",
 						"CrearUsuario"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CrearToken",
-			"protocolProfileBehavior": {
-				"strictSSL": false
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"27C3FA6E-DCD0-4D3F-51CE-08D99533F5EF\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\"\r\n    },\r\n    {\r\n      \"Token\": \"FB20A841-DA48-4ED1-51CF-08D99533F5EF\",\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44344/action/CrearToken",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44344",
-					"path": [
-						"action",
-						"CrearToken"
 					]
 				}
 			},
