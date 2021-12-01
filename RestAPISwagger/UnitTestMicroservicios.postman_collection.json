@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3527d507-527c-4a4a-8728-b8cef891927b",
+		"_postman_id": "d45895e4-0f05-4c0e-ad6e-670d23c4acc1",
 		"name": "UnitTestMicroservicios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -16,7 +16,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "6e79ae43-dc31-4a61-0fa7-08d9959527fb",
+							"value": "70A46753-3E44-4721-4F8B-08D9B4D84F44",
 							"type": "string"
 						},
 						{
@@ -158,7 +158,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "F6ACBDFF-02AD-4A12-33FC-08D995983074",
+							"value": "1a0c267b-e601-4154-6700-08d9b4740bec",
 							"type": "string"
 						},
 						{
@@ -238,6 +238,53 @@
 						"action",
 						"ObtenerTarjeta",
 						"A45B8C08-E8A1-4831-852C-CC6BA18379B5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ObtenerTarjetas",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "70A46753-3E44-4721-4F8B-08D9B4D84F44",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/ObtenerTarjetas",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"ObtenerTarjetas"
 					]
 				}
 			},

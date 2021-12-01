@@ -17,41 +17,39 @@ namespace ClientWebAPI.Web
     public class UsuariosController : Controller
     {
         private readonly ITokenService _tokenService;
-        public string apiUrlMantenedorMVCEntity = "https://localhost:44344/action/";
+        public string apiUrlMantenedorMVCEntity = "https://localhost:44344/action";
 
-        /////////////////////////Métodos ASP .NET Core 3.x: Implementación Rest API Microservicios Inicio /////////////////////////
-        public async Task<string> GetUserLogin()
+        public UsuariosController(ITokenService tokenService)
         {
-            var assembly = Assembly.GetEntryAssembly();
-            var resourceStream = assembly.GetManifestResourceStream("ClientWebAPI.Web.Data.LoginUserExample.json");
-            var data = Assembly.GetExecutingAssembly().GetManifestResourceNames();
-            using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
-            {
-                return await reader.ReadToEndAsync();
-            }
+            _tokenService = tokenService;
         }
 
+        /////////////////////////Métodos ASP .NET Core 3.x: Implementación Rest API Microservicios Inicio /////////////////////////
+
         [HttpPost, Produces("application/json")]
-        public async Task<List<User>> ListarTodosUSUARIOSSet()
+        public async Task<List<Card>> ListAllCards()
         {
             //Handle the RestAPI:
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            var UserToken = await GetUserLogin();
+            var APIKeyToken = await _tokenService.GetToken();
+            client.Headers["Token"] = APIKeyToken;
 
-            //Forge the RestAPI request
-            Enveloped envelopeSignedUserTokenOut = JsonConvert.DeserializeObject<Enveloped>(UserToken);
-            envelopeSignedUserTokenOut.body = new
-            {
-                
-            };
-
+            //Forge the RestAPI request + API Key
+            string envelopeSignedUserTokenOut = "";
             string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(envelopeSignedUserTokenOut);
-            var json = client.UploadString(apiUrlMantenedorMVCEntity + "/ListarTodos", "Post", envelopeSignedUserTokenOutStr);
-            Enveloped envelopeSignedUserToken = JsonConvert.DeserializeObject<Enveloped>(json);
-            List<User> det = JsonConvert.DeserializeObject<List<User>>(envelopeSignedUserToken.body.ToString());
-            return det;
+            var json = client.UploadString(apiUrlMantenedorMVCEntity + "/ObtenerTarjetas", "Post", envelopeSignedUserTokenOutStr);
+            CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(json);
+            List<Card> list = new List<Card>();
+            list.AddRange(response.cardInfoResponse.Select(item => new Card(item.Name, item.Pan)
+            {
+                Amount = Convert.ToDecimal(item.Amount),
+                Estado = item.Estado,
+                Id = new Guid(item.Id),
+                Pin = item.Pin
+            }));
+            return list;
         }
 
         [HttpPost, Produces("application/json")]
@@ -61,7 +59,7 @@ namespace ClientWebAPI.Web
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            var UserToken = await GetUserLogin();
+            var UserToken = await _tokenService.GetToken();
 
             //Forge the RestAPI request
             Enveloped envelopeSignedUserTokenOut = JsonConvert.DeserializeObject<Enveloped>(UserToken);
@@ -84,7 +82,7 @@ namespace ClientWebAPI.Web
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            var UserToken = await GetUserLogin();
+            var UserToken = await _tokenService.GetToken();
 
             //Forge the RestAPI request
             Enveloped envelopeSignedUserTokenOut = JsonConvert.DeserializeObject<Enveloped>(UserToken);
@@ -108,7 +106,7 @@ namespace ClientWebAPI.Web
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            var UserToken = await GetUserLogin();
+            var UserToken = await _tokenService.GetToken();
 
             //Forge the RestAPI request
             Enveloped envelopeSignedUserTokenOut = JsonConvert.DeserializeObject<Enveloped>(UserToken);
@@ -132,7 +130,7 @@ namespace ClientWebAPI.Web
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            var UserToken = await GetUserLogin();
+            var UserToken = await _tokenService.GetToken();
 
             //Forge the RestAPI request
             Enveloped envelopeSignedUserTokenOut = JsonConvert.DeserializeObject<Enveloped>(UserToken);
@@ -153,18 +151,18 @@ namespace ClientWebAPI.Web
         // GET: Usuarios
         public async Task<IActionResult> List()
         {
-            List<User> list = await ListarTodosUSUARIOSSet();
+            List<Card> list = await ListAllCards();
             return View(list);
         }
 
         // GET: Usuarios
         public async Task<IActionResult> Index(string nombreUsuario){
-            List<User> ret = new List<User>();
+            List<Card> ret = new List<Card>();
             if ((nombreUsuario != null) && !nombreUsuario.Contains("*"))
             {
                 try
                 {
-                    List<User> lst = (await ListarTodosUSUARIOSSet());
+                    List<Card> lst = (await ListAllCards());
                     ret.AddRange(lst.Where(item => item.Name.ToUpper().Contains(nombreUsuario.ToUpper())));
                 }
                 catch (Exception ex)
@@ -173,7 +171,7 @@ namespace ClientWebAPI.Web
                 }
             }
             else {
-                List<User> lst = new List<User>(); //(await ListarTodosUSUARIOSSet());
+                List<Card> lst = (await ListAllCards());
                 ret.AddRange(lst);
             }
             return View(ret);

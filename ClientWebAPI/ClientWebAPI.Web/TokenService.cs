@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using ClientWebAPI.Web.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using static ClientWebAPI.Api.Core.Enveloped.EnvelopedObject;
 
 namespace Client
 {
@@ -16,49 +20,37 @@ namespace Client
     public class TokenService : ITokenService
     {
         private MantenedorMVCEntityApiToken _token = new MantenedorMVCEntityApiToken();
-        private readonly IOptions<MantenedorMVCEntityConfig> _MantenedorMVCEntitySettings;
-
-        public TokenService(IOptions<MantenedorMVCEntityConfig> MantenedorMVCEntitySettings) => _MantenedorMVCEntitySettings = MantenedorMVCEntitySettings;
+        private readonly IOptions<ClientWebAPIConfig> _MantenedorMVCEntitySettings;
+        public TokenService(IOptions<ClientWebAPIConfig> MantenedorMVCEntitySettings) => _MantenedorMVCEntitySettings = MantenedorMVCEntitySettings;
 
         public async Task<string> GetToken()
         {
-	        if (_token.IsValidAndNotExpiring)
-	        {
-		        return _token.AccessToken;
-	        }
-
 	        _token = await GetNewAccessToken();
-
             return _token.AccessToken;
         }
 
         private async Task<MantenedorMVCEntityApiToken> GetNewAccessToken()
         {
-	        var client = new HttpClient();
-	        var clientId = _MantenedorMVCEntitySettings.Value.ClientId;
-	        var clientSecret = _MantenedorMVCEntitySettings.Value.ClientSecret;
-	        var clientCreds = System.Text.Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}");
+	        var Name = _MantenedorMVCEntitySettings.Value.Name;
+	        var Password = _MantenedorMVCEntitySettings.Value.Password;
 
-	        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(clientCreds));
+            //Handle the RestAPI:
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
 
-	        var postMessage = new Dictionary<string, string>
+            //Forge the RestAPI request
+            List <User> users = new List<User>();
+            users.Add(new User(Name, Password, new Guid(), ""));
+            UserTokenServiceRequest Req = new UserTokenServiceRequest(users);
+            
+            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(Req);
+            var json = client.UploadString(_MantenedorMVCEntitySettings.Value.TokenUrl + "/CrearToken", "Put", envelopeSignedUserTokenOutStr);
+            UserTokenServiceResponse response = JsonConvert.DeserializeObject<UserTokenServiceResponse>(json);
+            
+            if (response.usersNuevoTokenAsignado.Count > 0)
 	        {
-		        {"grant_type", "client_credentials"}, 
-		        {"scope", "access_token"}
-	        };
-
-	        var request = new HttpRequestMessage(HttpMethod.Post, _MantenedorMVCEntitySettings.Value.TokenUrl)
-	        {
-		        Content = new FormUrlEncodedContent(postMessage)
-	        };
-
-	        var response = await client.SendAsync(request);
-	        if (response.IsSuccessStatusCode)
-	        {
-		        var json = await response.Content.ReadAsStringAsync();
-                var newToken = JsonConvert.DeserializeObject<MantenedorMVCEntityApiToken>(json);
-                newToken.ExpiresAt = DateTime.UtcNow.AddSeconds(_token.ExpiresIn);
-
+		        MantenedorMVCEntityApiToken newToken = new MantenedorMVCEntityApiToken() { AccessToken = response.usersNuevoTokenAsignado[0].Token.ToString(), ExpiresAt = response.usersNuevoTokenAsignado[0].Tokenleasetime.ToString(), TokenType = "Api Key", Scope = "User Acess"};
                 return newToken;
 	        }
 

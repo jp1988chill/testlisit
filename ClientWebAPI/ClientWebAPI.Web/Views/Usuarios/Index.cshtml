@@ -1,4 +1,4 @@
-﻿@model List<ClientWebAPI.Web.Models.User>
+﻿@model List<ClientWebAPI.Web.Models.Card>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -285,7 +285,7 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h2>Manage <b>USUARIOS</b></h2>
+                        <h2>Gestión de <b>Tarjetas Magnéticas</b></h2>
                     </div>
                     <div class="col-sm-6">
                         <a class="btn btn-success" asp-area="" asp-controller="Usuarios" asp-action="Create"><i class="material-icons">&#xE147;</i> <span>Add New USUARIO</span></a>
@@ -304,9 +304,9 @@
                                 <label for="selectAll"></label>
                             </span>
                         </th>
-                        <th>IDUsuario</th>
-                        <th>NombreUsuario</th>
-                        <th>Apellido</th>
+                        <th>GUID Tarjeta</th>
+                        <th>NombreTarjetaHabiente</th>
+                        <th>Saldo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -320,13 +320,14 @@
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
-                            <td>@Html.DisplayFor(modelItem => item.Token)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
                             <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
                             <td>
-                                <a href="@Url.Action("Edit", "Usuarios", new { id = item.Token })" class="edit">
+                                <a href="@Url.Action("Edit", "Usuarios", new { id = item.Id })" class="edit">
                                     <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
                                 </a>
-                                <a href="@Url.Action("Details", "Usuarios", new { id = item.Name })" class="view">
+                                <a href="@Url.Action("Details", "Usuarios", new { id = item.Id })" class="view">
                                     <i class="material-icons" data-toggle="tooltip" title="Details">&#xE254;</i>
                                 </a>
                             </td>

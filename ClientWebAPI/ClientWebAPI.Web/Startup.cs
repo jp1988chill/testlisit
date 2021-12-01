@@ -22,9 +22,10 @@ namespace Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ITokenService, TokenService>();
 
-            services.Configure<MantenedorMVCEntityConfig>(Configuration.GetSection("ClientWebAPI"));
+            //Token Handler, required to consume Rest APIs
+            services.AddSingleton<ITokenService, TokenService>();
+            services.Configure<ClientWebAPIConfig>(Configuration.GetSection("ClientWebAPI"));
 
             //NetCore 3.x+ requires this to prevent external methods overriding EndPointRouting + Set NetCore 3.0 WebApi
             services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0).
