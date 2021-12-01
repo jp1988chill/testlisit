@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "3527d507-527c-4a4a-8728-b8cef891927b",
-		"name": "EnredMicroservicios",
+		"name": "UnitTestMicroservicios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [

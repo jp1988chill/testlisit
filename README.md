@@ -1,11 +1,6 @@
-Cada ítem está hecho para analizar una o más características de desarrollo.
-
-Lo más relevante (y que evaluaremos) es:
+Características:
  
-
 Simplicidad.
-Ocupar herramientas nativas.
-Buenas prácticas.
 Conceptos de DDD.
 Utilización de CQRS.
 Correcta segregación de capas.
@@ -13,10 +8,7 @@ Utilización de recursos existentes.
 Correcto uso de HttpStatus
 Conceptos de RestFul.
 Conceptos de Inyección de dependencia.
-Seguridad de la información (no exponer información sensible).
-Interpretación y entendimiento del requerimiento/necesidad.
-Uso de transformación de archivos de configuración según ambiente DEV/UAT/PROD
- 
+Seguridad de la información (no exponer información sensible). 
 
 Tareas
 
@@ -33,14 +25,21 @@ Añadir saldo a una tarjeta. -> OK
 Obtener una tarjeta por su GUID -> OK
 Obtener las tarjetas por nombre de tarjetahabiente. -> OK
 Actualizar el nombre del tarjetahabiente. -> OK
-
-Todo:
-Establecer el PIN (clave de 4 dígitos) de la tarjeta.
-Modificar el estado de una tarjeta, “vigente” o “no vigente”. Si la tarjeta se encuentra “no vigente” sólo se podrá modificar el estado.
-Exportar un *.csv con los datos de las tarjetas vigentes con saldo mayor a cero.
  
 Junto con las funcionalidades, se requiere que:
 El número de tarjeta (PAN) debe ser válido según el formato 1234-1234-1234-1234.
 El número de tarjeta debe mostrarse como XXX-XXXX-XXXX-1234
 Los datos obligatorios son: Usuario, Contraseña, PAN, Nombre del TajetaHabiente
 El campo PIN es de carácter sensible.
+
+-
+
+Usage:
+
+- Set up SQL Express 2017
+- Set up SQM Management Studio
+- Use Windows login in SQL Express, add "Prueba" database
+- Open Postman, load project postman collection:
+
+CrearUsuario (copy user from here)
+CrearToken (into here, and copy token into Subsequent Postman Header RestAPI services)

@@ -17,6 +17,13 @@ namespace Prueba.Application.Handlers
         public CrearUsuarioCommandHandler(PruebaContext pruebaContext)
         {
             userRepository = new RepositoryEntityFrameworkCQRS<User>(pruebaContext);
+
+            //Mapear y crear BD desde Modelo EF Core a base de datos real, si no existe. (Requerido por EF Core)
+            // Drop the database if it exists
+            //pruebaContext.Database.EnsureDeleted();
+
+            // Create the database if it doesn't exist
+            pruebaContext.Database.EnsureCreated();
         }
 
         public async Task<UserResponse> Handle(CrearUsuarioCommand request, CancellationToken cancellationToken)

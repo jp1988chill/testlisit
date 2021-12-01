@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Prueba.Domain;
 using MediatR;
 using System;
 using Prueba.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Prueba.WebApi
 {
@@ -26,15 +27,38 @@ namespace Prueba.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+                {
+                    Version = "v1",
+                    Title = "Rest API",
+                    Description = "RESTAPI.",
+                    TermsOfService = new Uri("http://exampleServer/exampleservice.svc"),
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact() { Name = "Swagger Developer", Email = "swagger@dotNet.com" }
+                });
+                //var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                //c.IncludeXmlComments(xmlPath);
+            });
+
             services.AddDbContext<PruebaContext>( //Registrar EntifyFramework Core
                 options => options
                     .UseSqlServer(Configuration.GetConnectionString("database"))
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors()
             );
+
+            //NetCore 3.0 has CamelCase resolver enabled by default, but still, we enforce it.
+            services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase);
+
+            //NetCore 3.x+ requires this to prevent external methods overriding EndPointRouting
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+
+            //Enforce NewtonsoftJson Swagger NetCore 2.x deserialization, over the newer NetCore 3.x one
+            services.AddControllers().AddNewtonsoftJson();
+
             services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 
             //Capa seguridad
