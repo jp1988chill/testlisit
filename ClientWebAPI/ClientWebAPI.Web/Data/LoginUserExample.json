@@ -1,0 +1,21 @@
+{ 
+  "header": { 
+    "consumerData":{ 
+        "ip": "164.77.3.38", 
+        "channel": "80", 
+        "module": "12", 
+        "functionality": "op", 
+        "service":"apis", 
+        "serviceType": "apis", 
+        "userId" :"13187976" 
+     }, 
+     "transactionData":{ 
+        "idTransaction": "ME20190520", 
+        "idTransaction_Rel": "ME20190520", 
+        "userType": "ME20190520" 
+      } 
+  }, 
+  "body": {
+		"rutFirmante": "166118670",
+	} 
+}
