@@ -288,7 +288,8 @@
                         <h2>Gestión de <b>Tarjetas Magnéticas</b></h2>
                     </div>
                     <div class="col-sm-6">
-                        <a class="btn btn-success" asp-area="" asp-controller="Usuarios" asp-action="Create"><i class="material-icons">&#xE147;</i> <span>Add New USUARIO</span></a>
+                        <a class="btn btn-success" asp-area="" asp-controller="Usuarios" asp-action="CreateUser"><i class="material-icons">&#xE147;</i> <span>Agregar Nuevo Usuario</span></a>
+                        <a class="btn btn-success" asp-area="" asp-controller="Usuarios" asp-action="CreateCard"><i class="material-icons">&#xE147;</i> <span>Agregar Nueva Tarjeta</span></a>
                         <!-- Agregar control AJAX que busque nombreUsuario acá-->
                         <input class="btn-default" type="text" id="txtBusquedaNombreUsuario" placeholder="Consulte Nombre Usuario... * para todos los registros.  " style="width:100%;" />
                     </div>
@@ -329,6 +330,9 @@
                                 </a>
                                 <a href="@Url.Action("Details", "Usuarios", new { id = item.Id })" class="view">
                                     <i class="material-icons" data-toggle="tooltip" title="Details">&#xE254;</i>
+                                </a>
+                                <a href="@Url.Action("Delete", "Usuarios", new { id = item.Id })" class="delete">
+                                    <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE254;</i>
                                 </a>
                             </td>
                         </tr>

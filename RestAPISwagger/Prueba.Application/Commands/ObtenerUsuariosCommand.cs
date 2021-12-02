@@ -8,13 +8,8 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class DescontarSaldoTarjetaCommand : IRequest<CardResponse>
+    public class ObtenerUsuariosCommand : IRequest<UserResponse>
     {
-        public decimal saldoPorDescontar { get; set; }
-        //Cards
-        [FromBody]
-        public CardBody objBodyObjectRequest { get; set; }
-
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

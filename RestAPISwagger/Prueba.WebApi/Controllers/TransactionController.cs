@@ -175,6 +175,56 @@ namespace Prueba.WebApi.Controllers
         }
 
         /// <summary>
+        /// Actualiza una Tarjeta.
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/ActualizarTarjeta")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        [HttpPut]
+        [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> ActualizarTarjeta([FromBody] CardBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new ActualizarTarjetaCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
+
+        /// <summary>
+        /// Elimina una Tarjeta.
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/EliminarTarjeta")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        [HttpDelete]
+        [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> EliminarTarjeta([FromBody] CardBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new EliminarTarjetaCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
+
+        /// <summary>
         /// Obtiene una Tarjeta por GUID.
         /// </summary>
         /// <param name="saldoPorAgregar">GUID de Tarjeta por obtener.</param>
@@ -186,7 +236,7 @@ namespace Prueba.WebApi.Controllers
         /// <returns></returns>
         [Route("/action/ObtenerTarjeta/{guidTarjeta}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
@@ -218,6 +268,29 @@ namespace Prueba.WebApi.Controllers
         public async Task<IActionResult> ObtenerTarjetas()
         {
             var handlerResponse = await _mediator.Send(new ObtenerTarjetasCommand() { }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
+        /// <summary>
+        /// Obtiene todos los User(s) registrados.
+        /// </summary>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/ObtenerUsuarios")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        [HttpGet]
+        [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> ObtenerUsuarios()
+        {
+            var handlerResponse = await _mediator.Send(new ObtenerUsuariosCommand() { }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
 

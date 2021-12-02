@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class DescontarSaldoTarjetaCommand : IRequest<CardResponse>
+    public class AgregarSaldoTarjetaCommand : IRequest<CardResponse>
     {
-        public decimal saldoPorDescontar { get; set; }
+        public decimal saldoPorAgregr { get; set; }
         //Cards
         [FromBody]
         public CardBody objBodyObjectRequest { get; set; }

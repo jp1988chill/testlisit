@@ -15,21 +15,29 @@ namespace Client
     public interface ITokenService
     {
         Task<string> GetToken();
+        Task<string> GetRestAPIPath();
     }
-    
+
     public class TokenService : ITokenService
     {
-        private MantenedorMVCEntityApiToken _token = new MantenedorMVCEntityApiToken();
+        private string _token = null;
         private readonly IOptions<ClientWebAPIConfig> _MantenedorMVCEntitySettings;
         public TokenService(IOptions<ClientWebAPIConfig> MantenedorMVCEntitySettings) => _MantenedorMVCEntitySettings = MantenedorMVCEntitySettings;
 
         public async Task<string> GetToken()
         {
-	        _token = await GetNewAccessToken();
-            return _token.AccessToken;
+	        if(_token == null) { 
+                _token = await GetNewAccessToken();
+            }
+            return _token;
         }
 
-        private async Task<MantenedorMVCEntityApiToken> GetNewAccessToken()
+        public async Task<string> GetRestAPIPath()
+        {
+            return _MantenedorMVCEntitySettings.Value.TokenUrl;
+        }
+
+        private async Task<String> GetNewAccessToken()
         {
 	        var Name = _MantenedorMVCEntitySettings.Value.Name;
 	        var Password = _MantenedorMVCEntitySettings.Value.Password;
@@ -41,7 +49,7 @@ namespace Client
 
             //Forge the RestAPI request
             List <User> users = new List<User>();
-            users.Add(new User(Name, Password, new Guid(), ""));
+            users.Add(new User() { Name = Name, Password = Password, Token = new Guid(), Tokenleasetime = "" });
             UserTokenServiceRequest Req = new UserTokenServiceRequest(users);
             
             string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(Req);
@@ -50,8 +58,7 @@ namespace Client
             
             if (response.usersNuevoTokenAsignado.Count > 0)
 	        {
-		        MantenedorMVCEntityApiToken newToken = new MantenedorMVCEntityApiToken() { AccessToken = response.usersNuevoTokenAsignado[0].Token.ToString(), ExpiresAt = response.usersNuevoTokenAsignado[0].Tokenleasetime.ToString(), TokenType = "Api Key", Scope = "User Acess"};
-                return newToken;
+		        return response.usersNuevoTokenAsignado[0].Token.ToString();
 	        }
 
 	        throw new ApplicationException("Unable to retrieve access token from ClientWebAPI");

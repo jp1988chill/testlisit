@@ -11,20 +11,54 @@ using Client;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClientWebAPI.Web
 {
     public class UsuariosController : Controller
     {
         private readonly ITokenService _tokenService;
-        public string apiUrlMantenedorMVCEntity = "https://localhost:44344/action";
-
+        public string RestAPIPath = String.Empty;
         public UsuariosController(ITokenService tokenService)
         {
             _tokenService = tokenService;
+            RestAPIPath = (_tokenService.GetRestAPIPath().Result);
         }
 
         /////////////////////////Métodos ASP .NET Core 3.x: Implementación Rest API Microservicios Inicio /////////////////////////
+
+        
+        [HttpPost, Produces("application/json")]
+        public async Task<List<User>> ListAllUsers()
+        {
+            //GET Method: Handle the RestAPI:
+            var APIKeyToken = await _tokenService.GetToken();
+            var url = RestAPIPath + "/ObtenerUsuarios";
+            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+            httpRequest.Accept = "application/json";
+            httpRequest.Headers["Authorization"] = "Api Key";
+            httpRequest.Headers["Token"] = APIKeyToken;
+
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                UserTokenServiceResponse response = JsonConvert.DeserializeObject<UserTokenServiceResponse>(streamReader.ReadToEnd());
+                List<User> list = new List<User>();
+                if (response.usersNuevoTokenAsignado.Count > 0)
+                {
+                    list.AddRange(response.usersNuevoTokenAsignado.Select(item => new User()
+                    {
+                        Password = item.Password,
+                        Token = new Guid(item.Token),
+                        Tokenleasetime = item.Tokenleasetime,
+                        Name = item.Name
+                    }));
+                    return list;
+                }
+            }
+            return null;
+        }
+
 
         [HttpPost, Produces("application/json")]
         public async Task<List<Card>> ListAllCards()
@@ -39,114 +73,138 @@ namespace ClientWebAPI.Web
             //Forge the RestAPI request + API Key
             string envelopeSignedUserTokenOut = "";
             string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(envelopeSignedUserTokenOut);
-            var json = client.UploadString(apiUrlMantenedorMVCEntity + "/ObtenerTarjetas", "Post", envelopeSignedUserTokenOutStr);
+            var json = client.UploadString(RestAPIPath + "/ObtenerTarjetas", "Post", envelopeSignedUserTokenOutStr);
             CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(json);
             List<Card> list = new List<Card>();
-            list.AddRange(response.cardInfoResponse.Select(item => new Card(item.Name, item.Pan)
+            list.AddRange(response.cardInfoResponse.Select(item => new Card()
             {
                 Amount = Convert.ToDecimal(item.Amount),
                 Estado = item.Estado,
                 Id = new Guid(item.Id),
-                Pin = item.Pin
+                Pin = item.Pin,
+                Name = item.Name,
+                Pan = item.Pan
             }));
             return list;
         }
 
         [HttpPost, Produces("application/json")]
-        public async Task<User> ObtenerUSUARIOSSet(string inIdUsuarios)
+        public async Task<List<Card>> GetCard(string inId)
         {
-            //Handle the RestAPI:
-            WebClient client = new WebClient();
-            client.Headers["Content-type"] = "application/json";
-            client.Encoding = Encoding.UTF8;
-            var UserToken = await _tokenService.GetToken();
+            //GET Method: Handle the RestAPI:
+            var APIKeyToken = await _tokenService.GetToken();
+            var url = RestAPIPath + "/ObtenerTarjeta/" + inId;
+            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+            httpRequest.Accept = "application/json";
+            httpRequest.Headers["Authorization"] = "Api Key";
+            httpRequest.Headers["Token"] = APIKeyToken;
 
-            //Forge the RestAPI request
-            Enveloped envelopeSignedUserTokenOut = JsonConvert.DeserializeObject<Enveloped>(UserToken);
-            envelopeSignedUserTokenOut.body = new
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                IdUsuarios = inIdUsuarios,
-            };
+                CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(streamReader.ReadToEnd());
+                List<Card> list = new List<Card>();
+                if(response.cardInfoResponse.Count > 0) { 
+                    list.AddRange(response.cardInfoResponse.Select(item => new Card()
+                    {
+                        Amount = Convert.ToDecimal(item.Amount),
+                        Estado = item.Estado,
+                        Id = new Guid(item.Id),
+                        Pin = item.Pin,
+                        Name = item.Name,
+                        Pan = item.Pan
+                    }));
+                    return list;
+                }
+            }
 
-            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(envelopeSignedUserTokenOut);
-            var json = client.UploadString(apiUrlMantenedorMVCEntity + "/Obtener", "Post", envelopeSignedUserTokenOutStr);
-            Enveloped envelopeSignedUserToken = JsonConvert.DeserializeObject<Enveloped>(json);
-            User det = JsonConvert.DeserializeObject<User>(envelopeSignedUserToken.body.ToString());
-            return det;
+            // httpResponse.StatusCode
+            return null;
         }
 
         [HttpPost, Produces("application/json")]
-        public async Task<User> CrearUSUARIOSSet(User user)
+        public async Task<Card> GenerateCard(Card card)
         {
             //Handle the RestAPI:
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            var UserToken = await _tokenService.GetToken();
+            var APIKeyToken = await _tokenService.GetToken();
+            client.Headers["Token"] = APIKeyToken;
 
-            //Forge the RestAPI request
-            Enveloped envelopeSignedUserTokenOut = JsonConvert.DeserializeObject<Enveloped>(UserToken);
-            envelopeSignedUserTokenOut.body = new
-            {
-                token = user.Token,
-                name = user.Name,
-            };
+            //Forge the RestAPI request + API Key
+            List<Card> list = new List<Card>();
+            list.Add(card);
+            CardTokenServiceRequest request = new CardTokenServiceRequest(list);
+            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(request);
+            var json = client.UploadString(RestAPIPath + "/CrearTarjeta", "Put", envelopeSignedUserTokenOutStr);
+            CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(json);
+            var cardResponse = response.cardInfoResponse.FirstOrDefault();
+            return new Card() { Name = cardResponse.Name, Amount = Convert.ToDecimal(cardResponse.Amount), Estado = cardResponse.Estado, Id = new Guid(cardResponse.Id), Pan = cardResponse.Pan, Pin = cardResponse.Pin, Users = new List<User>() };
+        }
 
-            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(envelopeSignedUserTokenOut);
-            var json = client.UploadString(apiUrlMantenedorMVCEntity + "/Crear", "Post", envelopeSignedUserTokenOutStr);
-            Enveloped envelopeSignedUserToken = JsonConvert.DeserializeObject<Enveloped>(json);
-            User det = JsonConvert.DeserializeObject<User>(envelopeSignedUserToken.body.ToString());
-            return det;
+
+        [HttpPost, Produces("application/json")]
+        public async Task<User> GenerateUser(User user)
+        {
+            //Handle the RestAPI:
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+            var APIKeyToken = await _tokenService.GetToken();
+            client.Headers["Token"] = APIKeyToken;
+
+            //Forge the RestAPI request + API Key
+            List<User> list = new List<User>();
+            list.Add(user);
+            UserTokenServiceRequest request = new UserTokenServiceRequest(list);
+            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(request);
+            var json = client.UploadString(RestAPIPath + "/CrearUsuario", "Put", envelopeSignedUserTokenOutStr);
+            UserTokenServiceResponse response = JsonConvert.DeserializeObject<UserTokenServiceResponse>(json);
+            var userResponse = response.usersNuevoTokenAsignado.FirstOrDefault();
+            return new User() { Name = userResponse.Name, Password = userResponse.Password, Token = new Guid(userResponse.Token), Tokenleasetime = userResponse.Tokenleasetime };
         }
 
         [HttpPost, Produces("application/json")]
-        public async Task<User> ActualizarUSUARIOSSet(string inIdUsuarios, User user)
+        public async Task<CardTokenServiceResponse> UpdateCard(string inIdUsuarios, Card card)
         {
             //Handle the RestAPI:
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            var UserToken = await _tokenService.GetToken();
+            var APIKeyToken = await _tokenService.GetToken();
+            client.Headers["Token"] = APIKeyToken;
 
-            //Forge the RestAPI request
-            Enveloped envelopeSignedUserTokenOut = JsonConvert.DeserializeObject<Enveloped>(UserToken);
-            envelopeSignedUserTokenOut.body = new
-            {
-                IdUsuarios = inIdUsuarios,
-                name = user.Name,
-            };
-
-            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(envelopeSignedUserTokenOut);
-            var json = client.UploadString(apiUrlMantenedorMVCEntity + "/Actualizar", "Put", envelopeSignedUserTokenOutStr);
-            Enveloped envelopeSignedUserToken = JsonConvert.DeserializeObject<Enveloped>(json);
-            User det = JsonConvert.DeserializeObject<User>(envelopeSignedUserToken.body.ToString());
-            return det;
+            //Forge the RestAPI request + API Key
+            List<Card> list = new List<Card>();
+            list.Add(card);
+            CardTokenServiceRequest request = new CardTokenServiceRequest(list);
+            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(request);
+            var json = client.UploadString(RestAPIPath + "/ActualizarTarjeta", "Put", envelopeSignedUserTokenOutStr);
+            CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(json);
+            return response;
         }
 
         [HttpPost, Produces("application/json")]
-        public async Task<User> EliminarUSUARIOSSet(string inIdUsuarios)
+        public async Task<CardTokenServiceResponse> DeleteCard(string inId)
         {
             //Handle the RestAPI:
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            var UserToken = await _tokenService.GetToken();
+            var APIKeyToken = await _tokenService.GetToken();
+            client.Headers["Token"] = APIKeyToken;
 
-            //Forge the RestAPI request
-            Enveloped envelopeSignedUserTokenOut = JsonConvert.DeserializeObject<Enveloped>(UserToken);
-            envelopeSignedUserTokenOut.body = new
-            {
-                IdUsuarios = inIdUsuarios,
-            };
-
-            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(envelopeSignedUserTokenOut);
-            var json = client.UploadString(apiUrlMantenedorMVCEntity + "/Eliminar", "Delete", envelopeSignedUserTokenOutStr);
-            Enveloped envelopeSignedUserToken = JsonConvert.DeserializeObject<Enveloped>(json);
-            User det = JsonConvert.DeserializeObject<User>(envelopeSignedUserToken.body.ToString());
-            return det;
+            //Forge the RestAPI request + API Key
+            List<Card> list = GetCard(inId).Result;
+            CardTokenServiceRequest request = new CardTokenServiceRequest(list);
+            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(request);
+            var json = client.UploadString(RestAPIPath + "/EliminarTarjeta", "Delete", envelopeSignedUserTokenOutStr);
+            CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(json);
+            return response;
         }
 
-        /////////////////////////Métodos ASP .NET Core 2.x: Implementación Rest API Microservicios Fin /////////////////////////
+        /////////////////////////Métodos ASP .NET Core 3.x: Implementación Rest API Microservicios Fin /////////////////////////
 
         // GET: Usuarios
         public async Task<IActionResult> List()
@@ -178,53 +236,65 @@ namespace ClientWebAPI.Web
         }
 
         // GET: Usuarios/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var usuariosset = await ObtenerUSUARIOSSet(id.ToString());
+            var usuariosset = await GetCard(id.ToString());
             if (usuariosset == null)
             {
                 return NotFound();
             }
 
+            return View(usuariosset.FirstOrDefault());
+        }
+
+        public IActionResult CreateUser()
+        {
+            var user = new User() { Token = Guid.NewGuid() };
+            return View(user);
+        }
+
+        public IActionResult CreateCard()
+        {
+            List<User> users = ListAllUsers().Result;
+            var card = new Card() { Id = Guid.NewGuid(), Users = users };
+            return View(card);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateUser([Bind("Token,Name,Password,Tokenleasetime")] ClientWebAPI.Web.Models.User usuariosInst)
+        {
+            var usuariosset = await GenerateUser(usuariosInst);
             return View(usuariosset);
         }
 
-        // GET: Usuarios/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Usuarios/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdUsuarios,NombreUsuario,Apellido")] ClientWebAPI.Web.Models.User usuariosInst)
+        public async Task<IActionResult> CreateCard([Bind("Id,Name,Pan,Pin,Estado,Amount,Users")] ClientWebAPI.Web.Models.Card cardInst)
         {
-            var usuariosset = await CrearUSUARIOSSet(usuariosInst);
+            var usuariosset = await GenerateCard(cardInst);
             return View(usuariosset);
         }
 
         // GET: Usuarios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var usuariosset = await ObtenerUSUARIOSSet(id.ToString());
+            var usuariosset = await GetCard(id.ToString());
             if (usuariosset == null)
             {
                 return NotFound();
             }
-            return View(usuariosset);
+            return View(usuariosset.FirstOrDefault());
         }
 
         // POST: Usuarios/Edit/5
@@ -232,19 +302,19 @@ namespace ClientWebAPI.Web
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdUsuarios,NombreUsuario,Apellido")] ClientWebAPI.Web.Models.User usuariosInst)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Pan,Pin,Estado,Amount")] Card card)
         {
-            if (null == usuariosInst.Token)
+            if (null == card.Id)
             {
                 return NotFound();
             }
 
-            var usuariosset = await ActualizarUSUARIOSSet(id.ToString(), usuariosInst);
+            var usuariosset = await UpdateCard(id.ToString(), card);
             if (usuariosset == null)
             {
                 return NotFound();
             }
-            if (await ObtenerUSUARIOSSet(usuariosset.Token.ToString()) == null)
+            if (usuariosset.httpCode != 200)
             {
                 return NotFound();
             }
@@ -252,28 +322,28 @@ namespace ClientWebAPI.Web
         }
 
         // GET: Usuarios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var usuariosset = await ObtenerUSUARIOSSet(id.ToString());
+            var usuariosset = await GetCard(id.ToString());
             if (usuariosset == null)
             {
                 return NotFound();
             }
 
-            return View(usuariosset);
+            return View(usuariosset.FirstOrDefault());
         }
 
         // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            await EliminarUSUARIOSSet(id.ToString());
+            await DeleteCard(id.ToString());
             return RedirectToAction(nameof(Index));
         }
     }

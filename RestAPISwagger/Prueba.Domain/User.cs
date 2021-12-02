@@ -28,6 +28,7 @@ namespace Prueba.Domain
         public string HttpMessage { get; set; }
         public string MoreInformation { get; set; }
         public string userFriendlyError { get; set; }
+        public List<User> usersNuevoTokenAsignado { get; set; }
 
         public override string ToString()
         {

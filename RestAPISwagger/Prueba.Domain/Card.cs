@@ -29,6 +29,7 @@ namespace Prueba.Domain
         public string HttpMessage { get; set; }
         public string MoreInformation { get; set; }
         public string userFriendlyError { get; set; }
+        public List<Card> cardInfoResponse { get; set; }
 
         public override string ToString()
         {

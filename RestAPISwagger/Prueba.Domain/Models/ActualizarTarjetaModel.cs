@@ -7,30 +7,34 @@ using System.Linq.Expressions;
 
 namespace Prueba.Domain.Models
 {
-    public class CrearTarjetaModel
+    public class ActualizarTarjetaModel
     {
         //Lógica Microservicio...
-        public bool CrearTarjetas(List<Card> cards, IRepositoryEntityFrameworkCQRS<Card> cardRepository){
-
-            //Generamos nuevo GUID para cada tarjeta.
+        public bool ActualizarTarjetas(List<Card> cards, IRepositoryEntityFrameworkCQRS<Card> cardRepository){
             foreach (Card card in cards) {
-                card.Id = new Guid();
+                Card thisCard = cardRepository.GetByID(card.Id);
+                if ((thisCard != null) && (card.Id == thisCard.Id)) {
+                    thisCard.Name = card.Name;
+                    thisCard.Amount = card.Amount;
+                    thisCard.Estado = card.Estado;
+                    thisCard.Pan = card.Pan;
+                    thisCard.Pin = card.Pin;
+                    cardRepository.Update(thisCard);
+                }
             }
-
-            cardRepository.InsertMany(cards);
             if (cardRepository.Save() > 0) {
                 return true;
             }
             return false;
         }
-        public async Task<CardResponse> CrearTarjeta(CardBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<Card> cardRepository)
+        public async Task<CardResponse> ActualizarTarjeta(CardBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<Card> cardRepository)
         {
             int httpCod = 200;
             string httpMsg = "Registros Procesados Correctamente";
             string moreInfo = "200 - Success";
             string usrFriendlyErr = "Registros Procesados Correctamente";
 
-            if (CrearTarjetas(objBodyObjectRequest.Cards, cardRepository) != true) {
+            if (ActualizarTarjetas(objBodyObjectRequest.Cards, cardRepository) != true) {
                 httpCod = 400;
                 httpMsg = "Error al ingresar tarjetas";
                 moreInfo = httpCod + " - Error";
@@ -42,8 +46,7 @@ namespace Prueba.Domain.Models
                 HttpCode = httpCod,
                 HttpMessage = httpMsg,
                 MoreInformation = moreInfo,
-                userFriendlyError = usrFriendlyErr,
-                cardInfoResponse = objBodyObjectRequest.Cards
+                userFriendlyError = usrFriendlyErr
             };
             await Task.CompletedTask.ConfigureAwait(false);
             return bodyResponse;

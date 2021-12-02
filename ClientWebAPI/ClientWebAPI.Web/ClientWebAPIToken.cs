@@ -5,19 +5,6 @@ using Newtonsoft.Json;
 
 namespace Client
 {
-    internal class MantenedorMVCEntityApiToken
-    {
-        [JsonProperty(PropertyName = "access_token")]
-        public string AccessToken { get; set; }
-
-        public string ExpiresAt { get; set; }
-
-        public string Scope { get; set; }
-
-        [JsonProperty(PropertyName = "token_type")]
-        public string TokenType { get; set; }
-    }
-
     public class UserTokenServiceRequest
     {
         public UserTokenServiceRequest(List<User> users)
@@ -37,6 +24,15 @@ namespace Client
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    public class CardTokenServiceRequest
+    {
+        public CardTokenServiceRequest(List<Card> cards)
+        {
+            Cards = cards;
+        }
+        public List<Card> Cards { get; set; }
+    }
+
     public class CardTokenServiceResponse
     {
         public int httpCode { get; set; }
