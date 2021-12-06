@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Newtonsoft.Json;
 using System.Text.Json;
+using Prueba.Domain;
 
 namespace Prueba.WebApi
 {
@@ -81,6 +82,10 @@ namespace Prueba.WebApi
                     policy.Requirements.Add(new ValidarClienteRequirement(true)));
             });
             services.AddSingleton<IAuthorizationHandler, ValidarClienteHandler>();
+
+            //Acceso a AppSettings
+            services.AddSingleton<IAppSettingsRepository, AppSettingsRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
