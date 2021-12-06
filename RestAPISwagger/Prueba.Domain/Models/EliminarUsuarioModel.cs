@@ -7,42 +7,45 @@ using System.Linq.Expressions;
 
 namespace Prueba.Domain.Models
 {
-    public class EliminarTarjetaModel
+    public class EliminarUsuarioModel
     {
         //Lógica Microservicio...
-        public bool EliminarTarjetas(List<Card> cards, IRepositoryEntityFrameworkCQRS<Card> cardRepository){
-            foreach (Card card in cards) {
-                Card thisCard = cardRepository.GetByID(card.Id);
-                if ((thisCard != null) && (card.Id == thisCard.Id)) {
-                    cardRepository.Delete(thisCard);
+        public bool EliminarUsuarios(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
+            foreach (User user in users)
+            {
+                User thisUser = userRepository.Get().Where( it => it.Name == user.Name).FirstOrDefault();
+                if ((thisUser != null) && (user.Name == thisUser.Name))
+                {
+                    userRepository.Delete(thisUser);
                 }
             }
-            if (cardRepository.Save() > 0) {
+            if (userRepository.Save() > 0)
+            {
                 return true;
             }
             return false;
         }
-        public async Task<CardResponse> EliminarTarjeta(CardBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<Card> cardRepository)
+        public async Task<UserResponse> EliminarUsuario(UserBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<User> userRepository)
         {
             int httpCod = 200;
             string httpMsg = "Registros Procesados Correctamente";
             string moreInfo = "200 - Success";
             string usrFriendlyErr = "Registros Procesados Correctamente";
 
-            if (EliminarTarjetas(objBodyObjectRequest.Cards, cardRepository) != true) {
+            if (EliminarUsuarios(objBodyObjectRequest.Users, userRepository) != true) {
                 httpCod = 400;
-                httpMsg = "Error al ingresar tarjetas";
+                httpMsg = "Error al eliminar usuarios";
                 moreInfo = httpCod + " - Error";
                 usrFriendlyErr = httpMsg;
             }
 
-            CardResponse bodyResponse = new CardResponse()
+            UserResponse bodyResponse = new UserResponse()
             {
                 HttpCode = httpCod,
                 HttpMessage = httpMsg,
                 MoreInformation = moreInfo,
                 userFriendlyError = usrFriendlyErr,
-                Cards = objBodyObjectRequest.Cards
+                usersNuevoTokenAsignado = objBodyObjectRequest.Users
             };
             await Task.CompletedTask.ConfigureAwait(false);
             return bodyResponse;

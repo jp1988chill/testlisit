@@ -13,7 +13,6 @@ namespace ClientWebAPI.Web.Models
         public string Pin { get; set; } //clave de 4 dígitos para usuario.
         public string Estado { get; set; }  //“vigente” o “no vigente”
         public decimal Amount { get; set; } //cantidad
-        public List<User> Users { get; set; }
     }
 
     public partial class CardResponse
@@ -24,6 +23,7 @@ namespace ClientWebAPI.Web.Models
         public string Pin { get; set; } //clave de 4 dígitos para usuario.
         public string Estado { get; set; }  //“vigente” o “no vigente”
         public string Amount { get; set; } //cantidad
+        public List<Card> Card { get; set; }
 
         public override string ToString()
         {

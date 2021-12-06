@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using ClientWebAPI.Web.Models;
 using Newtonsoft.Json;
-using Prueba.Domain;
 
 namespace Prueba.UnitTests
 {

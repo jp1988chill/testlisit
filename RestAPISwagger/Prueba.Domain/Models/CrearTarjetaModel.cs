@@ -43,7 +43,7 @@ namespace Prueba.Domain.Models
                 HttpMessage = httpMsg,
                 MoreInformation = moreInfo,
                 userFriendlyError = usrFriendlyErr,
-                cardInfoResponse = objBodyObjectRequest.Cards
+                Cards = objBodyObjectRequest.Cards
             };
             await Task.CompletedTask.ConfigureAwait(false);
             return bodyResponse;

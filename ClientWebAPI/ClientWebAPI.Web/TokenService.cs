@@ -14,6 +14,7 @@ namespace Client
 {
     public interface ITokenService
     {
+        Task<bool> CleanToken();
         Task<string> GetToken();
         Task<string> GetRestAPIPath();
     }
@@ -30,6 +31,12 @@ namespace Client
                 _token = await GetNewAccessToken();
             }
             return _token;
+        }
+
+        public async Task<bool> CleanToken()
+        {
+            _token = null;
+            return true;
         }
 
         public async Task<string> GetRestAPIPath()

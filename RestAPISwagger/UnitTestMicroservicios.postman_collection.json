@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d45895e4-0f05-4c0e-ad6e-670d23c4acc1",
+		"_postman_id": "88378c05-c73b-468a-956d-5cf8fe85cdb8",
 		"name": "UnitTestMicroservicios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -16,7 +16,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "6d5e7dfe-bc1b-46e4-734c-08d9b53eec86",
+							"value": "c8c48e52-a537-405c-302e-08d9b90fdf6c",
 							"type": "string"
 						},
 						{
@@ -595,6 +595,41 @@
 					"path": [
 						"action",
 						"CrearUsuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EliminarUsuario",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\"\r\n    },\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016208\",\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\"\r\n    },\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016208\",\r\n      \"Name\": \"Juan Neira\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/EliminarUsuario",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"EliminarUsuario"
 					]
 				}
 			},

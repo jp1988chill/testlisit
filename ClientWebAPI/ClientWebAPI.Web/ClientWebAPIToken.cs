@@ -39,6 +39,6 @@ namespace Client
         public string httpMessage { get; set; }
         public string moreInformation { get; set; }
         public string userFriendlyError { get; set; }
-        public List<CardResponse> cardInfoResponse { get; set; }
+        public List<Card> Cards { get; set; }
     }
 }

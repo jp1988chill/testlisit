@@ -17,7 +17,7 @@ namespace ClientWebAPI.Web
 {
     public class UsuariosController : Controller
     {
-        private readonly ITokenService _tokenService;
+        private readonly Client.ITokenService _tokenService;
         public string RestAPIPath = String.Empty;
         public UsuariosController(ITokenService tokenService)
         {
@@ -38,12 +38,12 @@ namespace ClientWebAPI.Web
             httpRequest.Accept = "application/json";
             httpRequest.Headers["Authorization"] = "Api Key";
             httpRequest.Headers["Token"] = APIKeyToken;
-
+            List<User> list = new List<User>();
             var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 UserTokenServiceResponse response = JsonConvert.DeserializeObject<UserTokenServiceResponse>(streamReader.ReadToEnd());
-                List<User> list = new List<User>();
+                
                 if (response.usersNuevoTokenAsignado.Count > 0)
                 {
                     list.AddRange(response.usersNuevoTokenAsignado.Select(item => new User()
@@ -53,10 +53,9 @@ namespace ClientWebAPI.Web
                         Tokenleasetime = item.Tokenleasetime,
                         Name = item.Name
                     }));
-                    return list;
                 }
             }
-            return null;
+            return list;
         }
 
 
@@ -76,15 +75,18 @@ namespace ClientWebAPI.Web
             var json = client.UploadString(RestAPIPath + "/ObtenerTarjetas", "Post", envelopeSignedUserTokenOutStr);
             CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(json);
             List<Card> list = new List<Card>();
-            list.AddRange(response.cardInfoResponse.Select(item => new Card()
+            if ((response.Cards != null) && (response.Cards.Count > 0))
             {
-                Amount = Convert.ToDecimal(item.Amount),
-                Estado = item.Estado,
-                Id = new Guid(item.Id),
-                Pin = item.Pin,
-                Name = item.Name,
-                Pan = item.Pan
-            }));
+                list.AddRange(response.Cards.Select(item => new Card()
+                {
+                    Amount = Convert.ToDecimal(item.Amount),
+                    Estado = item.Estado,
+                    Id = item.Id,
+                    Pin = item.Pin,
+                    Name = item.Name,
+                    Pan = item.Pan
+                }));
+            }
             return list;
         }
 
@@ -98,32 +100,31 @@ namespace ClientWebAPI.Web
             httpRequest.Accept = "application/json";
             httpRequest.Headers["Authorization"] = "Api Key";
             httpRequest.Headers["Token"] = APIKeyToken;
-
+            List<Card> list = new List<Card>();
             var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(streamReader.ReadToEnd());
-                List<Card> list = new List<Card>();
-                if(response.cardInfoResponse.Count > 0) { 
-                    list.AddRange(response.cardInfoResponse.Select(item => new Card()
+                
+                if(response.Cards.Count > 0) { 
+                    list.AddRange(response.Cards.Select(item => new Card()
                     {
                         Amount = Convert.ToDecimal(item.Amount),
                         Estado = item.Estado,
-                        Id = new Guid(item.Id),
+                        Id = item.Id,
                         Pin = item.Pin,
                         Name = item.Name,
                         Pan = item.Pan
                     }));
-                    return list;
                 }
             }
 
             // httpResponse.StatusCode
-            return null;
+            return list;
         }
 
         [HttpPost, Produces("application/json")]
-        public async Task<Card> GenerateCard(Card card)
+        public async Task<List<Card>> GenerateCard(List<Card> cards)
         {
             //Handle the RestAPI:
             WebClient client = new WebClient();
@@ -133,14 +134,11 @@ namespace ClientWebAPI.Web
             client.Headers["Token"] = APIKeyToken;
 
             //Forge the RestAPI request + API Key
-            List<Card> list = new List<Card>();
-            list.Add(card);
-            CardTokenServiceRequest request = new CardTokenServiceRequest(list);
+            CardTokenServiceRequest request = new CardTokenServiceRequest(cards);
             string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(request);
             var json = client.UploadString(RestAPIPath + "/CrearTarjeta", "Put", envelopeSignedUserTokenOutStr);
             CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(json);
-            var cardResponse = response.cardInfoResponse.FirstOrDefault();
-            return new Card() { Name = cardResponse.Name, Amount = Convert.ToDecimal(cardResponse.Amount), Estado = cardResponse.Estado, Id = new Guid(cardResponse.Id), Pan = cardResponse.Pan, Pin = cardResponse.Pin, Users = new List<User>() };
+            return response.Cards;
         }
 
 
@@ -181,6 +179,42 @@ namespace ClientWebAPI.Web
             CardTokenServiceRequest request = new CardTokenServiceRequest(list);
             string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(request);
             var json = client.UploadString(RestAPIPath + "/ActualizarTarjeta", "Put", envelopeSignedUserTokenOutStr);
+            CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(json);
+            return response;
+        }
+
+        [HttpPost, Produces("application/json")]
+        public async Task<UserTokenServiceResponse> DeleteUsers(List<User> users)
+        {
+            //Handle the RestAPI:
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+            var APIKeyToken = await _tokenService.GetToken();
+            client.Headers["Token"] = APIKeyToken;
+
+            //Forge the RestAPI request + API Key
+            UserTokenServiceRequest request = new UserTokenServiceRequest(users);
+            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(request);
+            var json = client.UploadString(RestAPIPath + "/EliminarUsuario", "Delete", envelopeSignedUserTokenOutStr);
+            UserTokenServiceResponse response = JsonConvert.DeserializeObject<UserTokenServiceResponse>(json);
+            return response;
+        }
+
+        [HttpPost, Produces("application/json")]
+        public async Task<CardTokenServiceResponse> DeleteCards(List<Card> cards)
+        {
+            //Handle the RestAPI:
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+            var APIKeyToken = await _tokenService.GetToken();
+            client.Headers["Token"] = APIKeyToken;
+
+            //Forge the RestAPI request + API Key
+            CardTokenServiceRequest request = new CardTokenServiceRequest(cards);
+            string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(request);
+            var json = client.UploadString(RestAPIPath + "/EliminarTarjeta", "Delete", envelopeSignedUserTokenOutStr);
             CardTokenServiceResponse response = JsonConvert.DeserializeObject<CardTokenServiceResponse>(json);
             return response;
         }
@@ -261,7 +295,7 @@ namespace ClientWebAPI.Web
         public IActionResult CreateCard()
         {
             List<User> users = ListAllUsers().Result;
-            var card = new Card() { Id = Guid.NewGuid(), Users = users };
+            var card = new Card() { Id = Guid.NewGuid() };
             return View(card);
         }
 
@@ -277,7 +311,9 @@ namespace ClientWebAPI.Web
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCard([Bind("Id,Name,Pan,Pin,Estado,Amount,Users")] ClientWebAPI.Web.Models.Card cardInst)
         {
-            var usuariosset = await GenerateCard(cardInst);
+            List<Card> lst = new List<Card>();
+            lst.Add(cardInst);
+            var usuariosset = await GenerateCard(lst);
             return View(usuariosset);
         }
 
