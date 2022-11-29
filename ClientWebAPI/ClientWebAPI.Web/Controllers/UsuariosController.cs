@@ -313,8 +313,8 @@ namespace ClientWebAPI.Web
         {
             List<Card> lst = new List<Card>();
             lst.Add(cardInst);
-            var usuariosset = await GenerateCard(lst);
-            return View(usuariosset);
+            List<Card> usuariosset = await GenerateCard(lst);
+            return View(usuariosset[0]);
         }
 
         // GET: Usuarios/Edit/5

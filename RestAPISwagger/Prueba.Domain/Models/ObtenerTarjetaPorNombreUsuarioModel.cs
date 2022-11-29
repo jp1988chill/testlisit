@@ -34,7 +34,7 @@ namespace Prueba.Domain.Models
                 HttpMessage = httpMsg,
                 MoreInformation = moreInfo,
                 userFriendlyError = usrFriendlyErr,
-                cardInfoResponse = Tarjeta
+                Cards = Tarjeta
             };
             await Task.CompletedTask.ConfigureAwait(false);
             return bodyResponse;
