@@ -65,3 +65,9 @@ Usage:
 - Open Postman, load project postman collection
 - Open RestAPI, run in background, do not close.
 - Open WebAPI, and run through the browser.
+
+-
+
+Local SQL:
+
+Server=localhost\SQLEXPRESS;Database=master;Trusted_Connection=True;
