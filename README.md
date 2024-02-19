@@ -1,5 +1,8 @@
 Español:
 
+Arquitectura:
+(Frontend) WebAPI + motor Typescript -> (Backend) Llamada RestAPI -> Modelo Inyección de Dependencias -> IRequest -> IRequestHandler (Inicializa EFCore) -> DBContext (Uso de EFCore API)
+
 NetCore 6.0 LTS RestAPI + WebAPI que implementa las siguientes características:
 - DDD + CQRS.
 - Command Handler NetCore 3.0+ .NET format. (Isolación de capas de seguridad controladas por memoria)
@@ -31,6 +34,9 @@ Uso:
 
 -----------------------------------------------------------------------------
 English:
+
+Architecture:
+(Frontend) WebAPI + Typescript engine -> (Backend) RestAPI Call -> Dependency Injection Model -> IRequest -> IRequestHandler (Initialize EFCore) -> DBContext (EFCore API usage)
 
 NetCore 6.0 LTS RestAPI + WebAPI implementing the following extensions:
 - DDD + CQRS.
