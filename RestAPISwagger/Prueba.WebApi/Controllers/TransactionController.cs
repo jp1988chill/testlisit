@@ -109,7 +109,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
-        [Route("/action/CrearToken")]
+        [Route("/action/CrearLoginUsuario")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado se genera desde este método, no se puede crear dependencia circular
         [HttpPut]
         [ProducesResponseType(typeof(CardResponse), (int)HttpStatusCode.OK)]
@@ -117,9 +117,9 @@ namespace Prueba.WebApi.Controllers
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> CrearToken([FromBody] UserBody objBodyObjectRequest)
+        public async Task<IActionResult> CrearLoginUsuario([FromBody] UserBody objBodyObjectRequest)
         {
-            var handlerResponse = await _mediator.Send(new CrearTokenCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            var handlerResponse = await _mediator.Send(new CrearLoginUsuarioCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
 

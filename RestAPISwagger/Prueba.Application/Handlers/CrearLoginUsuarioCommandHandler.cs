@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 
 namespace Prueba.Application.Handlers
 {
-    public class CrearTokenCommandHandler : IRequestHandler<CrearTokenCommand, TokenResponse>
+    public class CrearLoginUsuarioCommandHandler : IRequestHandler<CrearLoginUsuarioCommand, LoginUsuarioResponse>
     {
         private IRepositoryEntityFrameworkCQRS<User> userRepository = null;
-        public CrearTokenCommandHandler(PruebaContext pruebaContext)
+        public CrearLoginUsuarioCommandHandler(PruebaContext pruebaContext)
         {
             userRepository = new RepositoryEntityFrameworkCQRS<User>(pruebaContext);
         }
 
-        public async Task<TokenResponse> Handle(CrearTokenCommand request, CancellationToken cancellationToken)
+        public async Task<LoginUsuarioResponse> Handle(CrearLoginUsuarioCommand request, CancellationToken cancellationToken)
         {
-            var middleWareHandler = new CrearTokenModel();
-            var middleWareHandlerResponse = (await middleWareHandler.CrearToken(request.objBodyObjectRequest, userRepository));
+            var middleWareHandler = new CrearLoginUsuarioModel();
+            var middleWareHandlerResponse = (await middleWareHandler.CrearLoginUsuario(request.objBodyObjectRequest, userRepository));
             return middleWareHandlerResponse;
         }
     }

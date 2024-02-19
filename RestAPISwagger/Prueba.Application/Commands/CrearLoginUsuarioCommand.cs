@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class CrearTokenCommand : IRequest<TokenResponse>
+    public class CrearLoginUsuarioCommand : IRequest<LoginUsuarioResponse>
     {
         //Users
         [FromBody]

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Prueba.Domain
 {
-    public class TokenResponse
+    public class LoginUsuarioResponse
     {
         public int HttpCode { get; set; }
         public string HttpMessage { get; set; }

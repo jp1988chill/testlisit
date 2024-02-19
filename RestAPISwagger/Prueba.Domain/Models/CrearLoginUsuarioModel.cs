@@ -7,10 +7,10 @@ using System.Linq.Expressions;
 
 namespace Prueba.Domain.Models
 {
-    public class CrearTokenModel
+    public class CrearLoginUsuarioModel
     {
         //Lógica Microservicio...
-        public List<User> CrearTokenDesdeUsuarios(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
+        public List<User> CrearLoginUsuarioDesdeUsuarios(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
             List<User> usersTokenGenerado = new List<User>();
             foreach (User user in users) {
                 User thisUser = userRepository.GetAll().Where(id => id.Name == user.Name).FirstOrDefault();
@@ -26,13 +26,13 @@ namespace Prueba.Domain.Models
             }
             return usersTokenGenerado;
         }
-        public async Task<TokenResponse> CrearToken(UserBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<User> userRepository)
+        public async Task<LoginUsuarioResponse> CrearLoginUsuario(UserBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<User> userRepository)
         {
             int httpCod = 200;
             string httpMsg = "Registros Procesados Correctamente";
             string moreInfo = "200 - Success";
             string usrFriendlyErr = "Registros Procesados Correctamente";
-            List<User> lstNuevosTokensPorUsuario = CrearTokenDesdeUsuarios(objBodyObjectRequest.Users, userRepository);
+            List<User> lstNuevosTokensPorUsuario = CrearLoginUsuarioDesdeUsuarios(objBodyObjectRequest.Users, userRepository);
             if (lstNuevosTokensPorUsuario.Count == 0) {
                 httpCod = 400;
                 httpMsg = "Error al ingresar tokens. No se generó token alguno para usuario(s)";
@@ -40,7 +40,7 @@ namespace Prueba.Domain.Models
                 usrFriendlyErr = httpMsg;
             }
 
-            TokenResponse bodyResponse = new TokenResponse()
+            LoginUsuarioResponse bodyResponse = new LoginUsuarioResponse()
             {
                 HttpCode = httpCod,
                 HttpMessage = httpMsg,
