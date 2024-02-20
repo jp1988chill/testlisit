@@ -8,12 +8,10 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class DescontarSaldoTarjetaCommand : IRequest<CardResponse>
+    public class EliminarUserCommand : IRequest<UserResponse>
     {
-        public decimal saldoPorDescontar { get; set; }
-        //Cards
         [FromBody]
-        public CardBody objBodyObjectRequest { get; set; }
+        public UserBody objBodyObjectRequest { get; set; }
 
         public override string ToString()
         {

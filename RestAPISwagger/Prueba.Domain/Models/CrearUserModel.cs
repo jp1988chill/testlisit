@@ -7,34 +7,39 @@ using System.Linq.Expressions;
 
 namespace Prueba.Domain.Models
 {
-    public class ObtenerTarjetasModel
+    public class CrearUserModel
     {
         //Lógica Microservicio...
-        public List<Card> ObtenerTarjetas(IRepositoryEntityFrameworkCQRS<Card> cardRepository){
-            return cardRepository.GetAll().ToList();
+        public bool CrearUsers(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
+
+            //Generamos nuevo PK para cada user automáticamente
+            userRepository.InsertMany(users);
+            if (userRepository.Save() > 0) {
+                return true;
+            }
+            return false;
         }
-        public async Task<CardInfoResponse> ObtenerTarjeta(IRepositoryEntityFrameworkCQRS<Card> cardRepository)
+        public async Task<UserResponse> CrearUser(UserBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<User> userRepository)
         {
             int httpCod = 200;
             string httpMsg = "Registros Procesados Correctamente";
             string moreInfo = "200 - Success";
             string usrFriendlyErr = "Registros Procesados Correctamente";
 
-            List<Card> Tarjeta = ObtenerTarjetas(cardRepository);
-            if (Tarjeta == null) {
+            if (CrearUsers(objBodyObjectRequest.Users, userRepository) != true) {
                 httpCod = 400;
-                httpMsg = "No existe(n) Tarjeta(s) ingresada(s)";
+                httpMsg = "Error al ingresar usuarios";
                 moreInfo = httpCod + " - Error";
                 usrFriendlyErr = httpMsg;
             }
 
-            CardInfoResponse bodyResponse = new CardInfoResponse()
+            UserResponse bodyResponse = new UserResponse()
             {
                 HttpCode = httpCod,
                 HttpMessage = httpMsg,
                 MoreInformation = moreInfo,
                 userFriendlyError = usrFriendlyErr,
-                Cards = Tarjeta
+                usersNuevoTokenAsignado = objBodyObjectRequest.Users
             };
             await Task.CompletedTask.ConfigureAwait(false);
             return bodyResponse;

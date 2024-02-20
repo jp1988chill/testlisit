@@ -10,7 +10,6 @@ namespace Prueba.Application.Commands
 {
     public class CrearLoginUsuarioCommand : IRequest<LoginUsuarioResponse>
     {
-        //Users
         [FromBody]
         public UserBody objBodyObjectRequest { get; set; }
 

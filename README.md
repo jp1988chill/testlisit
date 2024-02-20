@@ -70,4 +70,26 @@ Usage:
 
 Local SQL:
 
-Server=localhost\SQLEXPRESS;Database=master;Trusted_Connection=True;
+Server=localhost\SQLEXPRESS;Database=Prueba;Trusted_Connection=True;
+
+-
+
+País, región y comuna
+
+1 País : N Regiones
+1 Region : N Comunas
+
+-
+
+Todo:
+
+Make CRUD services for entities:
+-User (CrearUser, EliminarUser, CrearLoginUsuario, ObtenerUsers, ObtenerUser, ActualizarUser)
+-Pais
+-Region
+-Comuna
+-ServicioSocial
+-RolUser
+
+misc services required:
+-CrearLoginUsuarioModel OK

@@ -8,11 +8,9 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class CrearUsuarioCommand : IRequest<UserResponse>
+    public class ObtenerUserCommand : IRequest<UserResponse>
     {
-        //Cards
-        [FromBody]
-        public UserBody objBodyObjectRequest { get; set; }
+        public string IdUser { get; set; }
 
         public override string ToString()
         {

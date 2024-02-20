@@ -8,15 +8,10 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class CrearTarjetaCommand : IRequest<CardResponse>
+    public class ActualizarUserCommand : IRequest<UserResponse>
     {
         [FromBody]
-        public Guid Token { get; set; }
-        
-        //Cards
-        [FromBody]
-        public CardBody objBodyObjectRequest { get; set; }
-
+        public UserBody Users { get; set; } //same as BaseClass -> BaseClassBody contents
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

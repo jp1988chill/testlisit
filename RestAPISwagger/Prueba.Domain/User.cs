@@ -2,22 +2,28 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Prueba.Domain
 {
-    public class User
+    public class User 
     {
-        public User(string name, string password, Guid token, string tokenleasetime)
+        public User(Guid token, int idroluser, string name, string password, string tokenleasetime)
         {
+            this.Token = token;
+            this.Idroluser = idroluser;
             this.Name = name;
             this.Password = password;
-            this.Token = token;
             this.Tokenleasetime = tokenleasetime;
         }
-        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity), Key()]
+        public int Iduser { get; set; } //PK: Autoinc
+        
         public Guid Token { get; set; }     //Token de usuario generado con duración de N minutos
-        public string Name { get; set; }    //Nombre de tarjetahabiente que contiene 1:1 class Card
+
+        public int Idroluser { get; set; }
+        public string Name { get; set; }
         public string Password { get; set; }
         public string Tokenleasetime { get; set; } //allows the token to last up to 10 minutes
     }

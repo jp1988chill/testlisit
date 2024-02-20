@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Expressions;
+using Newtonsoft.Json.Linq;
 
 namespace Prueba.Domain.Models
 {
@@ -11,7 +12,7 @@ namespace Prueba.Domain.Models
     {
         //Lógica Microservicio...
         public List<User> CrearLoginUsuarioDesdeUsuarios(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
-            List<User> usersTokenGenerado = new List<User>();
+            List<User> usersLoginGenerado = new List<User>();
             foreach (User user in users) {
                 User thisUser = userRepository.GetAll().Where(id => id.Name == user.Name).FirstOrDefault();
                 if (thisUser != null)
@@ -19,12 +20,12 @@ namespace Prueba.Domain.Models
                     userRepository.Delete(thisUser);
                     userRepository.Save();
                 }
-                thisUser = new User(user.Name, user.Password, new Guid(), DateTime.Now.AddMinutes(10).ToString()); //10 minutes lease time
+                thisUser = new User(new Guid(), user.Idroluser, user.Name, user.Password, DateTime.Now.AddMinutes(10).ToString()); //10 minutes lease time
                 userRepository.Insert(thisUser);
                 userRepository.Save();
-                usersTokenGenerado.Add(thisUser);
+                usersLoginGenerado.Add(thisUser);
             }
-            return usersTokenGenerado;
+            return usersLoginGenerado;
         }
         public async Task<LoginUsuarioResponse> CrearLoginUsuario(UserBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<User> userRepository)
         {

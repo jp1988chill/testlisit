@@ -8,10 +8,9 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class ActualizarNombreUsuarioCommand : IRequest<CardResponse>
+    public class ObtenerUsersCommand : IRequest<UserResponse>
     {
-        public string NombreUsuarioOriginal { get; set; }
-        public string NombreUsuarioNuevo { get; set; }
+
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

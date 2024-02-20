@@ -9,13 +9,14 @@ namespace Prueba.Repository
 {
     public class RepositoryEntityFrameworkCQRS<TEntity> : IRepositoryEntityFrameworkCQRS<TEntity> where TEntity : class
     {
+
         protected DbContext context;
         internal DbSet<TEntity> dbSet;
 
-        public RepositoryEntityFrameworkCQRS(PruebaContext context)
+        public RepositoryEntityFrameworkCQRS(PruebaContext ctx)
         {
-            this.context = context;
-            this.dbSet = context.Set<TEntity>();
+            this.context = ctx;
+            this.dbSet = this.context.Set<TEntity>();
         }
 
         public virtual IEnumerable<TEntity> Get(
@@ -91,5 +92,7 @@ namespace Prueba.Repository
         {
             return context.SaveChanges();
         }
+
+
     }
 }

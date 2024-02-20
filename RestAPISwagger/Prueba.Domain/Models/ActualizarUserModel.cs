@@ -7,34 +7,37 @@ using System.Linq.Expressions;
 
 namespace Prueba.Domain.Models
 {
-    public class EliminarUsuarioModel
+    public class ActualizarUserModel
     {
         //Lógica Microservicio...
-        public bool EliminarUsuarios(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
-            foreach (User user in users)
-            {
-                User thisUser = userRepository.Get().Where( it => it.Name == user.Name).FirstOrDefault();
-                if ((thisUser != null) && (user.Name == thisUser.Name))
-                {
-                    userRepository.Delete(thisUser);
+        public bool ActualizarUsers(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
+            foreach (User user in users) {
+                /*
+                User thisUser = userRepository.GetByID(user.Iduser);
+                if ((thisUser != null) && (user.Iduser == thisUser.Iduser)) {
+                    thisUser.Idroluser = user.Idroluser;
+                    thisUser.Name = user.Name;
+                    thisUser.Password = user.Password;
+                    thisUser.Tokenleasetime = user.Tokenleasetime;
+                    userRepository.Update(thisUser);
                 }
+                */
             }
-            if (userRepository.Save() > 0)
-            {
+            if (userRepository.Save() > 0) {
                 return true;
             }
             return false;
         }
-        public async Task<UserResponse> EliminarUsuario(UserBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<User> userRepository)
+        public async Task<UserResponse> ActualizarUser(UserBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<User> userRepository)
         {
             int httpCod = 200;
             string httpMsg = "Registros Procesados Correctamente";
             string moreInfo = "200 - Success";
             string usrFriendlyErr = "Registros Procesados Correctamente";
 
-            if (EliminarUsuarios(objBodyObjectRequest.Users, userRepository) != true) {
+            if (ActualizarUsers(objBodyObjectRequest.Users, userRepository) != true) {
                 httpCod = 400;
-                httpMsg = "Error al eliminar usuarios";
+                httpMsg = "Error al ingresar usuarios";
                 moreInfo = httpCod + " - Error";
                 usrFriendlyErr = httpMsg;
             }

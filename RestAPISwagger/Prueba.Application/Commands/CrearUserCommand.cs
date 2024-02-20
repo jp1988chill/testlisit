@@ -8,9 +8,10 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class ObtenerTarjetaPorNombreUsuarioCommand : IRequest<CardInfoResponse>
+    public class CrearUserCommand : IRequest<UserResponse>
     {
-        public string NombreUsuario { get; set; }
+        [FromBody]
+        public UserBody objBodyObjectRequest { get; set; }
 
         public override string ToString()
         {

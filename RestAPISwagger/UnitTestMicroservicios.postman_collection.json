@@ -1,392 +1,13 @@
 {
 	"info": {
-		"_postman_id": "88378c05-c73b-468a-956d-5cf8fe85cdb8",
+		"_postman_id": "e6c34773-7bc7-4852-ad39-95de6a7f2989",
 		"name": "UnitTestMicroservicios",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33064080"
 	},
 	"item": [
 		{
-			"name": "CrearTarjeta",
-			"protocolProfileBehavior": {
-				"strictSSL": false
-			},
-			"request": {
-				"auth": {
-					"type": "apikey",
-					"apikey": [
-						{
-							"key": "value",
-							"value": "c8c48e52-a537-405c-302e-08d9b90fdf6c",
-							"type": "string"
-						},
-						{
-							"key": "key",
-							"value": "Token",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 1355\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44344/action/CrearTarjeta",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44344",
-					"path": [
-						"action",
-						"CrearTarjeta"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "VaciarSaldoTarjeta",
-			"protocolProfileBehavior": {
-				"strictSSL": false
-			},
-			"request": {
-				"auth": {
-					"type": "apikey",
-					"apikey": [
-						{
-							"key": "value",
-							"value": "ADC7AA2B-DE29-4E6C-10B4-08D995900FDC",
-							"type": "string"
-						},
-						{
-							"key": "key",
-							"value": "Token",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"148FAF14-7B16-4827-81DB-08D995016206\",\r\n      \"Name\": \"Cliente Hilbert\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44344/action/VaciarSaldoTarjeta",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44344",
-					"path": [
-						"action",
-						"VaciarSaldoTarjeta"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DescontarSaldoTarjeta",
-			"protocolProfileBehavior": {
-				"strictSSL": false
-			},
-			"request": {
-				"auth": {
-					"type": "apikey",
-					"apikey": [
-						{
-							"key": "value",
-							"value": "6E79AE43-DC31-4A61-0FA7-08D9959527FB",
-							"type": "string"
-						},
-						{
-							"key": "key",
-							"value": "Token",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"8A98854B-19A3-47F0-D3E2-08D995953104\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"E5E340AD-BDA9-40FE-D3E0-08D995953104\",\r\n      \"Name\": \"Cliente Hilbert\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44344/action/DescontarSaldoTarjeta/1200",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44344",
-					"path": [
-						"action",
-						"DescontarSaldoTarjeta",
-						"1200"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AgregarSaldoTarjeta",
-			"protocolProfileBehavior": {
-				"strictSSL": false
-			},
-			"request": {
-				"auth": {
-					"type": "apikey",
-					"apikey": [
-						{
-							"key": "value",
-							"value": "1a0c267b-e601-4154-6700-08d9b4740bec",
-							"type": "string"
-						},
-						{
-							"key": "key",
-							"value": "Token",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44344/action/AgregarSaldoTarjeta/1200",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44344",
-					"path": [
-						"action",
-						"AgregarSaldoTarjeta",
-						"1200"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ActualizarTarjeta",
-			"protocolProfileBehavior": {
-				"strictSSL": false
-			},
-			"request": {
-				"auth": {
-					"type": "apikey",
-					"apikey": [
-						{
-							"key": "value",
-							"value": "2831c355-4ff5-4631-1a51-08d9b535b1cb",
-							"type": "string"
-						},
-						{
-							"key": "key",
-							"value": "Token",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"2931D66B-3796-44CE-3379-08D9B4D8B262\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8888\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 355\r\n    },\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44344/action/ActualizarTarjeta",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44344",
-					"path": [
-						"action",
-						"ActualizarTarjeta"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "EliminarTarjeta",
-			"protocolProfileBehavior": {
-				"strictSSL": false
-			},
-			"request": {
-				"auth": {
-					"type": "apikey",
-					"apikey": [
-						{
-							"key": "value",
-							"value": "6d5e7dfe-bc1b-46e4-734c-08d9b53eec86",
-							"type": "string"
-						},
-						{
-							"key": "key",
-							"value": "Token",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"2931D66B-3796-44CE-3379-08D9B4D8B262\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8888\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 355\r\n    },\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44344/action/EliminarTarjeta",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44344",
-					"path": [
-						"action",
-						"EliminarTarjeta"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ObtenerTarjeta",
-			"protocolProfileBehavior": {
-				"strictSSL": false,
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "apikey",
-					"apikey": [
-						{
-							"key": "value",
-							"value": "f50da451-e954-4ece-61f1-08d9b524f0fa",
-							"type": "string"
-						},
-						{
-							"key": "key",
-							"value": "Token",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44344/action/ObtenerTarjeta/2931d66b-3796-44ce-3379-08d9b4d8b262",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44344",
-					"path": [
-						"action",
-						"ObtenerTarjeta",
-						"2931d66b-3796-44ce-3379-08d9b4d8b262"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ObtenerTarjetas",
-			"protocolProfileBehavior": {
-				"strictSSL": false
-			},
-			"request": {
-				"auth": {
-					"type": "apikey",
-					"apikey": [
-						{
-							"key": "value",
-							"value": "70A46753-3E44-4721-4F8B-08D9B4D84F44",
-							"type": "string"
-						},
-						{
-							"key": "key",
-							"value": "Token",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44344/action/ObtenerTarjetas",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44344",
-					"path": [
-						"action",
-						"ObtenerTarjetas"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ObtenerUsuarios",
+			"name": "ObtenerUsers",
 			"protocolProfileBehavior": {
 				"strictSSL": false,
 				"disableBodyPruning": true
@@ -419,7 +40,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44344/action/ObtenerUsuarios",
+					"raw": "https://localhost:44344/action/ObtenerUsers",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -427,16 +48,17 @@
 					"port": "44344",
 					"path": [
 						"action",
-						"ObtenerUsuarios"
+						"ObtenerUsers"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "ObtenerTarjetaPorNombreUsuario",
+			"name": "ObtenerUser",
 			"protocolProfileBehavior": {
-				"strictSSL": false
+				"strictSSL": false,
+				"disableBodyPruning": true
 			},
 			"request": {
 				"auth": {
@@ -444,7 +66,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "AE3FAE9F-FA16-4C2E-6AA5-08D995ADA13F",
+							"value": "577168ec-01dc-434a-eb59-08d9b54bf863",
 							"type": "string"
 						},
 						{
@@ -454,11 +76,11 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -466,7 +88,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44344/action/ObtenerTarjetaPorNombreUsuario/User Juan Pablo Neira",
+					"raw": "https://localhost:44344/action/ObtenerUser/1",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -474,8 +96,8 @@
 					"port": "44344",
 					"path": [
 						"action",
-						"ObtenerTarjetaPorNombreUsuario",
-						"User Juan Pablo Neira"
+						"ObtenerUser",
+						"1"
 					]
 				}
 			},
@@ -531,7 +153,7 @@
 			"response": []
 		},
 		{
-			"name": "CrearToken",
+			"name": "CrearLoginUser",
 			"protocolProfileBehavior": {
 				"strictSSL": false
 			},
@@ -551,7 +173,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44344/action/CrearToken",
+					"raw": "https://localhost:44344/action/CrearLoginUser",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -559,14 +181,14 @@
 					"port": "44344",
 					"path": [
 						"action",
-						"CrearToken"
+						"CrearLoginUser"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "CrearUsuario",
+			"name": "CrearUser",
 			"protocolProfileBehavior": {
 				"strictSSL": false
 			},
@@ -578,7 +200,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\"\r\n    },\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016208\",\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"IdRolUser\": 0,\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\",\r\n      \"Tokenleasetime\": \"\"\r\n    },\r\n    {\r\n      \"IdRolUser\": 0,\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\",\r\n      \"Tokenleasetime\": \"\"\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -586,7 +208,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44344/action/CrearUsuario",
+					"raw": "https://localhost:44344/action/CrearUser",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -594,14 +216,14 @@
 					"port": "44344",
 					"path": [
 						"action",
-						"CrearUsuario"
+						"CrearUser"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "EliminarUsuario",
+			"name": "EliminarUser",
 			"protocolProfileBehavior": {
 				"strictSSL": false
 			},
@@ -621,7 +243,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44344/action/EliminarUsuario",
+					"raw": "https://localhost:44344/action/EliminarUser",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -629,7 +251,7 @@
 					"port": "44344",
 					"path": [
 						"action",
-						"EliminarUsuario"
+						"EliminarUser"
 					]
 				}
 			},
