@@ -88,7 +88,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44344/action/ObtenerUser/1",
+					"raw": "https://localhost:44344/action/ObtenerUser/7",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -97,7 +97,7 @@
 					"path": [
 						"action",
 						"ObtenerUser",
-						"1"
+						"7"
 					]
 				}
 			},
@@ -165,7 +165,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"4770D437-81D5-45DD-8507-08D9959B4370\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\"\r\n    },\r\n    {\r\n      \"Token\": \"FB20A841-DA48-4ED1-51CF-08D99533F5EF\",\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"4770D437-81D5-45DD-8507-08D9959B4370\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\",\r\n      \"IdRolUser\": 0\r\n    },\r\n    {\r\n      \"Token\": \"FB20A841-DA48-4ED1-51CF-08D99533F5EF\",\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\",\r\n      \"IdRolUser\": 0\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

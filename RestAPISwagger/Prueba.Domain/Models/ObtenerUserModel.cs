@@ -16,8 +16,7 @@ namespace Prueba.Domain.Models
 
         public List<User> ObtenerUsersPorId(string IdUser, IRepositoryEntityFrameworkCQRS<User> userRepository)
         {
-            //return userRepository.GetAll().Where(id => id.Iduser == Convert.ToInt32(IdUser)).ToList();
-            return null;
+            return userRepository.GetAll().Where(id => id.Iduser == Convert.ToInt32(IdUser)).ToList();
         }
 
         public List<User> ObtenerUsers(IRepositoryEntityFrameworkCQRS<User> userRepository)
@@ -33,7 +32,7 @@ namespace Prueba.Domain.Models
             string usrFriendlyErr = "Registros Procesados Correctamente";
 
             List<User> User = ObtenerUsersPorId(IdUser, userRepository);
-            if (User == null) {
+            if ((User == null) || (User.Count == 0)) {
                 httpCod = 400;
                 httpMsg = "No existe(n) Usuario(s) con IdUser ("+ IdUser + ")";
                 moreInfo = httpCod + " - Error";

@@ -134,7 +134,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/ObtenerUser/{iduser}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
         [HttpGet]
         [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
