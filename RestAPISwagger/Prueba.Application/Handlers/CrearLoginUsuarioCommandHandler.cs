@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace Prueba.Application.Handlers
 {
-    public class CrearLoginUsuarioCommandHandler : IRequestHandler<CrearLoginUsuarioCommand, LoginUsuarioResponse>
+    public class CrearLoginUserCommandHandler : IRequestHandler<CrearLoginUserCommand, LoginUsuarioResponse>
     {
         private IRepositoryEntityFrameworkCQRS<User> userRepository = null;
-        public CrearLoginUsuarioCommandHandler(PruebaContext pruebaContext)
+        public CrearLoginUserCommandHandler(PruebaContext pruebaContext)
         {
             userRepository = new RepositoryEntityFrameworkCQRS<User>(pruebaContext);
 
@@ -26,10 +26,10 @@ namespace Prueba.Application.Handlers
             pruebaContext.Database.EnsureCreated();
         }
 
-        public async Task<LoginUsuarioResponse> Handle(CrearLoginUsuarioCommand request, CancellationToken cancellationToken)
+        public async Task<LoginUsuarioResponse> Handle(CrearLoginUserCommand request, CancellationToken cancellationToken)
         {
-            var middleWareHandler = new CrearLoginUsuarioModel();
-            var middleWareHandlerResponse = (await middleWareHandler.CrearLoginUsuario(request.objBodyObjectRequest, userRepository));
+            var middleWareHandler = new CrearLoginUserModel();
+            var middleWareHandlerResponse = (await middleWareHandler.CrearLoginUser(request.objBodyObjectRequest, userRepository));
             return middleWareHandlerResponse;
         }
     }

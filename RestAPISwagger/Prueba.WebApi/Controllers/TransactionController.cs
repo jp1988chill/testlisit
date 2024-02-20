@@ -95,7 +95,7 @@ namespace Prueba.WebApi.Controllers
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> CrearLoginUser([FromBody] UserBody objBodyObjectRequest)
         {
-            var handlerResponse = await _mediator.Send(new CrearLoginUsuarioCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            var handlerResponse = await _mediator.Send(new CrearLoginUserCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
 

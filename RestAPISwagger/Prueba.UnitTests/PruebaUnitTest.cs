@@ -84,7 +84,7 @@ namespace Prueba.UnitTests
             int i = 0;
             for (i = 0; i < 10; i++)
             {
-                dbCtx.Users.Add(new User(i, name: "TestName" + i, password: "TestPassword" + i, tokenleasetime: DateTime.Now.AddSeconds(60 * 10).ToString("dd-MM-yyyy HH:mm:ss")));
+                dbCtx.Users.Add(new User(new Guid(), i, name: "TestName" + i, password: "TestPassword" + i, tokenleasetime: DateTime.Now.AddSeconds(60 * 10).ToString("dd-MM-yyyy HH:mm:ss")));
                 dbCtx.SaveChanges();
             }
             var shouldNotBeZero = dbCtx.Users.Count();
