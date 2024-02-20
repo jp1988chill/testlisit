@@ -1,5 +1,7 @@
 ﻿using Prueba.Domain;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Prueba.Repository
 {
@@ -13,6 +15,12 @@ namespace Prueba.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //EF Core <-> Database mapper for entity: List<int> Idregion;
+            modelBuilder.Entity<Pais>()
+            .Property(p => p.Idregion)
+            .HasConversion(v => JsonConvert.SerializeObject(v),
+                     v => JsonConvert.DeserializeObject<List<int>>(v));
         }
 		
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -22,7 +30,6 @@ namespace Prueba.Repository
 
         // Entities mapped to EF Core will then be used along CQRS methods (RepositoryEntityFrameworkCQRS.cs)
         public DbSet<User> Users { get; set; }
-		
-		//Todo: The rest of Models at Prueba.Domain
+        public DbSet<Pais> Paises { get; set; }
     }
 }

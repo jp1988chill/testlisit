@@ -28,54 +28,6 @@ namespace Prueba.WebApi.Controllers
         }
 
         /// <summary>
-        /// Crear un usuario.
-        /// </summary>
-        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
-        /// <response code="200">Retorna OK</response>
-        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
-        /// <response code="401">En el caso que los valores son inválidos</response>
-        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
-        /// <response code="500">Ocurrió un error interno en el servidor</response>
-        /// <returns></returns>
-        [Route("/action/CrearUser")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
-        [HttpPut]
-        [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> CrearUser([FromBody] UserBody objBodyObjectRequest)
-        {
-            var handlerResponse = await _mediator.Send(new CrearUserCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
-            return Ok(handlerResponse);
-        }
-
-        /// <summary>
-        /// Elimina usuario(s).
-        /// </summary>
-        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
-        /// <response code="200">Retorna OK</response>
-        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
-        /// <response code="401">En el caso que los valores son inválidos</response>
-        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
-        /// <response code="500">Ocurrió un error interno en el servidor</response>
-        /// <returns></returns>
-        [Route("/action/EliminarUser")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
-        [HttpDelete]
-        [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> EliminarUser([FromBody] UserBody objBodyObjectRequest)
-        {
-            var handlerResponse = await _mediator.Send(new EliminarUserCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
-            return Ok(handlerResponse);
-        }
-
-        /// <summary>
         /// Crear una sesión para un User registrado por 10 minutos.
         /// </summary>
         /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
@@ -99,7 +51,32 @@ namespace Prueba.WebApi.Controllers
             return Ok(handlerResponse);
         }
 
-        
+        ///////////////////////////////////////////////// CRUD Implementation User /////////////////////////////////////////////////
+
+        /// <summary>
+        /// Crear un usuario.
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/CrearUser")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
+        [HttpPut]
+        [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> CrearUser([FromBody] UserBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new CrearUserCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
         /// <summary>
         /// Obtiene todos los User(s) registrados.
         /// </summary>
@@ -171,5 +148,56 @@ namespace Prueba.WebApi.Controllers
             var handlerResponse = await _mediator.Send(new ActualizarUserCommand() { Users = objBodyObjectRequest }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
+
+        /// <summary>
+        /// Elimina usuario(s).
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/EliminarUser")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
+        [HttpDelete]
+        [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> EliminarUser([FromBody] UserBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new EliminarUserCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
+        ///////////////////////////////////////////////// CRUD Implementation Pais /////////////////////////////////////////////////
+
+        /// <summary>
+        /// Crear un usuario.
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/CrearPais")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
+        [HttpPut]
+        [ProducesResponseType(typeof(PaisResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> CrearPais([FromBody] PaisBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new CrearPaisCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
     }
 }

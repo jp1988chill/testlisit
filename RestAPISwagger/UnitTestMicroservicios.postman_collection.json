@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "078ae657-ce9b-4055-b02e-0f8e4d972548",
+		"_postman_id": "aa1c814b-36bc-4337-b413-9c03ce9aeb17",
 		"name": "UnitTestMicroservicios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33064080"
@@ -215,6 +215,41 @@
 					"path": [
 						"action",
 						"CrearUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CrearPais",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Paises\": [\r\n    {\r\n      \"Nombre\": \"Chile\",\r\n       \"IdRegion\": [\r\n        0,1,2,3\r\n      ]\r\n    },\r\n    {\r\n      \"Nombre\": \"Peru\",\r\n       \"IdRegion\": [\r\n        16,17,18,19\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/CrearPais",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"CrearPais"
 					]
 				}
 			},

@@ -4,22 +4,28 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Prueba.Domain
 {
     public class Pais
     {
-        public Pais(string _Nombre, List<int> _IdRegion)
+        public Pais()
         {
-            this.Nombre = _Nombre;
-            this.IdRegion = _IdRegion;
-
+            
+        }
+        public Pais(string nombre, List<int> idregion)
+        {
+            this.Nombre = nombre;
+            this.Idregion = idregion;
         }
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity), Key()]
-        public int IdPais { get; set; } //PK: Autoinc
+        public int Idpais { get; set; } //PK: Autoinc
         public string Nombre { get; set; }
-        public List<int> IdRegion { get; set; } // 1 País : N Regiones
-    }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public List<int> Idregion { get; set; } // 1 País : N Regiones
+}
 
     public class PaisResponse
     {
@@ -27,7 +33,7 @@ namespace Prueba.Domain
         public string HttpMessage { get; set; }
         public string MoreInformation { get; set; }
         public string userFriendlyError { get; set; }
-        public Pais pais { get; set; } //return same object if operation success, or NULL if operation failed
+        public List<Pais> Paises { get; set; } //return same object if operation success, or NULL if operation failed
 
         public override string ToString()
         {
@@ -37,7 +43,7 @@ namespace Prueba.Domain
 
     public class PaisBody
     {
-        public Pais pais { get; set; } //JSON format object
+        public List<Pais> Paises { get; set; } //JSON format object
 
         public override string ToString()
         {
