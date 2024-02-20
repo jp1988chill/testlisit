@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e6c34773-7bc7-4852-ad39-95de6a7f2989",
+		"_postman_id": "d252a825-198b-4d92-aa05-7c8f50dfda1c",
 		"name": "UnitTestMicroservicios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33064080"
@@ -235,7 +235,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\"\r\n    },\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016208\",\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\"\r\n    },\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016208\",\r\n      \"Name\": \"Juan Neira\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"IdRolUser\": 0,\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"LocalTest1\",\r\n      \"Tokenleasetime\": \"\"\r\n    },\r\n    {\r\n      \"IdRolUser\": 0,\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"1234ac\",\r\n      \"Tokenleasetime\": \"\"\r\n    },\r\n    {\r\n      \"Token\": \"8BA6059C-5584-4CFB-81D8-08D995016208\",\r\n      \"Name\": \"Juan Neira\",\r\n      \"Password\": \"1234ac\"\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

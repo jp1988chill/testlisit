@@ -11,13 +11,13 @@ namespace Prueba.Domain.Models
     {
         //Lógica Microservicio...
         public bool EliminarUsers(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
+            List<User> allUsers = userRepository.GetAll().ToList();
             foreach (User user in users) {
-                /*
-                User thisUser = userRepository.GetByID(user.Iduser);
-                if ((thisUser != null) && (user.Iduser == thisUser.Iduser)) {
-                    userRepository.Delete(thisUser);
+                List<User> UsersToBeDeleted = allUsers.Where(id => id.Name == user.Name).ToList();
+                foreach (User userToBeDeleted in UsersToBeDeleted)
+                {
+                    userRepository.Delete(userToBeDeleted);
                 }
-                */
             }
             if (userRepository.Save() > 0) {
                 return true;
