@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d252a825-198b-4d92-aa05-7c8f50dfda1c",
+		"_postman_id": "078ae657-ce9b-4055-b02e-0f8e4d972548",
 		"name": "UnitTestMicroservicios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33064080"
@@ -104,7 +104,7 @@
 			"response": []
 		},
 		{
-			"name": "ActualizarNombreUsuario",
+			"name": "ActualizarUser",
 			"protocolProfileBehavior": {
 				"strictSSL": false
 			},
@@ -128,7 +128,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"Cards\": [\r\n    {\r\n      \"Id\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1234-1234-1234-1234\",\r\n      \"Pin\": \"8088\",\r\n      \"Estado\": \"vigente\",\r\n      \"Amount\": 1355\r\n    },\r\n    {\r\n      \"Id\": \"8BA6059C-5584-4CFB-81D8-08D995016207\",\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Pan\": \"1232-124-15234-11234\",\r\n      \"Pin\": \"81528\",\r\n      \"Estado\": \"no vigente\",\r\n      \"Amount\": 778987\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"Users\": [\r\n    {\r\n      \"IdUser\": 5,\r\n      \"Token\": \"A45B8C08-E8A1-4831-852C-CC6BA18379B5\",\r\n      \"Idroluser\": 1,\r\n      \"Name\": \"User Juan Pablo Neira\",\r\n      \"Password\": \"Localtest2\",\r\n      \"Tokenleasetime\": \"20-02-2024 16:26:41\",\r\n    },\r\n    {\r\n      \"IdUser\": 6,\r\n      \"Token\": \"B4BB8BBB-B8B1-B8BB-8B2B-CB6BABB3BBBB\",\r\n      \"Idroluser\": 2,\r\n      \"Name\": \"User Hilbert\",\r\n      \"Password\": \"Localtest3\",\r\n      \"Tokenleasetime\": \"20-02-2024 23:26:41\",\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,7 +136,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44344/action/ActualizarNombreUsuario/User Juan Pablo Neira/Nuevo User Juan Pablo Neira",
+					"raw": "https://localhost:44344/action/ActualizarUser",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -144,9 +144,7 @@
 					"port": "44344",
 					"path": [
 						"action",
-						"ActualizarNombreUsuario",
-						"User Juan Pablo Neira",
-						"Nuevo User Juan Pablo Neira"
+						"ActualizarUser"
 					]
 				}
 			},

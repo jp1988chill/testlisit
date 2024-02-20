@@ -12,16 +12,15 @@ namespace Prueba.Domain.Models
         //Lógica Microservicio...
         public bool ActualizarUsers(List<User> users, IRepositoryEntityFrameworkCQRS<User> userRepository){
             foreach (User user in users) {
-                /*
-                User thisUser = userRepository.GetByID(user.Iduser);
-                if ((thisUser != null) && (user.Iduser == thisUser.Iduser)) {
-                    thisUser.Idroluser = user.Idroluser;
-                    thisUser.Name = user.Name;
-                    thisUser.Password = user.Password;
-                    thisUser.Tokenleasetime = user.Tokenleasetime;
-                    userRepository.Update(thisUser);
+                User UserToBeUpdated = userRepository.GetAll().Where(id => id.Name == user.Name).FirstOrDefault();
+                if (UserToBeUpdated != null) {
+                    UserToBeUpdated.Idroluser = user.Idroluser;
+                    UserToBeUpdated.Name = user.Name;
+                    UserToBeUpdated.Password = user.Password;
+                    UserToBeUpdated.Token = user.Token;
+                    UserToBeUpdated.Tokenleasetime = user.Tokenleasetime;
+                    userRepository.Update(UserToBeUpdated);
                 }
-                */
             }
             if (userRepository.Save() > 0) {
                 return true;
