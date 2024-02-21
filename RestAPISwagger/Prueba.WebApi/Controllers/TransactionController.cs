@@ -28,8 +28,97 @@ namespace Prueba.WebApi.Controllers
             _mediator = mediator;
         }
 
+        /////////////////////////////////////////////////////////////////////////
+        /// Sólo Prueba Unitaria actual. Este código se remueve en producción.
+        /// </summary>
+        /// <returns></returns>
+        private List<User> ObtenerUsuariosPruebaUnitaria()
+        {
+            var token = (OkObjectResult)ObtenerUsers().Result;
+            return ((UserResponse)token.Value).usersNuevoTokenAsignado;
+        }
+
+        private List<User> EliminarUsuarioPruebaUnitaria(UserBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)EliminarUser(objBodyObjectRequest).Result;
+            return ((UserResponse)token.Value).usersNuevoTokenAsignado;
+        }
+
+        private List<User> CrearUsuarioPruebaUnitaria(UserBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)CrearUser(objBodyObjectRequest).Result;
+            return ((UserResponse)token.Value).usersNuevoTokenAsignado;
+        }
+
+        private List<User> CrearLoginSessionUsersPruebaUnitaria(UserBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)CrearLoginUser(objBodyObjectRequest).Result;
+            return ((LoginUsuarioResponse)token.Value).UsersNuevoTokenAsignado;
+        }
+
+        /////////////////////////////////////////////////////////////////////////
+
         /// <summary>
-        /// Crear una sesión para un User registrado por 10 minutos.
+        /// Implementa prueba unitaria con los casos de uso exigidos en el test.
+        /// 
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/EjecutarPruebaUnitaria")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado se genera desde este método, no se puede crear dependencia circular
+        [HttpGet]
+        [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> EjecutarPruebaUnitaria()
+        {
+            //Implementación de Prueba Unitaria, que automatiza en una sola llamada a un servicio expuesto,
+            //los requerimientos en Prueba técnica - backend.pdf
+            
+            //Limpieza de tabla User
+            EliminarUsuarioPruebaUnitaria(new UserBody() { Users = ObtenerUsuariosPruebaUnitaria() });
+
+            //Se crean 2 usuarios: 1 Administrador y otro normal.
+            List<User> usu = new List<User>();
+            usu.Add(new User(new Guid(), 0, "JP", "pass", "")); //extraemos luego el idUser generado para asignar roles. Será administrador
+            usu.Add(new User(new Guid(), 0, "user", "pass", "")); //extraemos luego el idUser generado para asignar roles. Será usuario normal
+            List<User> usuariosRegistrados = CrearUsuarioPruebaUnitaria(new UserBody() { Users = usu });
+
+            usuariosRegistrados = CrearLoginSessionUsersPruebaUnitaria(new UserBody() { Users = usuariosRegistrados });
+
+            //Limpieza de tabla RolUser, y generamos un rol "Usuario", y el otro "Administrador".
+
+            int o = 0;
+            //Se habilita una sesión con timeout de 10 minutos por cada uno y asignamos los roles acá.
+
+            //Luego POST, PUTS, DELETE son validados sólo para perfil administrador. El Usuario no puede utilizar los servicios.
+
+            //Se implementa lo siguiente:
+            //Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
+            //A una persona no se le puede asignar más de una vez con el mismo servicio social el mismo año.
+            //El administrador puede ver personas y los servicios asignados, le puede asignar alguna ayuda social.
+            //Una persona puede obtener sus ayudas sociales asignados por año y el último vigente.
+            //El administrador puede obtener las ayudas sociales asignadas a un usuario.
+            //El administrador puede crear nuevas ayudas sociales para las comunas o regiones. Si se crea en una región
+            //se asigna a todas las comunas de esta.
+
+            //Todo al final: Implementar logging
+
+            return Ok(new UserResponse() { HttpCode = 200, HttpMessage = "Prueba Unitaria ejecutada correctamente", MoreInformation = "", userFriendlyError = "", usersNuevoTokenAsignado = new List<User>() });
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Permite asignar roles para un User registrado
+        /// 
         /// </summary>
         /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
         /// <response code="200">Retorna OK</response>

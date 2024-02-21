@@ -83,6 +83,9 @@ País, región y comuna
 
 Todo:
 
+-habilitar sesión de lease time
+
+
 apply business logic from manual, and serve!
 
 
