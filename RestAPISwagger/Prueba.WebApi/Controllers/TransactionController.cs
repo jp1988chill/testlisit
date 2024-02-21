@@ -50,16 +50,93 @@ namespace Prueba.WebApi.Controllers
             return ((UserResponse)token.Value).usersNuevoTokenAsignado;
         }
 
+        ///////////////////////////////////////////////////////////////////////////////////
+
         private List<User> CrearLoginSessionUsersPruebaUnitaria(UserBody objBodyObjectRequest)
         {
             var token = (OkObjectResult)CrearLoginUser(objBodyObjectRequest).Result;
             return ((LoginUsuarioResponse)token.Value).UsersNuevoTokenAsignado;
         }
 
+        ///////////////////////////////////////////////////////////////////////////////////
+        private List<RolUser> ObtenerRolUsuariosPruebaUnitaria()
+        {
+            var token = (OkObjectResult)ObtenerRolesUser().Result;
+            return ((RolUserResponse) token.Value).RolUsers;
+        }
+
+        private List<RolUser> EliminarRolUsuariosPruebaUnitaria(RolUserBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)EliminarRolUser(objBodyObjectRequest).Result;
+            return ((RolUserResponse)token.Value).RolUsers;
+        }
+
+        private List<RolUser> CrearRolUsuarioPruebaUnitaria(RolUserBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)CrearRolUser(objBodyObjectRequest).Result;
+            return ((RolUserResponse)token.Value).RolUsers;
+        }
+        /////////////////////////////////////////////////////////////////////////
+        private List<Pais> ObtenerPaisesPruebaUnitaria()
+        {
+            var token = (OkObjectResult)ObtenerPaises().Result;
+            return ((PaisResponse)token.Value).Paises;
+        }
+
+        private List<Pais> EliminarPaisPruebaUnitaria(PaisBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)EliminarPais(objBodyObjectRequest).Result;
+            return ((PaisResponse)token.Value).Paises;
+        }
+
+        private List<Pais> CrearPaisPruebaUnitaria(PaisBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)CrearPais(objBodyObjectRequest).Result;
+            return ((PaisResponse)token.Value).Paises;
+        }
         /////////////////////////////////////////////////////////////////////////
 
+        private List<Region_> ObtenerRegionesPruebaUnitaria()
+        {
+            var token = (OkObjectResult)ObtenerRegiones().Result;
+            return ((RegionResponse)token.Value).Regiones;
+        }
+
+        private List<Region_> EliminarRegionPruebaUnitaria(RegionBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)EliminarRegion(objBodyObjectRequest).Result;
+            return ((RegionResponse)token.Value).Regiones;
+        }
+
+        private List<Region_> CrearRegionPruebaUnitaria(RegionBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)CrearRegion(objBodyObjectRequest).Result;
+            return ((RegionResponse)token.Value).Regiones;
+        }
+        /////////////////////////////////////////////////////////////////////////
+
+        private List<Comuna> ObtenerComunasPruebaUnitaria()
+        {
+            var token = (OkObjectResult)ObtenerComunas().Result;
+            return ((ComunaResponse)token.Value).Comunas;
+        }
+
+        private List<Comuna> EliminarComunaPruebaUnitaria(ComunaBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)EliminarComuna(objBodyObjectRequest).Result;
+            return ((ComunaResponse)token.Value).Comunas;
+        }
+
+        private List<Comuna> CrearComunaPruebaUnitaria(ComunaBody objBodyObjectRequest)
+        {
+            var token = (OkObjectResult)CrearComuna(objBodyObjectRequest).Result;
+            return ((ComunaResponse)token.Value).Comunas;
+        }
+        /////////////////////////////////////////////////////////////////////////
+
+
         /// <summary>
-        /// Implementa prueba unitaria con los casos de uso exigidos en el test.
+        /// Implementación de Prueba Unitaria, que automatiza en una sola llamada a un servicio expuesto, los requerimientos en Prueba técnica - backend.pdf
         /// 
         /// </summary>
         /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
@@ -79,24 +156,58 @@ namespace Prueba.WebApi.Controllers
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> EjecutarPruebaUnitaria()
         {
-            //Implementación de Prueba Unitaria, que automatiza en una sola llamada a un servicio expuesto,
-            //los requerimientos en Prueba técnica - backend.pdf
-            
-            //Limpieza de tabla User
+            //Limpieza de tabla User, Generamos 2 usuarios + Login de 10 minutos de sesión para cada uno
             EliminarUsuarioPruebaUnitaria(new UserBody() { Users = ObtenerUsuariosPruebaUnitaria() });
-
-            //Se crean 2 usuarios: 1 Administrador y otro normal.
             List<User> usu = new List<User>();
-            usu.Add(new User(new Guid(), 0, "JP", "pass", "")); //extraemos luego el idUser generado para asignar roles. Será administrador
-            usu.Add(new User(new Guid(), 0, "user", "pass", "")); //extraemos luego el idUser generado para asignar roles. Será usuario normal
+            usu.Add(new User(new Guid(), 0, "JP", "pass", "")); //Será Usuario normal
+            usu.Add(new User(new Guid(), 0, "Catalina", "pass", "")); //Será Administrador 
             List<User> usuariosRegistrados = CrearUsuarioPruebaUnitaria(new UserBody() { Users = usu });
-
             usuariosRegistrados = CrearLoginSessionUsersPruebaUnitaria(new UserBody() { Users = usuariosRegistrados });
 
-            //Limpieza de tabla RolUser, y generamos un rol "Usuario", y el otro "Administrador".
+            //Limpieza, Generamos un rol "Usuario", y el otro "Administrador"
+            EliminarRolUsuariosPruebaUnitaria(new RolUserBody() { RolUsers = ObtenerRolUsuariosPruebaUnitaria() });
+            List<RolUser> rolUsu = new List<RolUser>();
+            rolUsu.Add(new RolUser("Usuario"));
+            rolUsu.Add(new RolUser("Administrador"));
+            List<RolUser> rolUsuariosRegistrados = CrearRolUsuarioPruebaUnitaria(new RolUserBody() { RolUsers = rolUsu });
+
+            //"Catalina" es "Administrador" && "JP" is "Usuario" normal
+            usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Administrador").ToList().FirstOrDefault().Idroluser;
+            usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Usuario").ToList().FirstOrDefault().Idroluser;
+
+            //Limpieza, Generamos 1 País con 2 Regiones, a su vez con 2 Comunas. 
+            //Los ids son relacionales de manera dinámica. Por ende, se crean primero las Comunas, luego Regiones y finalmente Pais. Luego se arma la tupla completa en OOP.  
+            //Nota: Estos servicios sólo pueden ser creados por un Administrador!
+            EliminarComunaPruebaUnitaria(new ComunaBody() { Comunas = ObtenerComunasPruebaUnitaria() });
+            EliminarRegionPruebaUnitaria(new RegionBody() { Regiones = ObtenerRegionesPruebaUnitaria() });
+            EliminarPaisPruebaUnitaria(new  PaisBody() { Paises = ObtenerPaisesPruebaUnitaria() });
+
+            List<int> comunasIdComunaAntof = new List<int>();
+            List<Comuna> comAntof = new List<Comuna>();
+            comAntof.Add(new Comuna() { IdComuna = 0, Nombre = "Calama" });     
+            comAntof.Add(new Comuna() { IdComuna = 0, Nombre = "Tocopilla" });
+            comAntof = CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comAntof });
+            foreach(Comuna comuna in comAntof){ comunasIdComunaAntof.Add(comuna.IdComuna); }
+
+            List<int> comunasIdComunaValpo = new List<int>();
+            List<Comuna> comValpo = new List<Comuna>();
+            comValpo.Add(new Comuna() { IdComuna = 0, Nombre = "Casablanca" });
+            comValpo.Add(new Comuna() { IdComuna = 0, Nombre = "Concón" });
+            comValpo = CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comValpo });
+            foreach (Comuna comuna in comValpo) { comunasIdComunaValpo.Add(comuna.IdComuna); }
+
+            List<int> regionesIdRegion = new List<int>();
+            List<Region_> reg = new List<Region_>();
+            reg.Add(new Region_() { Idregion = 0, Idcomuna = comunasIdComunaAntof, Nombre = "Antofagasta" } );
+            reg.Add(new Region_() { Idregion = 0, Idcomuna = comunasIdComunaValpo, Nombre = "Valparaiso" });
+            reg = CrearRegionPruebaUnitaria(new RegionBody() { Regiones = reg });
+            foreach (Region_ region in reg) { regionesIdRegion.Add(region.Idregion); }
+
+            List<Pais> pais = new List<Pais>();
+            pais.Add(new Pais() { Idpais = 0, Idregion = regionesIdRegion, Nombre = "Chile" });
+            pais = CrearPaisPruebaUnitaria(new PaisBody() { Paises = pais });
 
             int o = 0;
-            //Se habilita una sesión con timeout de 10 minutos por cada uno y asignamos los roles acá.
 
             //Luego POST, PUTS, DELETE son validados sólo para perfil administrador. El Usuario no puede utilizar los servicios.
 
