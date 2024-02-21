@@ -793,6 +793,41 @@
 			"response": []
 		},
 		{
+			"name": "EliminarComuna",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Comunas\": [\r\n    {\r\n        \"Idcomuna\": 1,\r\n        \"Nombre\": \"Lonquen\"\r\n    },\r\n    {\r\n        \"Idcomuna\": 2,\r\n        \"Nombre\": \"Tacna\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/EliminarComuna",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"EliminarComuna"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "EliminarPais",
 			"protocolProfileBehavior": {
 				"strictSSL": false
