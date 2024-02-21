@@ -536,6 +536,53 @@
 			"response": []
 		},
 		{
+			"name": "ActualizarComuna",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "44841339-2F11-49BE-1B75-08D995B6EE62",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Comunas\": [\r\n    {\r\n        \"Idcomuna\": 1,\r\n        \"Nombre\": \"Lonquen\"\r\n    },\r\n    {\r\n        \"Idcomuna\": 2,\r\n        \"Nombre\": \"Tacna\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/ActualizarComuna",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"ActualizarComuna"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CrearLoginUser",
 			"protocolProfileBehavior": {
 				"strictSSL": false
