@@ -40,6 +40,8 @@ namespace Prueba.Repository
         public DbSet<Pais> Paises { get; set; }
         public DbSet<Region_> Regiones { get; set; }
         public DbSet<Comuna> Comunas { get; set; }
+        public DbSet<ServicioSocial> Serviciosocial { get; set; }
+
 
     }
 }

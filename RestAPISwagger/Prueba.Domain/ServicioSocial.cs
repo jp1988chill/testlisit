@@ -9,18 +9,22 @@ namespace Prueba.Domain
 {
     public class ServicioSocial
     {
-        public ServicioSocial(int _IdComuna, int _IdUser, string _NombreServicioSocial)
+        public ServicioSocial()
         {
-            this.IdComuna = _IdComuna;
-            this.IdUser = _IdUser;
-            this.NombreServicioSocial = _NombreServicioSocial;
+
+        }
+        public ServicioSocial(int idcomuna, int iduser, string nombreserviciosocial)
+        {
+            this.Idcomuna = idcomuna;
+            this.Iduser = iduser;
+            this.Nombreserviciosocial = nombreserviciosocial;
         }
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity), Key()]
-        public int IdServicioSocial { get; set; } //PK: Autoinc
-        public int IdComuna { get; set; }
-        public int IdUser { get; set; }
+        public int Idserviciosocial { get; set; } //PK: Autoinc
+        public int Idcomuna { get; set; }
+        public int Iduser { get; set; }
 
-        public string NombreServicioSocial { get; set; }
+        public string Nombreserviciosocial { get; set; }
     }
 
     public class ServicioSocialResponse
@@ -29,7 +33,7 @@ namespace Prueba.Domain
         public string HttpMessage { get; set; }
         public string MoreInformation { get; set; }
         public string userFriendlyError { get; set; }
-        public ServicioSocial servicioSocial { get; set; } //return same object if operation success, or NULL if operation failed
+        public List<ServicioSocial> ServiciosSociales { get; set; } //return same object if operation success, or NULL if operation failed
 
         public override string ToString()
         {
@@ -39,7 +43,7 @@ namespace Prueba.Domain
 
     public class ServicioSocialBody
     {
-        public ServicioSocial servicioSocial { get; set; } //JSON format object
+        public List<ServicioSocial> ServiciosSociales { get; set; } //JSON format object
 
         public override string ToString()
         {

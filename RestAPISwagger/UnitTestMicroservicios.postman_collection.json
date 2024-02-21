@@ -653,6 +653,41 @@
 			"response": []
 		},
 		{
+			"name": "CrearServicioSocial",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Serviciossociales\": [\r\n    {\r\n      \"Idcomuna\": 120,\r\n      \"Iduser\": 115,\r\n      \"Nombreserviciosocial\": \"Servicio Social prueba\"\r\n    },\r\n    {\r\n      \"Idcomuna\": 1520,\r\n      \"Iduser\": 1215,\r\n      \"Nombreserviciosocial\": \"Servicio Social 2\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/CrearServicioSocial",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"CrearServicioSocial"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CrearComuna",
 			"protocolProfileBehavior": {
 				"strictSSL": false

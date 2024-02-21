@@ -536,5 +536,31 @@ namespace Prueba.WebApi.Controllers
             var handlerResponse = await _mediator.Send(new EliminarComunaCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
+
+        ///////////////////////////////////////////////// CRUD Implementation ServicioSocial /////////////////////////////////////////////////
+
+        /// <summary>
+        /// Crear un Servicio Social por comuna vinculado al usuario.
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/CrearServicioSocial")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
+        [HttpPut]
+        [ProducesResponseType(typeof(ServicioSocialResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> CrearServicioSocial([FromBody] ServicioSocialBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new CrearServicioSocialCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
     }
 }
