@@ -10,7 +10,7 @@ namespace Prueba.Domain.Models
     public class CrearRegionModel
     {
         //Lógica Microservicio...
-        public bool CrearRegiones(List<Region> regiones, IRepositoryEntityFrameworkCQRS<Region> regionRepository){
+        public bool CrearRegiones(List<Region_> regiones, IRepositoryEntityFrameworkCQRS<Region_> regionRepository){
 
             //Generamos nuevo PK para cada user automáticamente
             regionRepository.InsertMany(regiones);
@@ -19,7 +19,7 @@ namespace Prueba.Domain.Models
             }
             return false;
         }
-        public async Task<RegionResponse> CrearRegion(RegionBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<Region> userRepository)
+        public async Task<RegionResponse> CrearRegion(RegionBody objBodyObjectRequest, IRepositoryEntityFrameworkCQRS<Region_> userRepository)
         {
             int httpCod = 200;
             string httpMsg = "Registros Procesados Correctamente";

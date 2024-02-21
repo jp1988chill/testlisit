@@ -33,4 +33,27 @@ namespace Prueba.Application.Handlers
             return middleWareHandlerResponse;
         }
     }
+
+    public class ObtenerPaisesCommandHandler : IRequestHandler<ObtenerPaisesCommand, PaisResponse>
+    {
+        private IRepositoryEntityFrameworkCQRS<Pais> paisRepository = null;
+        public ObtenerPaisesCommandHandler(PruebaContext pruebaContext)
+        {
+            paisRepository = new RepositoryEntityFrameworkCQRS<Pais>(pruebaContext);
+
+            //Mapear y crear BD desde Modelo EF Core a base de datos real, si no existe. (Requerido por EF Core)
+            // Drop the database if it exists
+            //pruebaContext.Database.EnsureDeleted();
+
+            // Create the database if it doesn't exist
+            pruebaContext.Database.EnsureCreated();
+        }
+
+        public async Task<PaisResponse> Handle(ObtenerPaisesCommand request, CancellationToken cancellationToken)
+        {
+            var middleWareHandler = new ObtenerPaisModel();
+            var middleWareHandlerResponse = (await middleWareHandler.ObtenerPaisesCollection(paisRepository));
+            return middleWareHandlerResponse;
+        }
+    }
 }

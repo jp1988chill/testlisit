@@ -17,4 +17,13 @@ namespace Prueba.Application.Commands
             return JsonConvert.SerializeObject(this);
         }
     }
+
+    public class ObtenerPaisesCommand : IRequest<PaisResponse>
+    {
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
 }

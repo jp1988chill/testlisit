@@ -17,4 +17,13 @@ namespace Prueba.Application.Commands
             return JsonConvert.SerializeObject(this);
         }
     }
+
+    public class ObtenerUsersCommand : IRequest<UserResponse>
+    {
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
 }

@@ -23,7 +23,7 @@ namespace Prueba.Repository
                      v => JsonConvert.DeserializeObject<List<int>>(v));
 
             //EF Core <-> Database mapper for Region's entity: List<int> Idcomuna;
-            modelBuilder.Entity<Region>()
+            modelBuilder.Entity<Region_>()
             .Property(p => p.Idcomuna)
             .HasConversion(v => JsonConvert.SerializeObject(v),
                      v => JsonConvert.DeserializeObject<List<int>>(v));
@@ -38,7 +38,7 @@ namespace Prueba.Repository
         // Entities mapped to EF Core will then be used along CQRS methods (RepositoryEntityFrameworkCQRS.cs)
         public DbSet<User> Users { get; set; }
         public DbSet<Pais> Paises { get; set; }
-        public DbSet<Region> Region { get; set; }
+        public DbSet<Region_> Region { get; set; }
 
     }
 }

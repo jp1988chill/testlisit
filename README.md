@@ -84,7 +84,7 @@ País, región y comuna
 Todo:
 
 Make CRUD services for entities:
--Region (so far implemented: CrearRegion, )
+-Region (so far implemented: CrearRegion, ObtenerRegiones, ObtenerRegion)
 -Comuna
 -ServicioSocial
 -RolUser

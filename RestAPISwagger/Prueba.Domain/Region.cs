@@ -7,13 +7,13 @@ using System.Text;
 
 namespace Prueba.Domain
 {
-    public class Region
+    public class Region_
     {
-        public Region()
+        public Region_()
         {
 
         }
-        public Region(string nombre, List<int> comunas)
+        public Region_(string nombre, List<int> comunas)
         {
             this.Nombre = nombre;
             this.Idcomuna = comunas;
@@ -31,7 +31,7 @@ namespace Prueba.Domain
         public string HttpMessage { get; set; }
         public string MoreInformation { get; set; }
         public string userFriendlyError { get; set; }
-        public List<Region> Regiones { get; set; } //return same object if operation success, or NULL if operation failed
+        public List<Region_> Regiones { get; set; } //return same object if operation success, or NULL if operation failed
 
         public override string ToString()
         {
@@ -41,7 +41,7 @@ namespace Prueba.Domain
 
     public class RegionBody
     {
-        public List<Region> Regiones { get; set; } //JSON format object
+        public List<Region_> Regiones { get; set; } //JSON format object
 
         public override string ToString()
         {

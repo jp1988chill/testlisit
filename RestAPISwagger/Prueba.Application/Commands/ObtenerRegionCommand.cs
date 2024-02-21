@@ -8,7 +8,17 @@ using System.Text;
 
 namespace Prueba.Application.Commands
 {
-    public class ObtenerPaisesCommand : IRequest<PaisResponse>
+    public class ObtenerRegionCommand : IRequest<RegionResponse>
+    {
+        public string Idregion { get; set; }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
+
+    public class ObtenerRegionesCommand : IRequest<RegionResponse>
     {
 
         public override string ToString()
