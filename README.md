@@ -83,8 +83,8 @@ País, región y comuna
 
 Todo:
 
-Make CRUD services for entities:
--RolUser (so far: CrearRolUser, ObtenerRolesUser, ObtenerRolUser, ActualizarRolUser
+apply business logic from manual, and serve!
+
 
 misc services required:
 -CrearLoginUsuarioModel OK

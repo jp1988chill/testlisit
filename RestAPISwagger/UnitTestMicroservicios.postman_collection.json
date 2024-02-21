@@ -1151,6 +1151,41 @@
 			"response": []
 		},
 		{
+			"name": "EliminarRolUser",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Rolusers\": [\r\n    {\r\n        \"Idroluser\": 1,\r\n        \"Nombreroluser\": \"Administrador2\"\r\n    },\r\n    {\r\n        \"Idroluser\": 2,\r\n        \"Nombreroluser\": \"Usuario2\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/EliminarRolUser",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"EliminarRolUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "EliminarServicioSocial",
 			"protocolProfileBehavior": {
 				"strictSSL": false
