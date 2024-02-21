@@ -539,6 +539,53 @@
 			"response": []
 		},
 		{
+			"name": "ActualizarServicioSocial",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "44841339-2F11-49BE-1B75-08D995B6EE62",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Serviciossociales\": [\r\n    {\r\n      \"Idserviciosocial\": 1,\r\n      \"Idcomuna\": 8881,\r\n      \"Iduser\": 8883,\r\n      \"Nombreserviciosocial\": \"Servicio Social modif1\"\r\n    },\r\n    {\r\n      \"Idserviciosocial\": 2,\r\n      \"Idcomuna\": 9992,\r\n      \"Iduser\": 9991,\r\n      \"Nombreserviciosocial\": \"Servicio Social modif2\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/ActualizarServicioSocial",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"ActualizarServicioSocial"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "ActualizarPais",
 			"protocolProfileBehavior": {
 				"strictSSL": false

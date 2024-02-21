@@ -587,7 +587,7 @@ namespace Prueba.WebApi.Controllers
         }
 
         /// <summary>
-        /// Obtiene User(s) registrados por iduser.
+        /// Obtiene registro de Servicio Social por idserviciosocial.
         /// </summary>
         /// <param name="idserviciosocial">Idserviciosocial a consultar. Si el registro existe, retornará la Entidad Comuna con los valores pertinentes en el response. </param>
         /// <response code="200">Retorna OK</response>
@@ -609,6 +609,29 @@ namespace Prueba.WebApi.Controllers
             var handlerResponse = await _mediator.Send(new ObtenerServicioSocialCommand() { Idserviciosocial = idserviciosocial }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
-        
+
+        /// <summary>
+        /// Actualiza Servicio(s) Social(es) registrado(s) mediante Idserviciosocial(s) por nuevos valores incluídos en Body JSON.
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/ActualizarServicioSocial")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //todo: re-enable when Administrator role is available so only Administrator can use this, and User is rejected
+        [HttpPost]
+        [ProducesResponseType(typeof(ServicioSocialResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> ActualizarServicioSocial([FromBody] ServicioSocialBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new ActualizarServicioSocialCommand() { ServiciosSociales = objBodyObjectRequest }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
     }
 }
