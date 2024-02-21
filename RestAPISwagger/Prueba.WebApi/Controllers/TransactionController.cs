@@ -128,7 +128,6 @@ namespace Prueba.WebApi.Controllers
         /// Actualiza cada User(s) registrado(s) por _IdUser(s) por nuevos valores incluídos en Body JSON.
         /// </summary>
         /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
-        /// <param name="nombreUsuarioOriginal">Nombre de TarjetaHabiente original asociado a una lista de Tarjetas.</param>
         /// <response code="200">Retorna OK</response>
         /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
         /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
@@ -176,7 +175,7 @@ namespace Prueba.WebApi.Controllers
         ///////////////////////////////////////////////// CRUD Implementation Pais /////////////////////////////////////////////////
 
         /// <summary>
-        /// Crear un usuario.
+        /// Crear un Pais.
         /// </summary>
         /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
         /// <response code="200">Retorna OK</response>
@@ -200,7 +199,7 @@ namespace Prueba.WebApi.Controllers
         }
 
         /// <summary>
-        /// Obtiene todos los User(s) registrados.
+        /// Obtiene todos los Pais(es) registrados.
         /// </summary>
         /// <response code="200">Retorna OK</response>
         /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
@@ -223,7 +222,7 @@ namespace Prueba.WebApi.Controllers
         }
 
         /// <summary>
-        /// Obtiene User(s) registrados por _IdUser.
+        /// Obtiene Pais(es) registrados por Idpais.
         /// </summary>
         /// <param name="idpais">idpais a consultar. Si el registro existe, retornará la Entidad Pais con los valores pertinentes en el response. </param>
         /// <response code="200">Retorna OK</response>
@@ -243,6 +242,30 @@ namespace Prueba.WebApi.Controllers
         public async Task<IActionResult> ObtenerPais([FromRoute] string idpais)
         {
             var handlerResponse = await _mediator.Send(new ObtenerPaisCommand() { IdPais = idpais }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
+        /// <summary>
+        /// Actualiza cada Pais(s) registrado(s) por IdPais(s) por nuevos valores incluídos en Body JSON.
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/ActualizarPais")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //todo: re-enable when Administrator role is available so only Administrator can use this, and User is rejected
+        [HttpPost]
+        [ProducesResponseType(typeof(PaisResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> ActualizarPais([FromBody] PaisBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new ActualizarPaisCommand() { Paises = objBodyObjectRequest }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
     }

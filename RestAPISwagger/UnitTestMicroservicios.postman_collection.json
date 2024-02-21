@@ -248,6 +248,53 @@
 			"response": []
 		},
 		{
+			"name": "ActualizarPais",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "44841339-2F11-49BE-1B75-08D995B6EE62",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Paises\": [\r\n    {\r\n      \"Idpais\": 1,\r\n      \"Nombre\": \"Chile2\",\r\n      \"IdRegion\": [\r\n        26,27,28,29\r\n      ]\r\n    },\r\n    {\r\n      \"Idpais\": 2,\r\n      \"Nombre\": \"Argentina\",\r\n      \"IdRegion\": [\r\n        46,47,48,49\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/ActualizarPais",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"ActualizarPais"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CrearLoginUser",
 			"protocolProfileBehavior": {
 				"strictSSL": false
