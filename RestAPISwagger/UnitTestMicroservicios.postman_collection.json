@@ -647,6 +647,41 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "EliminarRegion",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Regiones\": [\r\n    {\r\n       \"Idregion\": 1,\r\n       \"Nombre\": \"O'Higgins\",\r\n       \"IdComuna\": [\r\n        0,1,2,3\r\n      ]\r\n    },\r\n    {\r\n      \"Idregion\": 2,\r\n       \"Nombre\": \"Antofagasta\",\r\n       \"IdComuna\": [\r\n        10,11,12,13\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/EliminarRegion",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"EliminarRegion"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
