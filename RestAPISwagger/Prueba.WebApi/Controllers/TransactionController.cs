@@ -686,5 +686,53 @@ namespace Prueba.WebApi.Controllers
             return Ok(handlerResponse);
         }
 
+        /// <summary>
+        /// Obtiene todos los rol(es) de User(s) registrados en el sistema.
+        /// </summary>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/ObtenerRolesUser")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        [HttpGet]
+        [ProducesResponseType(typeof(RolUserResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> ObtenerRolesUser()
+        {
+            var handlerResponse = await _mediator.Send(new ObtenerRolUsersCommand() { }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
+
+        /// <summary>
+        /// Obtiene registro de RolUser por idroluser.
+        /// </summary>
+        /// <param name="idroluser">idroluser a consultar. Si el registro existe, retornará la Entidad RolUser con los valores pertinentes en el response. </param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/ObtenerRolUser/{idroluser}")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        [HttpGet]
+        [ProducesResponseType(typeof(ServicioSocialResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> ObtenerRolUser([FromRoute] string idroluser)
+        {
+            var handlerResponse = await _mediator.Send(new ObtenerRolUserCommand() { IdRolUser = idroluser }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+        
     }
 }

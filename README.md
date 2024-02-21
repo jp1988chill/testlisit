@@ -84,7 +84,7 @@ País, región y comuna
 Todo:
 
 Make CRUD services for entities:
--RolUser (so far: CrearRolUser
+-RolUser (so far: CrearRolUser, ObtenerRolesUser, ObtenerRolUser
 
 misc services required:
 -CrearLoginUsuarioModel OK
