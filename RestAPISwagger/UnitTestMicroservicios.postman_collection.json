@@ -103,6 +103,54 @@
 			"response": []
 		},
 		{
+			"name": "ObtenerServiciosSociales",
+			"protocolProfileBehavior": {
+				"strictSSL": false,
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "577168ec-01dc-434a-eb59-08d9b54bf863",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/ObtenerServiciosSociales",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"ObtenerServiciosSociales"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "ObtenerPaises",
 			"protocolProfileBehavior": {
 				"strictSSL": false,
@@ -242,6 +290,55 @@
 						"action",
 						"ObtenerUser",
 						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ObtenerServicioSocial",
+			"protocolProfileBehavior": {
+				"strictSSL": false,
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "577168ec-01dc-434a-eb59-08d9b54bf863",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/ObtenerServicioSocial/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"ObtenerServicioSocial",
+						"2"
 					]
 				}
 			},

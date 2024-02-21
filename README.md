@@ -84,7 +84,7 @@ País, región y comuna
 Todo:
 
 Make CRUD services for entities:
--ServicioSocial (so far implemented: CrearServicioSocial,
+-ServicioSocial (so far implemented: CrearServicioSocial, CrearServiciosSociales, CrearServicioSocial
 -RolUser
 
 misc services required:
