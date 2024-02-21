@@ -972,6 +972,41 @@
 			"response": []
 		},
 		{
+			"name": "EliminarServicioSocial",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Serviciossociales\": [\r\n    {\r\n      \"Idserviciosocial\": 1,\r\n      \"Idcomuna\": 8811,\r\n      \"Iduser\": 88332,\r\n      \"Nombreserviciosocial\": \"Servicio modif1 again\"\r\n    },\r\n    {\r\n      \"Idserviciosocial\": 2,\r\n      \"Idcomuna\": 4992,\r\n      \"Iduser\": 9991,\r\n      \"Nombreserviciosocial\": \"Servicio modif again2\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/EliminarServicioSocial",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"EliminarServicioSocial"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "EliminarComuna",
 			"protocolProfileBehavior": {
 				"strictSSL": false
