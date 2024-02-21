@@ -356,7 +356,7 @@ namespace Prueba.WebApi.Controllers
         [Route("/action/ObtenerRegion/{Idregion}")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
         [HttpGet]
-        [ProducesResponseType(typeof(PaisResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(RegionResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
@@ -364,6 +364,30 @@ namespace Prueba.WebApi.Controllers
         public async Task<IActionResult> ObtenerRegion([FromRoute] string idregion)
         {
             var handlerResponse = await _mediator.Send(new ObtenerRegionCommand() { Idregion = idregion }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
+        /// <summary>
+        /// Actualiza cada Region(es) registrado(s) por Idregion(s) por nuevos valores incluídos en Body JSON.
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores Client Secret y Client Id son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/ActualizarRegion")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //todo: re-enable when Administrator role is available so only Administrator can use this, and User is rejected
+        [HttpPost]
+        [ProducesResponseType(typeof(RegionResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> ActualizarRegion([FromBody] RegionBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new ActualizarRegionCommand() { Regiones = objBodyObjectRequest }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
     }
