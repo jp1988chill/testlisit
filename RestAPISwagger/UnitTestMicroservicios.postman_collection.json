@@ -797,6 +797,41 @@
 			"response": []
 		},
 		{
+			"name": "CrearRolUser",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Rolusers\": [\r\n    {\r\n      \"Nombreroluser\": \"Administrador\"\r\n    },\r\n    {\r\n      \"Nombreroluser\": \"Usuario\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/CrearRolUser",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"CrearRolUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CrearServicioSocial",
 			"protocolProfileBehavior": {
 				"strictSSL": false

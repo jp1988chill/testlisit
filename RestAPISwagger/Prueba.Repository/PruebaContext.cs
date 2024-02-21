@@ -41,7 +41,7 @@ namespace Prueba.Repository
         public DbSet<Region_> Regiones { get; set; }
         public DbSet<Comuna> Comunas { get; set; }
         public DbSet<ServicioSocial> Serviciosocial { get; set; }
-
+        public DbSet<RolUser> RolUsers { get; set; }
 
     }
 }

@@ -9,13 +9,17 @@ namespace Prueba.Domain
 {
     public class RolUser
     {
-        public RolUser(string _NombreRolUser)
+        public RolUser()
         {
-            this.NombreRolUser = _NombreRolUser;
+
+        }
+        public RolUser(string nombreroluser)
+        {
+            this.Nombreroluser = nombreroluser;
         }
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity), Key()]
-        public int IdRolUser { get; set; } //PK: Autoinc
-        public string NombreRolUser { get; set; }
+        public int Idroluser { get; set; } //PK: Autoinc
+        public string Nombreroluser { get; set; }
     }
 
     public class RolUserResponse
@@ -24,7 +28,7 @@ namespace Prueba.Domain
         public string HttpMessage { get; set; }
         public string MoreInformation { get; set; }
         public string userFriendlyError { get; set; }
-        public List<RolUser> RolUsersAsignados { get; set; }
+        public List<RolUser> RolUsers { get; set; } //return same object if operation success, or NULL if operation failed
 
         public override string ToString()
         {
@@ -34,7 +38,7 @@ namespace Prueba.Domain
 
     public class RolUserBody
     {
-        public List<RolUser> RolUsers { get; set; }
+        public List<RolUser> RolUsers { get; set; } //JSON format object
 
         public override string ToString()
         {

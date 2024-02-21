@@ -657,5 +657,34 @@ namespace Prueba.WebApi.Controllers
             var handlerResponse = await _mediator.Send(new EliminarServicioSocialCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
             return Ok(handlerResponse);
         }
+
+
+
+        ///////////////////////////////////////////////// CRUD Implementation RolUser /////////////////////////////////////////////////
+
+        /// <summary>
+        /// Crear rol(es) para User(s).
+        /// </summary>
+        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
+        /// <response code="200">Retorna OK</response>
+        /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
+        /// <response code="401">En el caso que los valores son inválidos</response>
+        /// <response code="404">Un recurso no fue encontrado, típicamente por uso de una url indebida</response>
+        /// <response code="500">Ocurrió un error interno en el servidor</response>
+        /// <returns></returns>
+        [Route("/action/CrearRolUser")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
+        [HttpPut]
+        [ProducesResponseType(typeof(RolUserResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> CrearRolUser([FromBody] RolUserBody objBodyObjectRequest)
+        {
+            var handlerResponse = await _mediator.Send(new CrearRolUserCommand() { objBodyObjectRequest = objBodyObjectRequest }).ConfigureAwait(false);
+            return Ok(handlerResponse);
+        }
+
     }
 }
