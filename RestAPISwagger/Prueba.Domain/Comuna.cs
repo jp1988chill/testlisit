@@ -9,9 +9,13 @@ namespace Prueba.Domain
 {
     public class Comuna
     {
-        public Comuna(string _Nombre)
+        public Comuna()
         {
-            this.Nombre = _Nombre;
+
+        }
+        public Comuna(string nombre)
+        {
+            this.Nombre = nombre;
 
         }
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity), Key()]
@@ -25,7 +29,7 @@ namespace Prueba.Domain
         public string HttpMessage { get; set; }
         public string MoreInformation { get; set; }
         public string userFriendlyError { get; set; }
-        public Comuna comuna { get; set; } //return same object if operation success, or NULL if operation failed
+        public List<Comuna> Comunas { get; set; } //return same object if operation success, or NULL if operation failed
 
         public override string ToString()
         {
@@ -35,7 +39,7 @@ namespace Prueba.Domain
 
     public class ComunaBody
     {
-        public Comuna comuna { get; set; } //JSON format object
+        public List<Comuna> Comunas { get; set; } //JSON format object
 
         public override string ToString()
         {

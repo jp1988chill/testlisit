@@ -38,7 +38,8 @@ namespace Prueba.Repository
         // Entities mapped to EF Core will then be used along CQRS methods (RepositoryEntityFrameworkCQRS.cs)
         public DbSet<User> Users { get; set; }
         public DbSet<Pais> Paises { get; set; }
-        public DbSet<Region_> Region { get; set; }
+        public DbSet<Region_> Regiones { get; set; }
+        public DbSet<Comuna> Comunas { get; set; }
 
     }
 }

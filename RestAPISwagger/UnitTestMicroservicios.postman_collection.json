@@ -509,6 +509,41 @@
 			"response": []
 		},
 		{
+			"name": "CrearComuna",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Comunas\": [\r\n    {\r\n      \"Nombre\": \"Lota\"\r\n    },\r\n    {\r\n      \"Nombre\": \"Quintero\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/CrearComuna",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"CrearComuna"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CrearPais",
 			"protocolProfileBehavior": {
 				"strictSSL": false
