@@ -9,15 +9,20 @@ namespace Prueba.Domain
 {
     public class Region
     {
-        public Region(string _Nombre, List<int> _Comunas)
+        public Region()
         {
-            this.Nombre = _Nombre;
-            this.IdComuna = _Comunas;
+
+        }
+        public Region(string nombre, List<int> comunas)
+        {
+            this.Nombre = nombre;
+            this.Idcomuna = comunas;
         }
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity), Key()]
-        public int IdRegion { get; set; } //PK: Autoinc
+        public int Idregion { get; set; } //PK: Autoinc
         public string Nombre { get; set; }
-        public List<int> IdComuna { get; set; } // 1 Region : N Comunas
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public List<int> Idcomuna { get; set; } // 1 Region : N Comunas
     }
 
     public class RegionResponse
@@ -26,7 +31,7 @@ namespace Prueba.Domain
         public string HttpMessage { get; set; }
         public string MoreInformation { get; set; }
         public string userFriendlyError { get; set; }
-        public Region region { get; set; } //return same object if operation success, or NULL if operation failed
+        public List<Region> Regiones { get; set; } //return same object if operation success, or NULL if operation failed
 
         public override string ToString()
         {
@@ -36,7 +41,7 @@ namespace Prueba.Domain
 
     public class RegionBody
     {
-        public Region region { get; set; } //JSON format object
+        public List<Region> Regiones { get; set; } //JSON format object
 
         public override string ToString()
         {

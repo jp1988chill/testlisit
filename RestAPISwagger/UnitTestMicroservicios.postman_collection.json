@@ -400,6 +400,41 @@
 			"response": []
 		},
 		{
+			"name": "CrearRegion",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Regiones\": [\r\n    {\r\n       \"Idregion\": 0,\r\n       \"Nombre\": \"Tarapaca\",\r\n       \"IdComuna\": [\r\n        0,1,2,3\r\n      ]\r\n    },\r\n    {\r\n      \"Idregion\": 0,\r\n       \"Nombre\": \"Los Lagos\",\r\n       \"IdComuna\": [\r\n        10,11,12,13\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/CrearRegion",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"CrearRegion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "EliminarUser",
 			"protocolProfileBehavior": {
 				"strictSSL": false
