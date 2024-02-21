@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "aa1c814b-36bc-4337-b413-9c03ce9aeb17",
+		"_postman_id": "8aa870e7-01a9-49dc-bd62-3ce0436ad20c",
 		"name": "UnitTestMicroservicios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33064080"
@@ -429,6 +429,41 @@
 					"path": [
 						"action",
 						"EliminarUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EliminarPais",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Paises\": [\r\n    {\r\n      \"Idpais\": 1,\r\n      \"Nombre\": \"Chile2\",\r\n      \"IdRegion\": [\r\n        26,27,28,29\r\n      ]\r\n    },\r\n    {\r\n      \"Idpais\": 2,\r\n      \"Nombre\": \"Argentina\",\r\n      \"IdRegion\": [\r\n        46,47,48,49\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44344/action/EliminarPais",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44344",
+					"path": [
+						"action",
+						"EliminarPais"
 					]
 				}
 			},
