@@ -476,14 +476,6 @@ namespace Prueba.Domain
             return lst;
         }
 
-        //Todo: ahora
-
-        //Lógica: Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
-        //A una persona no se le puede asignar más de una vez con el mismo servicio social el mismo año.
-
-        //crear método AsignacionServicioSocialExiste(IdComuna, IdUsuario, Año) == true/false. Se implementa en Create / Update de ServicioSocial.
-        //Si es true, no se puede registrar, si es false, se registra.
-
         public List<ServicioSocial> CrearServicioSocialPruebaUnitaria(ServicioSocialBody objBodyObjectRequest)
         {
             var lst = new List<ServicioSocial>();

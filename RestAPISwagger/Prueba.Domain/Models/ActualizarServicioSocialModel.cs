@@ -12,9 +12,12 @@ namespace Prueba.Domain.Models
         //Lógica Microservicio...
         public bool ActualizarServiciosSociales(List<ServicioSocial> serviciossociales, IRepositoryEntityFrameworkCQRS<ServicioSocial> servicioSocialRepository)
         {
+            ObtenerServicioSocialModel obtenerServicioSocialModel = new ObtenerServicioSocialModel();
             foreach (ServicioSocial serviciosocial in serviciossociales) {
                 ServicioSocial ServicioSocialToBeUpdated = servicioSocialRepository.GetAll().Where(id => id.Idserviciosocial == serviciosocial.Idserviciosocial).FirstOrDefault();
-                if (ServicioSocialToBeUpdated != null) {
+                
+                //La asignación de servicio social no debe existir para la persona, en el mismo año.
+                if ((ServicioSocialToBeUpdated != null) && (obtenerServicioSocialModel.AsignacionServicioSocialExiste(ServicioSocialToBeUpdated.Idcomuna.ToString(), ServicioSocialToBeUpdated.Iduser.ToString(), ServicioSocialToBeUpdated.Fecharegistro, servicioSocialRepository) == false)) {
                     ServicioSocialToBeUpdated.Idcomuna = serviciosocial.Idcomuna;
                     ServicioSocialToBeUpdated.Iduser = serviciosocial.Iduser;
                     ServicioSocialToBeUpdated.Nombreserviciosocial = serviciosocial.Nombreserviciosocial;

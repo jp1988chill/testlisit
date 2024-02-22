@@ -10,9 +10,18 @@ namespace Prueba.Domain.Models
     public class CrearServicioSocialModel
     {
         //Lógica Microservicio...
-        public bool CrearServiciosSociales(List<ServicioSocial> serviciosocial, IRepositoryEntityFrameworkCQRS<ServicioSocial> servicioSocialRepository){
-            //Generamos nuevo PK para cada user automáticamente
-            servicioSocialRepository.InsertMany(serviciosocial);
+        public bool CrearServiciosSociales(List<ServicioSocial> serviciossociales, IRepositoryEntityFrameworkCQRS<ServicioSocial> servicioSocialRepository){
+            ObtenerServicioSocialModel obtenerServicioSocialModel = new ObtenerServicioSocialModel();
+            foreach (ServicioSocial serviciosocial in serviciossociales)
+            {
+                //La asignación de servicio social no debe existir para la persona, en el mismo año.
+                if (obtenerServicioSocialModel.AsignacionServicioSocialExiste(serviciosocial.Idcomuna.ToString(), serviciosocial.Iduser.ToString(), serviciosocial.Fecharegistro, servicioSocialRepository) == false)
+                {
+                    //Generamos nuevo PK para cada user automáticamente
+                    servicioSocialRepository.Insert(serviciosocial);
+                }
+            }
+
             if (servicioSocialRepository.Save() > 0) {
                 return true;
             }

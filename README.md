@@ -102,3 +102,9 @@ DELETE FROM dbo.Regiones
 DELETE FROM dbo.RolUsers
 DELETE FROM dbo.Serviciosocial
 DELETE FROM dbo.Users
+
+-
+
+Nota: Se recomienda utilizar el servicio de pruebas unitarias para depurar el comportamiento de la plataforma, por la complejidad de los requests.
+Por ejemplo, si se quiere Actualizar un Servicio Social, se requiere tanto de un usuario Administrador, como de un Token (capa seguridad), además de la colección de Servicios Sociales,
+todo resultará complejo de depurar si se hace mediante Postman u otro cliente que consuma dicha RestAPI.

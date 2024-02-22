@@ -13,16 +13,19 @@ namespace Prueba.Domain
         {
 
         }
-        public ServicioSocial(int idcomuna, int iduser, string nombreserviciosocial)
+        public ServicioSocial(int idcomuna, int iduser, string nombreserviciosocial, string fecharegistro)
         {
             this.Idcomuna = idcomuna;
             this.Iduser = iduser;
             this.Nombreserviciosocial = nombreserviciosocial;
+            this.Fecharegistro = fecharegistro;
         }
+
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity), Key()]
         public int Idserviciosocial { get; set; } //PK: Autoinc
         public int Idcomuna { get; set; }
         public int Iduser { get; set; }
+        public string Fecharegistro { get; set; } //Formato datetime de campo: DateTime.Now.AddSeconds(60 * 10).ToString("dd-MM-yyyy HH:mm:ss");
 
         public string Nombreserviciosocial { get; set; }
     }

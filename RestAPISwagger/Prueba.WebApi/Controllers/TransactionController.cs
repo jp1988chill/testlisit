@@ -118,10 +118,14 @@ namespace Prueba.WebApi.Controllers
                 //Creación Servicio Social para Comuna de "Casablanca"
                 Comuna ComunasSeleccionada = _PruebaUnitaria.ObtenerComunasPruebaUnitaria().Find(id => id.Nombre == "Casablanca");
                 List<ServicioSocial> listadoServSoc = new List<ServicioSocial>();
-                ServicioSocial userServSoc = new ServicioSocial() { Idcomuna = ComunasSeleccionada.IdComuna, Idserviciosocial = 0, Iduser = usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Iduser, Nombreserviciosocial = "Administrador(a) Municipal de Ayuda Social sector "+ ComunasSeleccionada.Nombre };
+                ServicioSocial userServSoc = new ServicioSocial() { Idcomuna = ComunasSeleccionada.IdComuna, Idserviciosocial = 0, Iduser = usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Iduser, Nombreserviciosocial = "Administrador(a) Municipal de Ayuda Social sector "+ ComunasSeleccionada.Nombre, Fecharegistro = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") };
                 listadoServSoc.Add(userServSoc);
-                listadoServSoc = _PruebaUnitaria.CrearServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = listadoServSoc, Token = TokenActualUsuarioConectado } );
+                listadoServSoc = _PruebaUnitaria.CrearServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = listadoServSoc, Token = TokenActualUsuarioConectado } ); //Se registra ServicioSocial sin problemas, de acuerdo a lógica de negocio.
                 ServicioSocial servSocGenerado = _PruebaUnitaria.ObtenerServicioSocial(listadoServSoc.FirstOrDefault().Idserviciosocial.ToString()).FirstOrDefault();
+
+
+                listadoServSoc = _PruebaUnitaria.CrearServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = listadoServSoc, Token = TokenActualUsuarioConectado }); //Sin embargo, ahora ya existe el mismo ServicioSocial por Usuario, Comuna y año. No se le permite el registro, de acuerdo a lógica de negocio.
+
 
                 //Todo:
 
