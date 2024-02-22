@@ -114,23 +114,32 @@ namespace Prueba.WebApi.Controllers
                 pais.Add(new Pais() { Idpais = 0, Idregion = regionesIdRegion, Nombre = "Chile" });
                 pais = _PruebaUnitaria.CrearPaisPruebaUnitaria(new PaisBody() { Paises = pais, Token = TokenActualUsuarioConectado });
 
+
+                //Creación Servicio Social para Comuna de "Casablanca"
+                Comuna ComunasSeleccionada = _PruebaUnitaria.ObtenerComunasPruebaUnitaria().Find(id => id.Nombre == "Casablanca");
+                List<ServicioSocial> listadoServSoc = new List<ServicioSocial>();
+                ServicioSocial userServSoc = new ServicioSocial() { Idcomuna = ComunasSeleccionada.IdComuna, Idserviciosocial = 0, Iduser = usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Iduser, Nombreserviciosocial = "Administrador(a) Municipal de Ayuda Social sector "+ ComunasSeleccionada.Nombre };
+                listadoServSoc.Add(userServSoc);
+                listadoServSoc = _PruebaUnitaria.CrearServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = listadoServSoc, Token = TokenActualUsuarioConectado } );
+                ServicioSocial servSocGenerado = _PruebaUnitaria.ObtenerServicioSocial(listadoServSoc.FirstOrDefault().Idserviciosocial.ToString()).FirstOrDefault();
+
+                //Todo:
+
+                //El administrador puede ver personas y los servicios asignados, le puede asignar alguna ayuda social.
+                //Una persona puede obtener sus ayudas sociales asignados por año y el último vigente.
+
+                //El administrador puede crear nuevas ayudas sociales para las comunas o regiones. Si se crea en una región
+                //se asigna a todas las comunas de esta.
+
                 //Fin de pruebas, limpieza de tablas.
+                _PruebaUnitaria.EliminarServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = _PruebaUnitaria.ObtenerServiciosSociales(TokenActualUsuarioConectado), Token = TokenActualUsuarioConectado }); //primero, porque ésta tupla es relacional con las siguientes.
+                
                 _PruebaUnitaria.EliminarUsuarioPruebaUnitaria(new UserBody() { Users = _PruebaUnitaria.ObtenerUsuariosPruebaUnitaria(), Token = TokenActualUsuarioConectado });
                 _PruebaUnitaria.EliminarRolUsuariosPruebaUnitaria(new RolUserBody() { RolUsers = _PruebaUnitaria.ObtenerRolUsuariosPruebaUnitaria(), Token = TokenActualUsuarioConectado });
                 _PruebaUnitaria.EliminarComunaPruebaUnitaria(new ComunaBody() { Comunas = _PruebaUnitaria.ObtenerComunasPruebaUnitaria(), Token = TokenActualUsuarioConectado });
                 _PruebaUnitaria.EliminarRegionPruebaUnitaria(new RegionBody() { Regiones = _PruebaUnitaria.ObtenerRegionesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
                 _PruebaUnitaria.EliminarPaisPruebaUnitaria(new PaisBody() { Paises = _PruebaUnitaria.ObtenerPaisesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
-
-                //var servSoc = _PruebaUnitaria.ActualizarServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = new List<ServicioSocial>(), Token = TokenActualUsuarioConectado});
-
-                //Se implementa lo siguiente:
-                //Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
-                //A una persona no se le puede asignar más de una vez con el mismo servicio social el mismo año.
-                //El administrador puede ver personas y los servicios asignados, le puede asignar alguna ayuda social.
-                //Una persona puede obtener sus ayudas sociales asignados por año y el último vigente.
-                //El administrador puede obtener las ayudas sociales asignadas a un usuario.
-                //El administrador puede crear nuevas ayudas sociales para las comunas o regiones. Si se crea en una región
-                //se asigna a todas las comunas de esta.
+                
                 return Ok(new PruebaUnitariaResponse() { HttpCode = 200, HttpMessage = "Prueba Unitaria ejecutada correctamente", MoreInformation = "----", userFriendlyError = "----" });
             }
             catch (Exception ex)
@@ -710,7 +719,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/ObtenerServiciosSociales")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El administrador puede obtener las ayudas sociales asignadas a un usuario.
         [HttpGet]
         [ProducesResponseType(typeof(ServicioSocialResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
@@ -735,7 +744,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/ObtenerServicioSocial/{idserviciosocial}")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //Dado que la lógica cambia dependiendo si es Administrador o Usuario, el Token no sirve para determinar el IdUser de la persona. Porque 1 IdUser puede tener N ServiciosSociales. Por ende, se implementa el modelo en la capa Model del servicio en Prueba Unitaria.
         [HttpGet]
         [ProducesResponseType(typeof(ServicioSocialResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]

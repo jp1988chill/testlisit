@@ -409,13 +409,13 @@ namespace Prueba.Domain
         }
 
         ////////////////////////////////////////////////////////////////////////
-        //todo: test
-        public List<ServicioSocial> ObtenerServiciosSociales()
+        public List<ServicioSocial> ObtenerServiciosSociales(string Token)
         {
             var lst = new List<ServicioSocial>();
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", Token);
                 var verb = "ObtenerServiciosSociales";
                 try
                 {
@@ -424,7 +424,7 @@ namespace Prueba.Domain
                     ServicioSocialResponse resp = JsonConvert.DeserializeObject<ServicioSocialResponse>(response.Content.ReadAsStringAsync().Result);
                     lst = resp.ServiciosSociales;
                 }
-                catch /*(Exception ex)*/
+                catch (Exception ex)
                 {
 
                 }
@@ -432,7 +432,6 @@ namespace Prueba.Domain
             return lst;
         }
 
-        //todo: test
         public List<ServicioSocial> ObtenerServicioSocial(string IdServicioSocial)
         {
             var lst = new List<ServicioSocial>();
@@ -477,7 +476,14 @@ namespace Prueba.Domain
             return lst;
         }
 
-        
+        //Todo: ahora
+
+        //Lógica: Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
+        //A una persona no se le puede asignar más de una vez con el mismo servicio social el mismo año.
+
+        //crear método AsignacionServicioSocialExiste(IdComuna, IdUsuario, Año) == true/false. Se implementa en Create / Update de ServicioSocial.
+        //Si es true, no se puede registrar, si es false, se registra.
+
         public List<ServicioSocial> CrearServicioSocialPruebaUnitaria(ServicioSocialBody objBodyObjectRequest)
         {
             var lst = new List<ServicioSocial>();
