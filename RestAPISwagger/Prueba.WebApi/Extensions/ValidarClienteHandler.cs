@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Prueba.Domain;
 using Prueba.Repository;
+using Prueba.WebApi.Controllers;
 using Prueba.WebApi.Responses;
 using System;
 using System.Collections.Generic;
@@ -20,11 +22,12 @@ namespace Prueba.WebApi.Extensions
         private readonly IHttpContextAccessor _httpContextAccessor = null;
         private IRepositoryEntityFrameworkCQRS<User> userRepository = null;
         private IRepositoryEntityFrameworkCQRS<RolUser> rolUserRepository = null;
-
-        public ValidarClienteHandler(IHttpContextAccessor httpContextAccessor, IServiceScopeFactory scopeFactory)
+        private readonly ILogger<ValidarClienteHandler> _logger;
+        public ValidarClienteHandler(IHttpContextAccessor httpContextAccessor, IServiceScopeFactory scopeFactory, ILogger<ValidarClienteHandler> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             this._scopeFactory = scopeFactory;
+            _logger = logger;
         }
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ValidarClienteRequirement requirement)
         {
@@ -39,6 +42,7 @@ namespace Prueba.WebApi.Extensions
                 string token = httpContext.Request.Headers["Token"];
                 if (string.IsNullOrEmpty(token))
                 {
+                    _logger.LogInformation("Log: El request no tiene Token. Agregue uno.");
                     httpContext = CustomMessage(httpContext, "El request no tiene Token. Agregue uno.");
                     context.Fail();
                     return Task.CompletedTask;
@@ -51,24 +55,29 @@ namespace Prueba.WebApi.Extensions
                     RolUser rolUser = rolUserRepository.GetAll().Where(id => id.Idroluser == user.Idroluser).FirstOrDefault();
                     if ((rolUser != null) && (rolUser.Nombreroluser == "Administrador"))
                     {
+                        _logger.LogInformation("Log: ValidarCliente(): Sesión Administrador encontrada. Verificando si está expirada su sesión...");
                         DateTime userDT = DateTime.ParseExact(user.Tokenleasetime, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                         int result = DateTime.Compare(DateTime.Now, userDT);
                         if (result < 0)
                         {
+                            _logger.LogInformation("Log: ValidarCliente(): Sesión Administrador sesion válida!");
                             context.Succeed(requirement);
                         }
                         else
                         {
+                            _logger.LogInformation("Log: ValidarCliente(): " + "El Token del usuario se encuentra expirado (" + userDT.ToShortTimeString() + "). Asegúrese de iniciar sesión nuevamente.");
                             httpContext = CustomMessage(httpContext, "El Token del usuario se encuentra expirado (" + userDT.ToShortTimeString() + "). Asegúrese de iniciar sesión nuevamente.");
                             context.Fail();
                         }
                     }
                     else {
+                        _logger.LogInformation("Log: ValidarCliente():" + "El usuario (" + token + " ) no tiene acceso a los servicios.");
                         httpContext = CustomMessage(httpContext, "El usuario (" + token + " ) no tiene acceso a los servicios: .");
                         context.Fail();
                     }
                 }
                 catch (Exception ex) {
+                    _logger.LogInformation("Log: ValidarCliente():" + ex.Message);
                     httpContext = CustomMessage(httpContext, ex.Message);
                     context.Fail();
                 }
