@@ -1065,7 +1065,19 @@
 			},
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "PruebaToken",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Token",
+							"type": "string"
+						}
+					]
 				},
 				"method": "PUT",
 				"header": [],

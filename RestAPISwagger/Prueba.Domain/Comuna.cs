@@ -39,6 +39,7 @@ namespace Prueba.Domain
 
     public class ComunaBody
     {
+        public string Token { get; set; } //Token con ID único que se actualiza cada vez que se autoriza el ingreso a un usuario. Protege accesos a servicios tipo: Usuario/Administrador
         public List<Comuna> Comunas { get; set; } //JSON format object
 
         public override string ToString()

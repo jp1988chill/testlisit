@@ -6,6 +6,7 @@ using Prueba.Repository;
 using Prueba.WebApi.Responses;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -18,6 +19,8 @@ namespace Prueba.WebApi.Extensions
         private readonly IServiceScopeFactory _scopeFactory; //no podemos acceder al objeto PruebaContext desde acá aún, porque no se ha generado (arroja error transiente), por lo tanto, accedemos de esta manera.
         private readonly IHttpContextAccessor _httpContextAccessor = null;
         private IRepositoryEntityFrameworkCQRS<User> userRepository = null;
+        private IRepositoryEntityFrameworkCQRS<RolUser> rolUserRepository = null;
+
         public ValidarClienteHandler(IHttpContextAccessor httpContextAccessor, IServiceScopeFactory scopeFactory)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -29,8 +32,9 @@ namespace Prueba.WebApi.Extensions
             {
                 var ctx = scope.ServiceProvider.GetService<PruebaContext>();
                 userRepository = new RepositoryEntityFrameworkCQRS<User>(ctx);
+                rolUserRepository = new RepositoryEntityFrameworkCQRS<RolUser>(ctx);
 
-                //Se obtiene el token
+                //Se obtiene token con vigencia de 10 minutos. Permite al usuario autenticarse mediante rolUser, tipo Administrador, sólo durante la sesión actual y nunca otra.
                 HttpContext httpContext = _httpContextAccessor.HttpContext;
                 string token = httpContext.Request.Headers["Token"];
                 if (string.IsNullOrEmpty(token))
@@ -43,10 +47,11 @@ namespace Prueba.WebApi.Extensions
                 //Validamos que el lease time no sea mayor a 10 minutos
                 try
                 {
-                    User user = userRepository.GetByID(new Guid(token));
-                    if (user != null)
+                    User user = userRepository.GetAll().Where(id => id.Token == new Guid(token)).FirstOrDefault();
+                    RolUser rolUser = rolUserRepository.GetAll().Where(id => id.Idroluser == user.Idroluser).FirstOrDefault();
+                    if ((rolUser != null) && (rolUser.Nombreroluser == "Administrador"))
                     {
-                        DateTime userDT = DateTime.Parse(user.Tokenleasetime);
+                        DateTime userDT = DateTime.ParseExact(user.Tokenleasetime, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                         int result = DateTime.Compare(DateTime.Now, userDT);
                         if (result < 0)
                         {
@@ -54,12 +59,12 @@ namespace Prueba.WebApi.Extensions
                         }
                         else
                         {
-                            httpContext = CustomMessage(httpContext, "El Token del usuario se encuentra expirado (" + userDT.ToShortTimeString() + "). Genere un nuevo Token");
+                            httpContext = CustomMessage(httpContext, "El Token del usuario se encuentra expirado (" + userDT.ToShortTimeString() + "). Asegúrese de iniciar sesión nuevamente.");
                             context.Fail();
                         }
                     }
                     else {
-                        httpContext = CustomMessage(httpContext, "No existe usuario con el Token (" + token + ").");
+                        httpContext = CustomMessage(httpContext, "El usuario (" + token + " ) no tiene acceso a los servicios: .");
                         context.Fail();
                     }
                 }

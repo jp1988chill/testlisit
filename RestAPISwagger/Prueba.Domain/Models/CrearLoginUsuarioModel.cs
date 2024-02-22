@@ -18,7 +18,7 @@ namespace Prueba.Domain.Models
                 if (thisUser != null)
                 {
                     thisUser.Tokenleasetime = DateTime.Now.AddSeconds(60 * 10).ToString("dd-MM-yyyy HH:mm:ss");
-                    thisUser.Token = user.Token;
+                    thisUser.Token = Guid.NewGuid();
                     userRepository.Update(thisUser);
                     usersLoginGenerado.Add(thisUser);
                 }

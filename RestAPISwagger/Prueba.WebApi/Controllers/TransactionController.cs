@@ -13,6 +13,7 @@ using Prueba.WebApi.Responses;
 using Prueba.Application.Commands;
 using System.Threading.Tasks;
 using System.Drawing;
+using Newtonsoft.Json;
 
 namespace Prueba.WebApi.Controllers
 {
@@ -28,10 +29,11 @@ namespace Prueba.WebApi.Controllers
             _mediator = mediator;
         }
 
-        /////////////////////////////////////////////////////////////////////////
-        /// Sólo Prueba Unitaria actual. Este código se remueve en producción.
-        /// </summary>
-        /// <returns></returns>
+
+        ////////////////////////////////// Sólo Prueba Unitaria actual. Este código se remueve en producción. /////////////////////////////////////////////////////////////////////////
+        //Client Rest API services
+        public string apiUrlMantenedorMVCEntity = "https://localhost:44344/action";
+
         private List<User> ObtenerUsuariosPruebaUnitaria()
         {
             var token = (OkObjectResult)ObtenerUsers().Result;
@@ -129,10 +131,24 @@ namespace Prueba.WebApi.Controllers
 
         private List<Comuna> CrearComunaPruebaUnitaria(ComunaBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)CrearComuna(objBodyObjectRequest).Result;
-            return ((ComunaResponse)token.Value).Comunas;
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+            client.Headers["Token"] = objBodyObjectRequest.Token;
+            try
+            {
+                string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(objBodyObjectRequest);
+                var json = client.UploadString(apiUrlMantenedorMVCEntity + "/CrearComuna", "Put", envelopeSignedUserTokenOutStr);
+                ComunaResponse resp = JsonConvert.DeserializeObject<ComunaResponse>(json);
+                return resp.Comunas;
+            }
+            catch  {
+                
+            }
+            return null;
         }
-        /////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////// Sólo Prueba Unitaria actual (Fin). Este código se remueve en producción. /////////////////////////////////////////////////////////////////////////
+
 
 
         /// <summary>
@@ -175,6 +191,10 @@ namespace Prueba.WebApi.Controllers
             usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Administrador").ToList().FirstOrDefault().Idroluser;
             usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Usuario").ToList().FirstOrDefault().Idroluser;
 
+            //Ahora, seleccionamos cualquiera de los 2 usuarios conectados:
+            //string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Token).ToString(); //Perfil Usuario: No permite acceso a servicios tipo POST, PUTS, DELETE
+            string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Token).ToString(); //Perfil Administrador: Acceso permitido a servicios tipo POST, PUTS, DELETE
+
             //Limpieza, Generamos 1 País con 2 Regiones, a su vez con 2 Comunas. 
             //Los ids son relacionales de manera dinámica. Por ende, se crean primero las Comunas, luego Regiones y finalmente Pais. Luego se arma la tupla completa en OOP.  
             //Nota: Estos servicios sólo pueden ser creados por un Administrador!
@@ -186,7 +206,7 @@ namespace Prueba.WebApi.Controllers
             List<Comuna> comAntof = new List<Comuna>();
             comAntof.Add(new Comuna() { IdComuna = 0, Nombre = "Calama" });     
             comAntof.Add(new Comuna() { IdComuna = 0, Nombre = "Tocopilla" });
-            comAntof = CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comAntof });
+            comAntof = CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comAntof, Token = TokenActualUsuarioConectado }); //So far implemenedt Administrador services validation. Todo: Implement the same for the rest of services
             foreach(Comuna comuna in comAntof){ comunasIdComunaAntof.Add(comuna.IdComuna); }
 
             List<int> comunasIdComunaValpo = new List<int>();
@@ -208,8 +228,6 @@ namespace Prueba.WebApi.Controllers
             pais = CrearPaisPruebaUnitaria(new PaisBody() { Paises = pais });
 
             int o = 0;
-
-            //Luego POST, PUTS, DELETE son validados sólo para perfil administrador. El Usuario no puede utilizar los servicios.
 
             //Se implementa lo siguiente:
             //Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
@@ -628,7 +646,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/CrearComuna")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
         [HttpPut]
         [ProducesResponseType(typeof(ComunaResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
