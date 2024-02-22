@@ -164,14 +164,46 @@ namespace Prueba.WebApi.Controllers
         ///////////////////////////////////////////////////////////////////////////////////
         private List<RolUser> ObtenerRolUsuariosPruebaUnitaria()
         {
-            var token = (OkObjectResult)ObtenerRolesUser().Result;
-            return ((RolUserResponse) token.Value).RolUsers;
+            var lst = new List<RolUser>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                var verb = "ObtenerRolesUser";
+                try
+                {
+                    HttpResponseMessage response = client.GetAsync(verb).Result;
+                    response.EnsureSuccessStatusCode();
+                    var resp = JsonConvert.DeserializeObject<RolUserResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.RolUsers;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         private List<RolUser> EliminarRolUsuariosPruebaUnitaria(RolUserBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)EliminarRolUser(objBodyObjectRequest).Result;
-            return ((RolUserResponse)token.Value).RolUsers;
+            var lst = new List<RolUser>();
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                    client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                    var result = _miscHelpers.DeleteAsJsonAsync(client, "EliminarRolUser", objBodyObjectRequest).Result;
+                    result.EnsureSuccessStatusCode();
+                    RolUserResponse resp = JsonConvert.DeserializeObject<RolUserResponse>(result.Content.ReadAsStringAsync().Result);
+                    lst = resp.RolUsers;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         private List<RolUser> CrearRolUsuarioPruebaUnitaria(RolUserBody objBodyObjectRequest)
@@ -199,14 +231,46 @@ namespace Prueba.WebApi.Controllers
         /////////////////////////////////////////////////////////////////////////
         private List<Pais> ObtenerPaisesPruebaUnitaria()
         {
-            var token = (OkObjectResult)ObtenerPaises().Result;
-            return ((PaisResponse)token.Value).Paises;
+            var lst = new List<Pais>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                var verb = "ObtenerPaises";
+                try
+                {
+                    HttpResponseMessage response = client.GetAsync(verb).Result;
+                    response.EnsureSuccessStatusCode();
+                    var resp = JsonConvert.DeserializeObject<PaisResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.Paises;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         private List<Pais> EliminarPaisPruebaUnitaria(PaisBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)EliminarPais(objBodyObjectRequest).Result;
-            return ((PaisResponse)token.Value).Paises;
+            var lst = new List<Pais>();
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                    client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                    var result = _miscHelpers.DeleteAsJsonAsync(client, "EliminarPais", objBodyObjectRequest).Result;
+                    result.EnsureSuccessStatusCode();
+                    var resp = JsonConvert.DeserializeObject<PaisResponse>(result.Content.ReadAsStringAsync().Result);
+                    lst = resp.Paises;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         private List<Pais> CrearPaisPruebaUnitaria(PaisBody objBodyObjectRequest)
@@ -235,20 +299,50 @@ namespace Prueba.WebApi.Controllers
 
         private List<Region_> ObtenerRegionesPruebaUnitaria()
         {
-            var token = (OkObjectResult)ObtenerRegiones().Result;
-            return ((RegionResponse)token.Value).Regiones;
+            var lst = new List<Region_>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                var verb = "ObtenerRegiones";
+                try
+                {
+                    HttpResponseMessage response = client.GetAsync(verb).Result;
+                    response.EnsureSuccessStatusCode();
+                    var resp = JsonConvert.DeserializeObject<RegionResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.Regiones;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         private List<Region_> EliminarRegionPruebaUnitaria(RegionBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)EliminarRegion(objBodyObjectRequest).Result;
-            return ((RegionResponse)token.Value).Regiones;
+            var lst = new List<Region_>();
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                    client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                    var result = _miscHelpers.DeleteAsJsonAsync(client, "EliminarRegion", objBodyObjectRequest).Result;
+                    result.EnsureSuccessStatusCode();
+                    var resp = JsonConvert.DeserializeObject<RegionResponse>(result.Content.ReadAsStringAsync().Result);
+                    lst = resp.Regiones;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         private List<Region_> CrearRegionPruebaUnitaria(RegionBody objBodyObjectRequest)
         {
-            //var token = (OkObjectResult)CrearRegion(objBodyObjectRequest).Result;
-            //return ((RegionResponse)token.Value).Regiones;
             var lst = new List<Region_>();
             using (HttpClient client = new HttpClient())
             {
@@ -273,14 +367,46 @@ namespace Prueba.WebApi.Controllers
 
         private List<Comuna> ObtenerComunasPruebaUnitaria()
         {
-            var token = (OkObjectResult)ObtenerComunas().Result;
-            return ((ComunaResponse)token.Value).Comunas;
+            var lst = new List<Comuna>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                var verb = "ObtenerComunas";
+                try
+                {
+                    HttpResponseMessage response = client.GetAsync(verb).Result;
+                    response.EnsureSuccessStatusCode();
+                    var resp = JsonConvert.DeserializeObject<ComunaResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.Comunas;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         private List<Comuna> EliminarComunaPruebaUnitaria(ComunaBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)EliminarComuna(objBodyObjectRequest).Result;
-            return ((ComunaResponse)token.Value).Comunas;
+            var lst = new List<Comuna>();
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                    client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                    var result = _miscHelpers.DeleteAsJsonAsync(client, "EliminarComuna", objBodyObjectRequest).Result;
+                    result.EnsureSuccessStatusCode();
+                    ComunaResponse resp = JsonConvert.DeserializeObject<ComunaResponse>(result.Content.ReadAsStringAsync().Result);
+                    lst = resp.Comunas;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         private List<Comuna> CrearComunaPruebaUnitaria(ComunaBody objBodyObjectRequest)
@@ -313,7 +439,6 @@ namespace Prueba.WebApi.Controllers
         /// Implementación de Prueba Unitaria, que automatiza en una sola llamada a un servicio expuesto, los requerimientos en Prueba técnica - backend.pdf
         /// 
         /// </summary>
-        /// <param name="objBodyObjectRequest">Body incluyendo el Array en formato JSON v2</param>
         /// <response code="200">Retorna OK</response>
         /// <response code="400">La solicitud no pudo ser entendida por el servidor debido a una mala sintaxis.</response>
         /// <response code="401">En el caso que los valores son inválidos</response>
@@ -321,7 +446,6 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/EjecutarPruebaUnitaria")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado se genera desde este método, no se puede crear dependencia circular
         [HttpGet]
         [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
@@ -347,14 +471,12 @@ namespace Prueba.WebApi.Controllers
             usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Administrador").ToList().FirstOrDefault().Idroluser;
             usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Usuario").ToList().FirstOrDefault().Idroluser;
 
-            //Seleccionamos cualquiera de los 2 usuarios conectados:
+            //Seleccionamos 1 de los 2 usuarios conectados:
             //string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Token).ToString(); //Perfil Usuario: No permite acceso a servicios tipo POST, PUTS, DELETE
             string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Token).ToString(); //Perfil Administrador: Acceso permitido a servicios tipo POST, PUTS, DELETE
 
-            //Update data in DB
             ActualizarUsuarioPruebaUnitaria(new UserBody() { Users = usuariosRegistrados, Token = TokenActualUsuarioConectado });
-
-            
+           
             //Generamos 1 País con 2 Regiones, a su vez con 2 Comunas. 
             //Los ids son relacionales de manera dinámica. Por ende, se crean primero las Comunas, luego Regiones y finalmente Pais. Luego se arma la tupla completa en OOP.  
             //Nota: Estos servicios sólo pueden ser creados por un Administrador!
@@ -390,6 +512,8 @@ namespace Prueba.WebApi.Controllers
             EliminarRegionPruebaUnitaria(new RegionBody() { Regiones = ObtenerRegionesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
             EliminarPaisPruebaUnitaria(new PaisBody() { Paises = ObtenerPaisesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
 
+            //Todo: Implementar logging
+
             //Se implementa lo siguiente:
             //Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
             //A una persona no se le puede asignar más de una vez con el mismo servicio social el mismo año.
@@ -398,9 +522,6 @@ namespace Prueba.WebApi.Controllers
             //El administrador puede obtener las ayudas sociales asignadas a un usuario.
             //El administrador puede crear nuevas ayudas sociales para las comunas o regiones. Si se crea en una región
             //se asigna a todas las comunas de esta.
-
-            //Todo al final: Implementar logging
-
             return Ok(new UserResponse() { HttpCode = 200, HttpMessage = "Prueba Unitaria ejecutada correctamente", MoreInformation = "", userFriendlyError = "", usersNuevoTokenAsignado = new List<User>() });
         }
 
