@@ -44,6 +44,7 @@ namespace Prueba.Domain
 
     public class UserBody
     {
+        public string Token { get; set; } //Token con ID único que se actualiza cada vez que se autoriza el ingreso a un usuario. Protege accesos a servicios tipo: Usuario/Administrador
         public List<User> Users { get; set; }
 
         public override string ToString()

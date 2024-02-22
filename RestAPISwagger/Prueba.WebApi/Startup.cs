@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Newtonsoft.Json;
 using System.Text.Json;
 using Prueba.Domain;
+using Prueba.Domain.Interfaces.Helper;
 
 namespace Prueba.WebApi
 {
@@ -87,6 +88,8 @@ namespace Prueba.WebApi
             //Acceso a AppSettings
             services.AddSingleton<IAppSettingsRepository, AppSettingsRepository>();
 
+            //Acceso a MiscHelpers
+            services.AddSingleton<IMiscHelpers, MiscHelpers>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

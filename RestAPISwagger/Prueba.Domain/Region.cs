@@ -41,6 +41,7 @@ namespace Prueba.Domain
 
     public class RegionBody
     {
+        public string Token { get; set; } //Token con ID único que se actualiza cada vez que se autoriza el ingreso a un usuario. Protege accesos a servicios tipo: Usuario/Administrador
         public List<Region_> Regiones { get; set; } //JSON format object
 
         public override string ToString()

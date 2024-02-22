@@ -18,6 +18,10 @@ using System.Net.Http;
 using System.Security.Policy;
 using System.Net.Http.Headers;
 using System.Text.Json.Nodes;
+using static System.Net.WebRequestMethods;
+using Swashbuckle.Swagger;
+using System.Net.Http.Json;
+using Prueba.Domain.Interfaces.Helper;
 
 namespace Prueba.WebApi.Controllers
 {
@@ -28,11 +32,13 @@ namespace Prueba.WebApi.Controllers
     {
         private readonly IMediator _mediator;
         private IAppSettingsRepository _appSettingsRepository;
+        private IMiscHelpers _miscHelpers;
 
-        public TransactionController(IMediator mediator, IAppSettingsRepository appSettingsRepository)
+        public TransactionController(IMediator mediator, IAppSettingsRepository appSettingsRepository, IMiscHelpers miscHelpers)
         {
             _mediator = mediator;
             _appSettingsRepository = appSettingsRepository;
+            _miscHelpers = miscHelpers;
         }
 
 
@@ -63,22 +69,96 @@ namespace Prueba.WebApi.Controllers
 
         private List<User> EliminarUsuarioPruebaUnitaria(UserBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)EliminarUser(objBodyObjectRequest).Result;
-            return ((UserResponse)token.Value).usersNuevoTokenAsignado;
+            var lst = new List<User>();
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                    client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                    var result = _miscHelpers.DeleteAsJsonAsync(client, "EliminarUser", objBodyObjectRequest).Result;
+                    result.EnsureSuccessStatusCode();
+                    UserResponse resp = JsonConvert.DeserializeObject<UserResponse>(result.Content.ReadAsStringAsync().Result);
+                    lst = resp.usersNuevoTokenAsignado;
+                }
+                catch /*(Exception ex)*/
+                {
+                    
+                }
+            }
+            return lst;
         }
 
         private List<User> CrearUsuarioPruebaUnitaria(UserBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)CrearUser(objBodyObjectRequest).Result;
-            return ((UserResponse)token.Value).usersNuevoTokenAsignado;
+            var lst = new List<User>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                var verb = "CrearUser";
+                try
+                {
+                    HttpResponseMessage response = client.PutAsync(verb, new StringContent(JsonConvert.SerializeObject(objBodyObjectRequest), Encoding.UTF8, "application/json")).Result;
+                    response.EnsureSuccessStatusCode();
+                    UserResponse resp = JsonConvert.DeserializeObject<UserResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.usersNuevoTokenAsignado;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
+
+        private List<User> ActualizarUsuarioPruebaUnitaria(UserBody objBodyObjectRequest)
+        {
+            var lst = new List<User>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                var verb = "ActualizarUser";
+                try
+                {
+                    HttpResponseMessage response = client.PostAsync(verb, new StringContent(JsonConvert.SerializeObject(objBodyObjectRequest), Encoding.UTF8, "application/json")).Result;
+                    response.EnsureSuccessStatusCode();
+                    UserResponse resp = JsonConvert.DeserializeObject<UserResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.usersNuevoTokenAsignado;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
+        }
+
 
         ///////////////////////////////////////////////////////////////////////////////////
 
         private List<User> CrearLoginSessionUsersPruebaUnitaria(UserBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)CrearLoginUser(objBodyObjectRequest).Result;
-            return ((LoginUsuarioResponse)token.Value).UsersNuevoTokenAsignado;
+            var lst = new List<User>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                var verb = "CrearLoginUser";
+                try
+                {
+                    HttpResponseMessage response = client.PutAsync(verb, new StringContent(JsonConvert.SerializeObject(objBodyObjectRequest), Encoding.UTF8, "application/json")).Result;
+                    response.EnsureSuccessStatusCode();
+                    UserResponse resp = JsonConvert.DeserializeObject<UserResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.usersNuevoTokenAsignado;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////
@@ -96,8 +176,25 @@ namespace Prueba.WebApi.Controllers
 
         private List<RolUser> CrearRolUsuarioPruebaUnitaria(RolUserBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)CrearRolUser(objBodyObjectRequest).Result;
-            return ((RolUserResponse)token.Value).RolUsers;
+            var lst = new List<RolUser>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                var verb = "CrearRolUser";
+                try
+                {
+                    HttpResponseMessage response = client.PutAsync(verb, new StringContent(JsonConvert.SerializeObject(objBodyObjectRequest), Encoding.UTF8, "application/json")).Result;
+                    response.EnsureSuccessStatusCode();
+                    RolUserResponse resp = JsonConvert.DeserializeObject<RolUserResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.RolUsers;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
         /////////////////////////////////////////////////////////////////////////
         private List<Pais> ObtenerPaisesPruebaUnitaria()
@@ -114,8 +211,25 @@ namespace Prueba.WebApi.Controllers
 
         private List<Pais> CrearPaisPruebaUnitaria(PaisBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)CrearPais(objBodyObjectRequest).Result;
-            return ((PaisResponse)token.Value).Paises;
+            var lst = new List<Pais>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                var verb = "CrearPais";
+                try
+                {
+                    HttpResponseMessage response = client.PutAsync(verb, new StringContent(JsonConvert.SerializeObject(objBodyObjectRequest), Encoding.UTF8, "application/json")).Result;
+                    response.EnsureSuccessStatusCode();
+                    PaisResponse resp = JsonConvert.DeserializeObject<PaisResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.Paises;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
         /////////////////////////////////////////////////////////////////////////
 
@@ -133,8 +247,27 @@ namespace Prueba.WebApi.Controllers
 
         private List<Region_> CrearRegionPruebaUnitaria(RegionBody objBodyObjectRequest)
         {
-            var token = (OkObjectResult)CrearRegion(objBodyObjectRequest).Result;
-            return ((RegionResponse)token.Value).Regiones;
+            //var token = (OkObjectResult)CrearRegion(objBodyObjectRequest).Result;
+            //return ((RegionResponse)token.Value).Regiones;
+            var lst = new List<Region_>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                var verb = "CrearRegion";
+                try
+                {
+                    HttpResponseMessage response = client.PutAsync(verb, new StringContent(JsonConvert.SerializeObject(objBodyObjectRequest), Encoding.UTF8, "application/json")).Result;
+                    response.EnsureSuccessStatusCode();
+                    RegionResponse resp = JsonConvert.DeserializeObject<RegionResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.Regiones;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
         /////////////////////////////////////////////////////////////////////////
 
@@ -197,16 +330,14 @@ namespace Prueba.WebApi.Controllers
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> EjecutarPruebaUnitaria()
         {
-            //Limpieza de tabla User, Generamos 2 usuarios + Login de 10 minutos de sesión para cada uno
-            EliminarUsuarioPruebaUnitaria(new UserBody() { Users = ObtenerUsuariosPruebaUnitaria() });
+            //Generamos 2 usuarios + Login de 10 minutos de sesión para cada uno
             List<User> usu = new List<User>();
             usu.Add(new User(new Guid(), 0, "JP", "pass", "")); //Será Usuario normal
             usu.Add(new User(new Guid(), 0, "Catalina", "pass", "")); //Será Administrador 
             List<User> usuariosRegistrados = CrearUsuarioPruebaUnitaria(new UserBody() { Users = usu });
             usuariosRegistrados = CrearLoginSessionUsersPruebaUnitaria(new UserBody() { Users = usuariosRegistrados });
 
-            //Limpieza, Generamos un rol "Usuario", y el otro "Administrador"
-            EliminarRolUsuariosPruebaUnitaria(new RolUserBody() { RolUsers = ObtenerRolUsuariosPruebaUnitaria() });
+            //Generamos un rol "Usuario", y el otro "Administrador"
             List<RolUser> rolUsu = new List<RolUser>();
             rolUsu.Add(new RolUser("Usuario"));
             rolUsu.Add(new RolUser("Administrador"));
@@ -216,17 +347,17 @@ namespace Prueba.WebApi.Controllers
             usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Administrador").ToList().FirstOrDefault().Idroluser;
             usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Usuario").ToList().FirstOrDefault().Idroluser;
 
-            //Ahora, seleccionamos cualquiera de los 2 usuarios conectados:
+            //Seleccionamos cualquiera de los 2 usuarios conectados:
             //string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Token).ToString(); //Perfil Usuario: No permite acceso a servicios tipo POST, PUTS, DELETE
             string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Token).ToString(); //Perfil Administrador: Acceso permitido a servicios tipo POST, PUTS, DELETE
 
-            //Limpieza, Generamos 1 País con 2 Regiones, a su vez con 2 Comunas. 
+            //Update data in DB
+            ActualizarUsuarioPruebaUnitaria(new UserBody() { Users = usuariosRegistrados, Token = TokenActualUsuarioConectado });
+
+            
+            //Generamos 1 País con 2 Regiones, a su vez con 2 Comunas. 
             //Los ids son relacionales de manera dinámica. Por ende, se crean primero las Comunas, luego Regiones y finalmente Pais. Luego se arma la tupla completa en OOP.  
             //Nota: Estos servicios sólo pueden ser creados por un Administrador!
-            EliminarComunaPruebaUnitaria(new ComunaBody() { Comunas = ObtenerComunasPruebaUnitaria() });
-            EliminarRegionPruebaUnitaria(new RegionBody() { Regiones = ObtenerRegionesPruebaUnitaria() });
-            EliminarPaisPruebaUnitaria(new  PaisBody() { Paises = ObtenerPaisesPruebaUnitaria() });
-
             List<int> comunasIdComunaAntof = new List<int>();
             List<Comuna> comAntof = new List<Comuna>();
             comAntof.Add(new Comuna() { IdComuna = 0, Nombre = "Calama" });     
@@ -238,7 +369,7 @@ namespace Prueba.WebApi.Controllers
             List<Comuna> comValpo = new List<Comuna>();
             comValpo.Add(new Comuna() { IdComuna = 0, Nombre = "Casablanca" });
             comValpo.Add(new Comuna() { IdComuna = 0, Nombre = "Concón" });
-            comValpo = CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comValpo });
+            comValpo = CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comValpo, Token = TokenActualUsuarioConectado });
             foreach (Comuna comuna in comValpo) { comunasIdComunaValpo.Add(comuna.IdComuna); }
 
             List<int> regionesIdRegion = new List<int>();
@@ -250,9 +381,14 @@ namespace Prueba.WebApi.Controllers
 
             List<Pais> pais = new List<Pais>();
             pais.Add(new Pais() { Idpais = 0, Idregion = regionesIdRegion, Nombre = "Chile" });
-            pais = CrearPaisPruebaUnitaria(new PaisBody() { Paises = pais });
+            pais = CrearPaisPruebaUnitaria(new PaisBody() { Paises = pais, Token = TokenActualUsuarioConectado });
 
-            int o = 0;
+            //Fin de pruebas, limpieza de tablas.
+            EliminarUsuarioPruebaUnitaria(new UserBody() { Users = ObtenerUsuariosPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+            EliminarRolUsuariosPruebaUnitaria(new RolUserBody() { RolUsers = ObtenerRolUsuariosPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+            EliminarComunaPruebaUnitaria(new ComunaBody() { Comunas = ObtenerComunasPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+            EliminarRegionPruebaUnitaria(new RegionBody() { Regiones = ObtenerRegionesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+            EliminarPaisPruebaUnitaria(new PaisBody() { Paises = ObtenerPaisesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
 
             //Se implementa lo siguiente:
             //Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
@@ -282,7 +418,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/CrearLoginUser")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado se genera desde este método, no se puede crear dependencia circular
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //La generación de Tokens por sesión requieren de que un usuario exista primero.
         [HttpPut]
         [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
@@ -308,7 +444,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/CrearUser")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //No se puede generar un Token sin un usuario primero, asique no tiene seguridad por el momento. 
         [HttpPut]
         [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
@@ -403,7 +539,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/EliminarUser")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
         [HttpDelete]
         [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
@@ -916,7 +1052,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/CrearRolUser")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token validado depende de este usuario, no se valida acá.
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //El Token se genera acá, no se puede validar un valor que se generará a continuación (IdRol->Administrador).
         [HttpPut]
         [ProducesResponseType(typeof(RolUserResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
