@@ -14,6 +14,10 @@ using Prueba.Application.Commands;
 using System.Threading.Tasks;
 using System.Drawing;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Security.Policy;
+using System.Net.Http.Headers;
+using System.Text.Json.Nodes;
 
 namespace Prueba.WebApi.Controllers
 {
@@ -23,16 +27,17 @@ namespace Prueba.WebApi.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private IAppSettingsRepository _appSettingsRepository;
 
-        public TransactionController(IMediator mediator)
+        public TransactionController(IMediator mediator, IAppSettingsRepository appSettingsRepository)
         {
             _mediator = mediator;
+            _appSettingsRepository = appSettingsRepository;
         }
 
 
         ////////////////////////////////// Sólo Prueba Unitaria actual. Este código se remueve en producción. /////////////////////////////////////////////////////////////////////////
-        //Client Rest API services
-        public string apiUrlMantenedorMVCEntity = "https://localhost:44344/action";
+        
 
         private List<User> ObtenerUsuariosPruebaUnitaria()
         {
@@ -131,21 +136,25 @@ namespace Prueba.WebApi.Controllers
 
         private List<Comuna> CrearComunaPruebaUnitaria(ComunaBody objBodyObjectRequest)
         {
-            WebClient client = new WebClient();
-            client.Headers["Content-type"] = "application/json";
-            client.Encoding = Encoding.UTF8;
-            client.Headers["Token"] = objBodyObjectRequest.Token;
-            try
+            var lst = new List<Comuna>();
+            using (HttpClient client = new HttpClient())
             {
-                string envelopeSignedUserTokenOutStr = JsonConvert.SerializeObject(objBodyObjectRequest);
-                var json = client.UploadString(apiUrlMantenedorMVCEntity + "/CrearComuna", "Put", envelopeSignedUserTokenOutStr);
-                ComunaResponse resp = JsonConvert.DeserializeObject<ComunaResponse>(json);
-                return resp.Comunas;
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                var verb = "CrearComuna";
+                try
+                {
+                    HttpResponseMessage response = client.PutAsync(verb, new StringContent(JsonConvert.SerializeObject(objBodyObjectRequest), Encoding.UTF8, "application/json")).Result;
+                    response.EnsureSuccessStatusCode();
+                    ComunaResponse resp = JsonConvert.DeserializeObject<ComunaResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.Comunas;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
             }
-            catch  {
-                
-            }
-            return null;
+            return lst;
         }
         ////////////////////////////////// Sólo Prueba Unitaria actual (Fin). Este código se remueve en producción. /////////////////////////////////////////////////////////////////////////
 
