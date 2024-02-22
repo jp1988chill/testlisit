@@ -144,12 +144,6 @@ namespace Prueba.WebApi.Controllers
                 string TokenUsuarioSinPrivilegios = (usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Token).ToString();
                 serviciosSocialesPorUsuarioAutenticado = _PruebaUnitaria.getServicioSocialCollectionFromAuthenticatedUser(TokenUsuarioSinPrivilegios); //Usuario actual no es Administrador, por ende extrae todos los ServiciosSociales vinculados a su propio idUser.
 
-
-                //Todo:
-
-                //El administrador puede crear nuevas ayudas sociales para las comunas o regiones. Si se crea en una región
-                //se asigna a todas las comunas de esta.
-
                 //Fin de pruebas, limpieza de tablas.
                 _PruebaUnitaria.EliminarServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = _PruebaUnitaria.ObtenerServiciosSociales(TokenActualUsuarioConectado), Token = TokenActualUsuarioConectado }); //primero, porque ésta tupla es relacional con las siguientes.
                 
