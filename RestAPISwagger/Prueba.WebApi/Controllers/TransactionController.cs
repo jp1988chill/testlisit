@@ -23,6 +23,7 @@ using Swashbuckle.Swagger;
 using System.Net.Http.Json;
 using Prueba.Domain.Interfaces.Helper;
 using Microsoft.Extensions.Logging;
+using Prueba.Domain.Models;
 
 namespace Prueba.WebApi.Controllers
 {
@@ -115,7 +116,7 @@ namespace Prueba.WebApi.Controllers
                 pais = _PruebaUnitaria.CrearPaisPruebaUnitaria(new PaisBody() { Paises = pais, Token = TokenActualUsuarioConectado });
 
 
-                //Creación Servicio Social para Comuna de "Casablanca"
+                //Creación Servicio Social para Comuna de "Casablanca" para Administrador
                 Comuna ComunasSeleccionada = _PruebaUnitaria.ObtenerComunasPruebaUnitaria().Find(id => id.Nombre == "Casablanca");
                 List<ServicioSocial> listadoServSoc = new List<ServicioSocial>();
                 ServicioSocial userServSoc = new ServicioSocial() { Idcomuna = ComunasSeleccionada.IdComuna, Idserviciosocial = 0, Iduser = usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Iduser, Nombreserviciosocial = "Administrador(a) Municipal de Ayuda Social sector "+ ComunasSeleccionada.Nombre, Fecharegistro = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") };
@@ -127,10 +128,24 @@ namespace Prueba.WebApi.Controllers
                 listadoServSoc = _PruebaUnitaria.CrearServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = listadoServSoc, Token = TokenActualUsuarioConectado }); //Sin embargo, ahora ya existe el mismo ServicioSocial por Usuario, Comuna y año. No se le permite el registro, de acuerdo a lógica de negocio.
 
 
-                //Todo:
+                //Creación Servicio Social para Comuna de "Calama" para Usuario sin perfil de Administrador
+                ComunasSeleccionada = _PruebaUnitaria.ObtenerComunasPruebaUnitaria().Find(id => id.Nombre == "Calama");
+                listadoServSoc.Clear();
+                userServSoc = new ServicioSocial() { Idcomuna = ComunasSeleccionada.IdComuna, Idserviciosocial = 0, Iduser = usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Iduser, Nombreserviciosocial = "Operador zonal de Ayuda Social sector " + ComunasSeleccionada.Nombre, Fecharegistro = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") };
+                listadoServSoc.Add(userServSoc);
+                listadoServSoc = _PruebaUnitaria.CrearServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = listadoServSoc, Token = TokenActualUsuarioConectado }); //Se registra ServicioSocial de Usuario sin permisos a las API, con Token de Administrador.
+                servSocGenerado = _PruebaUnitaria.ObtenerServicioSocial(listadoServSoc.FirstOrDefault().Idserviciosocial.ToString()).FirstOrDefault();
+
 
                 //El administrador puede ver personas y los servicios asignados, le puede asignar alguna ayuda social.
-                //Una persona puede obtener sus ayudas sociales asignados por año y el último vigente.
+                List<ServicioSocial> serviciosSocialesPorUsuarioAutenticado = _PruebaUnitaria.getServicioSocialCollectionFromAuthenticatedUser(TokenActualUsuarioConectado); //Usuario actual es Administrador, por ende extrae todos los ServiciosSociales
+
+                //Una persona (Usuario Normal) puede obtener sus ayudas sociales asignados por año y el último vigente.
+                string TokenUsuarioSinPrivilegios = (usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Token).ToString();
+                serviciosSocialesPorUsuarioAutenticado = _PruebaUnitaria.getServicioSocialCollectionFromAuthenticatedUser(TokenUsuarioSinPrivilegios); //Usuario actual no es Administrador, por ende extrae todos los ServiciosSociales vinculados a su propio idUser.
+
+
+                //Todo:
 
                 //El administrador puede crear nuevas ayudas sociales para las comunas o regiones. Si se crea en una región
                 //se asigna a todas las comunas de esta.

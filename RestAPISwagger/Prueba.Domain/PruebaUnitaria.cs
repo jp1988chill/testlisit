@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using Prueba.Domain.Interfaces.Helper;
+using Prueba.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 
@@ -522,6 +525,40 @@ namespace Prueba.Domain
             return lst;
         }
         
+        public RolUser getRolUserFromServicioSocialId(string IdServicioSocial)
+        {
+            return null;
+        }
+
+        //Servicio que extrae Servicios Sociales disponibles, por rol.
+        //Si es usuario, sólo genera sus ayudas sociales asignados por año y el último vigente.
+        //Si es administrador, todos los registros disponibles.
+        public List<ServicioSocial> getServicioSocialCollectionFromAuthenticatedUser(string currentLoggedUserToken) {
+            List<ServicioSocial> result = new List<ServicioSocial>();
+
+            List<ServicioSocial> servicioSocialRegistrados = ObtenerServiciosSociales(currentLoggedUserToken);
+            List<User> users = ObtenerUsuariosPruebaUnitaria();
+            List<RolUser> rolUsers = ObtenerRolUsuariosPruebaUnitaria();
+
+            User user = users.Where(id => id.Token == new Guid(currentLoggedUserToken)).FirstOrDefault();
+            RolUser rolUser = rolUsers.Where(id => id.Idroluser == user.Idroluser).FirstOrDefault();
+            if ((rolUser != null) && (rolUser.Nombreroluser == "Administrador")){
+                result.AddRange(servicioSocialRegistrados);
+            }
+
+            //Posiblemente el Usuario no tenga acceso a las API por Token. Asignamos un Token Administrador al azar, y extraemos la información pertinente únicamente al usuario conectado.
+            else if (servicioSocialRegistrados.Count == 0) {
+                RolUser adminRol = rolUsers.Where(id => id.Nombreroluser == "Administrador").FirstOrDefault();
+                if (adminRol != null)
+                {
+                    User adminUser = users.Where(id => id.Idroluser == adminRol.Idroluser).FirstOrDefault();
+                    servicioSocialRegistrados = ObtenerServiciosSociales(adminUser.Token.ToString());
+                    result.AddRange(servicioSocialRegistrados.Where(id => id.Iduser.ToString() == user.Iduser.ToString()));
+                }
+            }
+            return result;
+        }
+
         ////////////////////////////////// Sólo Prueba Unitaria actual (Fin). Este código se remueve en producción. /////////////////////////////////////////////////////////////////////////
     }
 
