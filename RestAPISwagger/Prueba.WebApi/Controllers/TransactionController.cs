@@ -121,6 +121,8 @@ namespace Prueba.WebApi.Controllers
                 _PruebaUnitaria.EliminarRegionPruebaUnitaria(new RegionBody() { Regiones = _PruebaUnitaria.ObtenerRegionesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
                 _PruebaUnitaria.EliminarPaisPruebaUnitaria(new PaisBody() { Paises = _PruebaUnitaria.ObtenerPaisesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
 
+                //var servSoc = _PruebaUnitaria.ActualizarServicioSocialPruebaUnitaria(new ServicioSocialBody() { ServiciosSociales = new List<ServicioSocial>(), Token = TokenActualUsuarioConectado});
+
                 //Se implementa lo siguiente:
                 //Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
                 //A una persona no se le puede asignar más de una vez con el mismo servicio social el mismo año.

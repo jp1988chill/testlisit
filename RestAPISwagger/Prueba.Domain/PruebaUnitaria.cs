@@ -407,6 +407,123 @@ namespace Prueba.Domain
             }
             return lst;
         }
+
+        ////////////////////////////////////////////////////////////////////////
+        //todo: test
+        public List<ServicioSocial> ObtenerServiciosSociales()
+        {
+            var lst = new List<ServicioSocial>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                var verb = "ObtenerServiciosSociales";
+                try
+                {
+                    HttpResponseMessage response = client.GetAsync(verb).Result;
+                    response.EnsureSuccessStatusCode();
+                    ServicioSocialResponse resp = JsonConvert.DeserializeObject<ServicioSocialResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.ServiciosSociales;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
+        }
+
+        //todo: test
+        public List<ServicioSocial> ObtenerServicioSocial(string IdServicioSocial)
+        {
+            var lst = new List<ServicioSocial>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                var verb = "ObtenerServicioSocial/" + IdServicioSocial;
+                try
+                {
+                    HttpResponseMessage response = client.GetAsync(verb).Result;
+                    response.EnsureSuccessStatusCode();
+                    ServicioSocialResponse resp = JsonConvert.DeserializeObject<ServicioSocialResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.ServiciosSociales;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
+        }
+
+        public List<ServicioSocial> EliminarServicioSocialPruebaUnitaria(ServicioSocialBody objBodyObjectRequest)
+        {
+            var lst = new List<ServicioSocial>();
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                    client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                    var result = _miscHelpers.DeleteAsJsonAsync(client, "EliminarServicioSocial", objBodyObjectRequest).Result;
+                    result.EnsureSuccessStatusCode();
+                    var resp = JsonConvert.DeserializeObject<ServicioSocialResponse>(result.Content.ReadAsStringAsync().Result);
+                    lst = resp.ServiciosSociales;
+                }
+                catch 
+                {
+
+                }
+            }
+            return lst;
+        }
+
+        
+        public List<ServicioSocial> CrearServicioSocialPruebaUnitaria(ServicioSocialBody objBodyObjectRequest)
+        {
+            var lst = new List<ServicioSocial>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                var verb = "CrearServicioSocial";
+                try
+                {
+                    HttpResponseMessage response = client.PutAsync(verb, new StringContent(JsonConvert.SerializeObject(objBodyObjectRequest), Encoding.UTF8, "application/json")).Result;
+                    response.EnsureSuccessStatusCode();
+                    var resp = JsonConvert.DeserializeObject<ServicioSocialResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.ServiciosSociales;
+                }
+                catch 
+                {
+
+                }
+            }
+            return lst;
+        }
+
+        public List<ServicioSocial> ActualizarServicioSocialPruebaUnitaria(ServicioSocialBody objBodyObjectRequest)
+        {
+            var lst = new List<ServicioSocial>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                client.DefaultRequestHeaders.Add("Token", objBodyObjectRequest.Token);
+                var verb = "ActualizarServicioSocial";
+                try
+                {
+                    HttpResponseMessage response = client.PostAsync(verb, new StringContent(JsonConvert.SerializeObject(objBodyObjectRequest), Encoding.UTF8, "application/json")).Result;
+                    response.EnsureSuccessStatusCode();
+                    var resp = JsonConvert.DeserializeObject<ServicioSocialResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.ServiciosSociales;
+                }
+                catch 
+                {
+
+                }
+            }
+            return lst;
+        }
+        
         ////////////////////////////////// Sólo Prueba Unitaria actual (Fin). Este código se remueve en producción. /////////////////////////////////////////////////////////////////////////
     }
 

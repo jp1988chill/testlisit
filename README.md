@@ -91,3 +91,14 @@ apply business logic from manual, and serve!
 
 misc services required:
 -CrearLoginUsuarioModel OK
+
+
+-
+
+
+DELETE FROM dbo.Comunas
+DELETE FROM dbo.Paises
+DELETE FROM dbo.Regiones
+DELETE FROM dbo.RolUsers
+DELETE FROM dbo.Serviciosocial
+DELETE FROM dbo.Users
