@@ -41,8 +41,24 @@ namespace Prueba.WebApi.Controllers
 
         private List<User> ObtenerUsuariosPruebaUnitaria()
         {
-            var token = (OkObjectResult)ObtenerUsers().Result;
-            return ((UserResponse)token.Value).usersNuevoTokenAsignado;
+            var lst = new List<User>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettingsRepository.GetRestAPIPath());
+                var verb = "ObtenerUsers";
+                try
+                {
+                    HttpResponseMessage response = client.GetAsync(verb).Result;
+                    response.EnsureSuccessStatusCode();
+                    UserResponse resp = JsonConvert.DeserializeObject<UserResponse>(response.Content.ReadAsStringAsync().Result);
+                    lst = resp.usersNuevoTokenAsignado;
+                }
+                catch /*(Exception ex)*/
+                {
+
+                }
+            }
+            return lst;
         }
 
         private List<User> EliminarUsuarioPruebaUnitaria(UserBody objBodyObjectRequest)
@@ -315,7 +331,7 @@ namespace Prueba.WebApi.Controllers
         /// <response code="500">Ocurrió un error interno en el servidor</response>
         /// <returns></returns>
         [Route("/action/ObtenerUsers")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ValidarCliente")] //Verbo GET no tiene capa de seguridad
         [HttpGet]
         [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
