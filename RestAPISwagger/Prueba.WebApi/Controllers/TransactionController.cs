@@ -32,22 +32,14 @@ namespace Prueba.WebApi.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private IAppSettingsRepository _appSettingsRepository;
-        private IMiscHelpers _miscHelpers;
         private readonly ILogger<TransactionController> _logger;
         private PruebaUnitaria _PruebaUnitaria;
         public TransactionController(IMediator mediator, IAppSettingsRepository appSettingsRepository, IMiscHelpers miscHelpers, ILogger<TransactionController> logger)
         {
             _mediator = mediator;
-            _appSettingsRepository = appSettingsRepository;
-            _miscHelpers = miscHelpers;
             _logger = logger;
             _PruebaUnitaria = new PruebaUnitaria(appSettingsRepository, miscHelpers);
         }
-
-
-        
-
 
         /// <summary>
         /// Implementación de Prueba Unitaria, que automatiza en una sola llamada a un servicio expuesto, los requerimientos en Prueba técnica - backend.pdf
@@ -68,73 +60,82 @@ namespace Prueba.WebApi.Controllers
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> EjecutarPruebaUnitaria()
         {
-            //Generamos 2 usuarios + Login de 10 minutos de sesión para cada uno
-            List<User> usu = new List<User>();
-            usu.Add(new User(new Guid(), 0, "JP", "pass", "")); //Será Usuario normal
-            usu.Add(new User(new Guid(), 0, "Catalina", "pass", "")); //Será Administrador 
-            List<User> usuariosRegistrados = _PruebaUnitaria.CrearUsuarioPruebaUnitaria(new UserBody() { Users = usu });
-            usuariosRegistrados = _PruebaUnitaria.CrearLoginSessionUsersPruebaUnitaria(new UserBody() { Users = usuariosRegistrados });
+            string errorDetalle = "Prueba Unitaria fallida!";
+            try
+            {
+                //Generamos 2 usuarios + Login de 10 minutos de sesión para cada uno
+                List<User> usu = new List<User>();
+                usu.Add(new User(new Guid(), 0, "JP", "pass", "")); //Será Usuario normal
+                usu.Add(new User(new Guid(), 0, "Catalina", "pass", "")); //Será Administrador 
+                List<User> usuariosRegistrados = _PruebaUnitaria.CrearUsuarioPruebaUnitaria(new UserBody() { Users = usu });
+                usuariosRegistrados = _PruebaUnitaria.CrearLoginSessionUsersPruebaUnitaria(new UserBody() { Users = usuariosRegistrados });
 
-            //Generamos un rol "Usuario", y el otro "Administrador"
-            List<RolUser> rolUsu = new List<RolUser>();
-            rolUsu.Add(new RolUser("Usuario"));
-            rolUsu.Add(new RolUser("Administrador"));
-            List<RolUser> rolUsuariosRegistrados = _PruebaUnitaria.CrearRolUsuarioPruebaUnitaria(new RolUserBody() { RolUsers = rolUsu });
+                //Generamos un rol "Usuario", y el otro "Administrador"
+                List<RolUser> rolUsu = new List<RolUser>();
+                rolUsu.Add(new RolUser("Usuario"));
+                rolUsu.Add(new RolUser("Administrador"));
+                List<RolUser> rolUsuariosRegistrados = _PruebaUnitaria.CrearRolUsuarioPruebaUnitaria(new RolUserBody() { RolUsers = rolUsu });
 
-            //"Catalina" es "Administrador" && "JP" is "Usuario" normal
-            usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Administrador").ToList().FirstOrDefault().Idroluser;
-            usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Usuario").ToList().FirstOrDefault().Idroluser;
+                //"Catalina" es "Administrador" && "JP" is "Usuario" normal
+                usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Administrador").ToList().FirstOrDefault().Idroluser;
+                usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Idroluser = rolUsuariosRegistrados.Where(id => id.Nombreroluser == "Usuario").ToList().FirstOrDefault().Idroluser;
 
-            //Seleccionamos 1 de los 2 usuarios conectados:
-            //string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Token).ToString(); //Perfil Usuario: No permite acceso a servicios tipo POST, PUTS, DELETE
-            string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Token).ToString(); //Perfil Administrador: Acceso permitido a servicios tipo POST, PUTS, DELETE
+                //Seleccionamos 1 de los 2 usuarios conectados:
+                //string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "JP").ToList().FirstOrDefault().Token).ToString(); //Perfil Usuario: No permite acceso a servicios tipo POST, PUTS, DELETE
+                string TokenActualUsuarioConectado = (usuariosRegistrados.Where(id => id.Name == "Catalina").ToList().FirstOrDefault().Token).ToString(); //Perfil Administrador: Acceso permitido a servicios tipo POST, PUTS, DELETE
 
-            _PruebaUnitaria.ActualizarUsuarioPruebaUnitaria(new UserBody() { Users = usuariosRegistrados, Token = TokenActualUsuarioConectado });
-           
-            //Generamos 1 País con 2 Regiones, a su vez con 2 Comunas. 
-            //Los ids son relacionales de manera dinámica. Por ende, se crean primero las Comunas, luego Regiones y finalmente Pais. Luego se arma la tupla completa en OOP.  
-            //Nota: Estos servicios sólo pueden ser creados por un Administrador!
-            List<int> comunasIdComunaAntof = new List<int>();
-            List<Comuna> comAntof = new List<Comuna>();
-            comAntof.Add(new Comuna() { IdComuna = 0, Nombre = "Calama" });     
-            comAntof.Add(new Comuna() { IdComuna = 0, Nombre = "Tocopilla" });
-            comAntof = _PruebaUnitaria.CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comAntof, Token = TokenActualUsuarioConectado }); //So far implemenedt Administrador services validation. Todo: Implement the same for the rest of services
-            foreach(Comuna comuna in comAntof){ comunasIdComunaAntof.Add(comuna.IdComuna); }
+                _PruebaUnitaria.ActualizarUsuarioPruebaUnitaria(new UserBody() { Users = usuariosRegistrados, Token = TokenActualUsuarioConectado });
 
-            List<int> comunasIdComunaValpo = new List<int>();
-            List<Comuna> comValpo = new List<Comuna>();
-            comValpo.Add(new Comuna() { IdComuna = 0, Nombre = "Casablanca" });
-            comValpo.Add(new Comuna() { IdComuna = 0, Nombre = "Concón" });
-            comValpo = _PruebaUnitaria.CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comValpo, Token = TokenActualUsuarioConectado });
-            foreach (Comuna comuna in comValpo) { comunasIdComunaValpo.Add(comuna.IdComuna); }
+                //Generamos 1 País con 2 Regiones, a su vez con 2 Comunas. 
+                //Los ids son relacionales de manera dinámica. Por ende, se crean primero las Comunas, luego Regiones y finalmente Pais. Luego se arma la tupla completa en OOP.  
+                //Nota: Estos servicios sólo pueden ser creados por un Administrador!
+                List<int> comunasIdComunaAntof = new List<int>();
+                List<Comuna> comAntof = new List<Comuna>();
+                comAntof.Add(new Comuna() { IdComuna = 0, Nombre = "Calama" });
+                comAntof.Add(new Comuna() { IdComuna = 0, Nombre = "Tocopilla" });
+                comAntof = _PruebaUnitaria.CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comAntof, Token = TokenActualUsuarioConectado }); //So far implemenedt Administrador services validation. Todo: Implement the same for the rest of services
+                foreach (Comuna comuna in comAntof) { comunasIdComunaAntof.Add(comuna.IdComuna); }
 
-            List<int> regionesIdRegion = new List<int>();
-            List<Region_> reg = new List<Region_>();
-            reg.Add(new Region_() { Idregion = 0, Idcomuna = comunasIdComunaAntof, Nombre = "Antofagasta" } );
-            reg.Add(new Region_() { Idregion = 0, Idcomuna = comunasIdComunaValpo, Nombre = "Valparaiso" });
-            reg = _PruebaUnitaria.CrearRegionPruebaUnitaria(new RegionBody() { Regiones = reg });
-            foreach (Region_ region in reg) { regionesIdRegion.Add(region.Idregion); }
+                List<int> comunasIdComunaValpo = new List<int>();
+                List<Comuna> comValpo = new List<Comuna>();
+                comValpo.Add(new Comuna() { IdComuna = 0, Nombre = "Casablanca" });
+                comValpo.Add(new Comuna() { IdComuna = 0, Nombre = "Concón" });
+                comValpo = _PruebaUnitaria.CrearComunaPruebaUnitaria(new ComunaBody() { Comunas = comValpo, Token = TokenActualUsuarioConectado });
+                foreach (Comuna comuna in comValpo) { comunasIdComunaValpo.Add(comuna.IdComuna); }
 
-            List<Pais> pais = new List<Pais>();
-            pais.Add(new Pais() { Idpais = 0, Idregion = regionesIdRegion, Nombre = "Chile" });
-            pais = _PruebaUnitaria.CrearPaisPruebaUnitaria(new PaisBody() { Paises = pais, Token = TokenActualUsuarioConectado });
+                List<int> regionesIdRegion = new List<int>();
+                List<Region_> reg = new List<Region_>();
+                reg.Add(new Region_() { Idregion = 0, Idcomuna = comunasIdComunaAntof, Nombre = "Antofagasta" });
+                reg.Add(new Region_() { Idregion = 0, Idcomuna = comunasIdComunaValpo, Nombre = "Valparaiso" });
+                reg = _PruebaUnitaria.CrearRegionPruebaUnitaria(new RegionBody() { Regiones = reg });
+                foreach (Region_ region in reg) { regionesIdRegion.Add(region.Idregion); }
 
-            //Fin de pruebas, limpieza de tablas.
-            _PruebaUnitaria.EliminarUsuarioPruebaUnitaria(new UserBody() { Users = _PruebaUnitaria.ObtenerUsuariosPruebaUnitaria(), Token = TokenActualUsuarioConectado });
-            _PruebaUnitaria.EliminarRolUsuariosPruebaUnitaria(new RolUserBody() { RolUsers = _PruebaUnitaria.ObtenerRolUsuariosPruebaUnitaria(), Token = TokenActualUsuarioConectado });
-            _PruebaUnitaria.EliminarComunaPruebaUnitaria(new ComunaBody() { Comunas = _PruebaUnitaria.ObtenerComunasPruebaUnitaria(), Token = TokenActualUsuarioConectado });
-            _PruebaUnitaria.EliminarRegionPruebaUnitaria(new RegionBody() { Regiones = _PruebaUnitaria.ObtenerRegionesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
-            _PruebaUnitaria.EliminarPaisPruebaUnitaria(new PaisBody() { Paises = _PruebaUnitaria.ObtenerPaisesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+                List<Pais> pais = new List<Pais>();
+                pais.Add(new Pais() { Idpais = 0, Idregion = regionesIdRegion, Nombre = "Chile" });
+                pais = _PruebaUnitaria.CrearPaisPruebaUnitaria(new PaisBody() { Paises = pais, Token = TokenActualUsuarioConectado });
 
-            //Se implementa lo siguiente:
-            //Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
-            //A una persona no se le puede asignar más de una vez con el mismo servicio social el mismo año.
-            //El administrador puede ver personas y los servicios asignados, le puede asignar alguna ayuda social.
-            //Una persona puede obtener sus ayudas sociales asignados por año y el último vigente.
-            //El administrador puede obtener las ayudas sociales asignadas a un usuario.
-            //El administrador puede crear nuevas ayudas sociales para las comunas o regiones. Si se crea en una región
-            //se asigna a todas las comunas de esta.
-            return Ok(new PruebaUnitariaResponse() { HttpCode = 200, HttpMessage = "Prueba Unitaria ejecutada correctamente", MoreInformation = "----", userFriendlyError = "----" });
+                //Fin de pruebas, limpieza de tablas.
+                _PruebaUnitaria.EliminarUsuarioPruebaUnitaria(new UserBody() { Users = _PruebaUnitaria.ObtenerUsuariosPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+                _PruebaUnitaria.EliminarRolUsuariosPruebaUnitaria(new RolUserBody() { RolUsers = _PruebaUnitaria.ObtenerRolUsuariosPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+                _PruebaUnitaria.EliminarComunaPruebaUnitaria(new ComunaBody() { Comunas = _PruebaUnitaria.ObtenerComunasPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+                _PruebaUnitaria.EliminarRegionPruebaUnitaria(new RegionBody() { Regiones = _PruebaUnitaria.ObtenerRegionesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+                _PruebaUnitaria.EliminarPaisPruebaUnitaria(new PaisBody() { Paises = _PruebaUnitaria.ObtenerPaisesPruebaUnitaria(), Token = TokenActualUsuarioConectado });
+
+                //Se implementa lo siguiente:
+                //Servicios de ayudas sociales: Están asignados por comuna y solo a los residentes de dichas comunas
+                //A una persona no se le puede asignar más de una vez con el mismo servicio social el mismo año.
+                //El administrador puede ver personas y los servicios asignados, le puede asignar alguna ayuda social.
+                //Una persona puede obtener sus ayudas sociales asignados por año y el último vigente.
+                //El administrador puede obtener las ayudas sociales asignadas a un usuario.
+                //El administrador puede crear nuevas ayudas sociales para las comunas o regiones. Si se crea en una región
+                //se asigna a todas las comunas de esta.
+                return Ok(new PruebaUnitariaResponse() { HttpCode = 200, HttpMessage = "Prueba Unitaria ejecutada correctamente", MoreInformation = "----", userFriendlyError = "----" });
+            }
+            catch (Exception ex)
+            {
+                errorDetalle = ex.Message.ToString();
+            }
+            return BadRequest(new PruebaUnitariaResponse() { HttpCode = 500, HttpMessage = "Prueba Unitaria falló", MoreInformation = errorDetalle, userFriendlyError = "----" });
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////

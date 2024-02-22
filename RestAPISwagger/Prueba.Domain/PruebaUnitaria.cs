@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Prueba.Domain
 {
-    //Clase general para implementar conversiones específicas si son requeridas durante la prueba unitaria
+    //Juan Pablo: Generalmente implemento las pruebas unitarias apropiadamente, pero por temas de tiempo, tuve que abstraerlas directamente en la capa Dominio!
     public class PruebaUnitaria
     {
         private IAppSettingsRepository _appSettingsRepository;
@@ -22,8 +22,6 @@ namespace Prueba.Domain
         }
 
         ////////////////////////////////// Sólo Prueba Unitaria actual. Este código se remueve en producción. /////////////////////////////////////////////////////////////////////////
-
-
         public List<User> ObtenerUsuariosPruebaUnitaria()
         {
             var lst = new List<User>();
